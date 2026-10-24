@@ -7,3 +7,5 @@
 - Saturday-24/10/2026-12:07 - Daniel Echeverría : Depuración y eliminación de caracteres emoji en código backend y frontend (course.py, webhooks.py, pdf_report.py, DependenciesModal.tsx) garantizando cumplimiento de directriz de estilo.
 - Saturday-24/10/2026-12:18 - Daniel Echeverría : Integración del logotipo SVG de OpenNavy (assets/logo_opennavy.svg) en el encabezado del README.md en la rama develop.
 - Saturday-24/10/2026-12:35 - Daniel Echeverría : Implementación de US-09 en rama feature/backend-blueprint-broadcast con buffer de blueprints en FleetSonarManager, rutas REST /blueprints/latest, suite de tests automatizados (4 passed) y script de diagnóstico de LAN scripts/check-lan.py.
+- [Saturday]-[24/10/2026]-[12:13]-[Dylan Gamero] : Corrección de retrocompatibilidad en config.py y health.py para alineación de OPENNAVY_TIER y arranque operativo de backend y frontend.
+

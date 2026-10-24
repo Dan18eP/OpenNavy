@@ -66,7 +66,7 @@ def health_check(db: Session = Depends(get_db)):
         "version": settings.VERSION,
         "database": db_status,
         "active_model": settings.OLLAMA_MODEL,
-        "local_tier": settings.PRAXIA_LOCAL_TIER,
+        "local_tier": getattr(settings, "OPENNAVY_TIER", settings.PRAXIA_LOCAL_TIER),
         "installed_models": models_info,
         "knowledge_base": {
             "path": str(kb_path),
