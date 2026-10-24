@@ -46,7 +46,7 @@ def offline_synthesizer_node(state: AnalysisState) -> Dict[str, Any]:
     # 5. Cálculo determinístico de scores
     eval_report = _calculate_criterion_scores(static_metrics, deps_info, findings)
     eval_report["mode"] = "deterministic_offline"
-    eval_report["banner"] = "Generado en Modo Determinístico Offline (Motor Matemático Praxia)"
+    eval_report["banner"] = "Generado en Modo Determinístico Offline (Motor Matemático OpenNavy)"
 
     return {
         "findings": findings,

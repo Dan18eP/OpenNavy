@@ -138,6 +138,16 @@ export interface CoursePlotResult {
   reef_warnings: string[];
   action_steps: string[];
   pr_template: string;
+  drift_risk?: {
+    total_impacted_modules: number;
+    direct_impact_count: number;
+    indirect_impact_count: number;
+    risk_level: 'LOW' | 'MEDIUM' | 'HIGH' | 'CRITICAL';
+    layer_violations: any[];
+    preliminary_adr: any;
+    blast_radius: any[];
+  };
+  blast_radius?: any[];
 }
 
 export interface ChatSessionItem {
@@ -384,6 +394,26 @@ export const api = {
       body: JSON.stringify(payload),
     });
     return handleResponse<any>(res, 'Error al trazar rumbo con el Almirante Gemma 4');
+  },
+
+  async getRepoTopography(repoId: string) {
+    const res = await fetch(`${API_BASE}/repos/${repoId}/topography`);
+    return handleResponse<{ repo_id: string; files: string[]; total_files: number; scc_cycles: any[]; adjacency: Record<string, string[]> }>(
+      res,
+      'Error al obtener topografia AST del repositorio'
+    );
+  },
+
+  async evaluateDrift(repoId: string, waypoints: Array<{ file: string; lines?: [number, number]; reason?: string }>) {
+    const res = await fetch(`${API_BASE}/repos/${repoId}/drift/evaluate`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ waypoints }),
+    });
+    return handleResponse<{ repo_id: string; evaluation: any }>(
+      res,
+      'Error al evaluar deriva arquitectonica'
+    );
   },
 
   async getLatestBlueprint(): Promise<{ latest_blueprint: any | null }> {

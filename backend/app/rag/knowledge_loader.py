@@ -1,7 +1,7 @@
 import re
 from pathlib import Path
 from typing import List, Dict, Any, Optional
-from app.core.config import settings
+from app.core.config import settings, PROJECT_ROOT
 
 
 class KnowledgeLoader:
@@ -16,13 +16,22 @@ class KnowledgeLoader:
         y genera chunks semánticos estructurados con metadatos.
         """
         chunks: List[Dict[str, Any]] = []
-        if not self.kb_dir.exists():
-            return chunks
+        if self.kb_dir.exists():
+            for md_file in self.kb_dir.rglob("*.md"):
+                if md_file.is_file():
+                    file_chunks = self.process_markdown_file(md_file)
+                    chunks.extend(file_chunks)
 
-        for md_file in self.kb_dir.rglob("*.md"):
-            if md_file.is_file():
-                file_chunks = self.process_markdown_file(md_file)
-                chunks.extend(file_chunks)
+        # Cargar ADRs y arquitectura central de OpenNavy
+        adr_dir = PROJECT_ROOT / "docs" / "adr"
+        if adr_dir.exists():
+            for md_file in adr_dir.glob("*.md"):
+                if md_file.is_file():
+                    chunks.extend(self.process_markdown_file(md_file))
+
+        arch_file = PROJECT_ROOT / "docs" / "ARCHITECTURE.md"
+        if arch_file.exists() and arch_file.is_file():
+            chunks.extend(self.process_markdown_file(arch_file))
 
         return chunks
 
@@ -33,7 +42,13 @@ class KnowledgeLoader:
         except Exception:
             return []
 
-        rel_path = str(file_path.relative_to(self.kb_dir)).replace("\\", "/")
+        try:
+            rel_path = str(file_path.relative_to(self.kb_dir)).replace("\\", "/")
+        except ValueError:
+            try:
+                rel_path = str(file_path.relative_to(PROJECT_ROOT)).replace("\\", "/")
+            except Exception:
+                rel_path = file_path.name
 
         # 1. Extraer Metadatos del Encabezado
         doc_metadata = self._extract_metadata(content)
@@ -71,7 +86,7 @@ class KnowledgeLoader:
                 source_tier = "team_standard"
             elif "module-docs/" in path_lower:
                 source_tier = "module_doc"
-            elif "adrs/" in path_lower:
+            elif "adrs/" in path_lower or "adr/" in path_lower or "architecture" in path_lower:
                 source_tier = "adr"
             elif "criteria/" in path_lower:
                 source_tier = "criteria"
@@ -83,8 +98,8 @@ class KnowledgeLoader:
                 "doc_path": rel_path,
                 "criterion": criterion,
                 "category": category,
-                "authority": doc_metadata.get("authority", "Praxia Standards"),
-                "rule_id": doc_metadata.get("rule_id", f"PRAXIA-{criterion.upper()}"),
+                "authority": doc_metadata.get("authority", "OpenNavy Standards"),
+                "rule_id": doc_metadata.get("rule_id", f"NAVY-{criterion.upper()}"),
                 "severity": doc_metadata.get("severity", "medium"),
                 "heading": heading,
                 "chunk_type": chunk_type,

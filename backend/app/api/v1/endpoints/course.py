@@ -91,6 +91,23 @@ async def plot_course(
         reefs_list = [" -> ".join(c.get("cycle", [])) for c in scc_cycles[:3]]
         reefs_context = "\n[ARRECIFES DE CODIGO DETECTADOS POR TARJAN - PRECAUCION DE ACOPLAMIENTO]:\n" + "\n".join(f"* {r}" for r in reefs_list)
 
+    # 1.5 Recuperar mejores practicas arquitectonicas y estandares con RAG
+    knowledge_context = ""
+    try:
+        from app.rag.retriever import get_knowledge_retriever
+        retriever = get_knowledge_retriever()
+        kb_chunks = retriever.search_general(payload.mission, top_k=2)
+        if kb_chunks:
+            kb_lines = []
+            for c in kb_chunks:
+                heading = c.get("heading", "")
+                content_snippet = c.get("content", "")[:350].strip().replace("\n", " ")
+                source_doc = c.get("doc_path", "pauta")
+                kb_lines.append(f"* [{source_doc} - {heading}]: {content_snippet}")
+            knowledge_context = "\n[PAUTAS ARQUITECTONICAS Y ESTANDARES RECOMENDADOS (RAG)]:\n" + "\n".join(kb_lines)
+    except Exception as e:
+        logger.warning(f"No se pudo recuperar contexto de conocimiento RAG para el rumbo: {e}")
+
     # 2. Prompt estructurado para Google Gemma 4
     system_prompt = (
         "Eres el Almirante de OpenNavy (The Admiralty AI), un arquitecto de software supremo especializado "
@@ -109,14 +126,16 @@ async def plot_course(
         '  "reef_warnings": ["Advertencias de acoplamiento o dependencias circulares..."],\n'
         '  "action_steps": ["Paso 1...", "Paso 2...", "Paso 3..."],\n'
         '  "pr_template": "### Cambios realizados\\n..."\n'
-        "}"
+        "}\n"
+        "5. Incorpora las pautas arquitectonicas y estandares de ingenieria recuperados para asegurar modularidad y calidad."
     )
 
     user_prompt = (
         f"Repositorio: {repo_name}\n"
         f"Mision / Issue: {payload.mission}\n\n"
         f"[TOPOGRAFIA REAL DE ARCHIVOS DEL REPOSITORIO]:\n{files_context}\n"
-        f"{reefs_context}"
+        f"{reefs_context}\n"
+        f"{knowledge_context}"
     )
 
     try:
