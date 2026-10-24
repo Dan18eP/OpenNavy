@@ -112,7 +112,7 @@ class FleetSonarManager:
                         "conflicting_files": [file_path],
                         "timestamp": datetime.utcnow().isoformat(),
                     })
-                # Colision por modulo acoplado (misma carpeta o prefijo)
+                # Colision por modulo acoplado (segun matriz de Tarjan o submodulo)
                 elif self._are_modules_coupled(file_path, other_file):
                     await self.broadcast({
                         "type": "COLLISION_ALERT",
@@ -124,7 +124,17 @@ class FleetSonarManager:
                     })
 
     def _are_modules_coupled(self, file_a: str, file_b: str) -> bool:
-        """Determina heuristicamente acoplamiento cercano si comparten directorio o submodulo."""
+        """
+        Determina acoplamiento entre modulos utilizando la matriz de Tarjan SCC
+        del servicio AntiDrift, con fallback a coincidencia de directorio.
+        """
+        try:
+            from app.services.anti_drift_service import anti_drift_service
+            if anti_drift_service.are_modules_coupled_via_tarjan(file_a, file_b):
+                return True
+        except Exception as e:
+            logger.debug(f"[FleetSonar] Error consultando acoplamiento Tarjan: {e}")
+
         parts_a = file_a.replace("\\", "/").split("/")
         parts_b = file_b.replace("\\", "/").split("/")
         if len(parts_a) > 1 and len(parts_b) > 1:

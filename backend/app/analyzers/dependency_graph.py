@@ -37,6 +37,8 @@ class DependencyGraphAnalyzer:
         canonical_modules: Set[str] = set()
 
         for node in file_nodes:
+            if not node or not getattr(node, "path", None):
+                continue
             canonical = self._get_canonical_module_name(node.path, repo_root)
             canonical_modules.add(canonical)
 
@@ -95,6 +97,8 @@ class DependencyGraphAnalyzer:
         edge_details: Dict[Tuple[str, str], Dict[str, Any]] = {}
 
         for node in file_nodes:
+            if not node or not getattr(node, "path", None):
+                continue
             src_canonical = self._get_canonical_module_name(node.path, repo_root)
             for imp in node.imports:
                 target_canonical = self._resolve_import_target(imp, module_keys)
@@ -278,6 +282,7 @@ Las dependencias cíclicas impiden el testing modular aislado, generan acoplamie
             - coupling_metrics: Fan-in, Fan-out e inestabilidad por módulo
         """
         root = Path(repo_root)
+        file_nodes = [n for n in file_nodes if n and getattr(n, "path", None)]
         module_keys, canonical_modules = self._build_module_keys_map(file_nodes, root)
         adjacency_list, edge_details = self._build_adjacency_list_and_edges(file_nodes, root, module_keys, canonical_modules)
 
