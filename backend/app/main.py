@@ -3,6 +3,7 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from app.core.config import settings
 from app.core.database import init_db
+from app.core.seeder import seed_opennavy_repo
 from app.api.v1.api import api_router
 
 
@@ -10,6 +11,8 @@ from app.api.v1.api import api_router
 async def lifespan(app: FastAPI):
     # Inicializar tablas de Base de Datos al arrancar
     init_db()
+    # Auto-sembrar repositorio OpenNavy si la base de datos esta vacia
+    seed_opennavy_repo()
     yield
 
 
