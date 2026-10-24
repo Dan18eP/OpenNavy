@@ -40,7 +40,7 @@ export const DeepCodeExplorerView: React.FC<DeepExplorerProps> = ({ repoId, repo
   }>>([
     {
       role: 'assistant',
-      content: `Hola. Soy el auditor **Praxia DeepCode**. Puedes preguntarme cómo funciona el sistema, qué dependencias o clases tienen antipatrones o cómo refactorizar funciones complejas. Navega los archivos a la derecha o haz clic en las citas de código para saltar directamente a sus líneas.`,
+      content: `Hola. Soy el explorador **OpenNavy DeepCode**. Puedes preguntarme cómo funciona el sistema, qué dependencias o clases tienen antipatrones o cómo navegar el código con Tree-sitter y Google Gemma 4. Navega los archivos a la derecha o haz clic en las citas de código para saltar directamente a sus líneas.`,
     }
   ]);
   const [inputMessage, setInputMessage] = useState<string>('');
@@ -286,7 +286,7 @@ export const DeepCodeExplorerView: React.FC<DeepExplorerProps> = ({ repoId, repo
                 <span className="w-2 h-2 bg-brand animate-bounce" style={{ animationDelay: '300ms' }} />
               </div>
               <span className="text-xs font-mono text-text-secondary">
-                Praxia AI razonando con rúbricas RAG y modelo local...
+                OpenNavy AI razonando con rúbricas y Google Gemma 4...
               </span>
             </div>
           )}

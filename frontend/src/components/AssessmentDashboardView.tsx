@@ -12,7 +12,7 @@ import { api } from '../services/api';
 export const AssessmentDashboardView: React.FC = () => {
   const [assessmentData, setAssessmentData] = useState<any>({
     proyecto: 'Asistente de Triage Inteligente',
-    equipo: 'Equipo de Ingeniería Praxia',
+    equipo: 'Tripulación de Ingeniería OpenNavy',
     problema: 'Los tickets y revisiones de código se procesan manualmente generando retrasos.',
     situacion: 'Proceso manual no estandarizado con ~15 minutos por revisión.',
     resultado: 'Clasificar y emitir veredicto de arquitectura y calidad automáticamente.',

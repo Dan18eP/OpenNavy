@@ -70,7 +70,7 @@ export const UnifiedWorkspaceView: React.FC<UnifiedWorkspaceViewProps> = ({
   const [messages, setMessages] = useState<WorkspaceMessage[]>([
     {
       role: 'assistant',
-      content: `Hola. Soy el Copilot de arquitectura **Praxia Workspace**. Puedo explicarte cómo está estructurado este repositorio (${repoName || 'repositorio'}), auditar módulos en tiempo real y citar las líneas exactas de código donde se ubican posibles violaciones o dependencias cíclicas.\n\nPuedes escribir comandos slash como **/help**, **/tree**, **/models**, **/cycles**, **/solid** o **/secrets** directamente en el chat para activar paneles visuales interactivos.`,
+      content: `Hola. Soy el Copilot de arquitectura **OpenNavy Fleet Copilot**. Puedo explicarte cómo está estructurado este repositorio (${repoName || 'repositorio'}), auditar módulos en tiempo real con Tree-sitter y citar las líneas exactas de código donde se ubican posibles violaciones o dependencias cíclicas con el algoritmo de Tarjan.\n\nPuedes escribir comandos slash como **/help**, **/tree**, **/models**, **/cycles**, **/solid** o **/secrets** directamente en el chat para activar paneles visuales interactivos.`,
       timestamp: new Date(),
     },
   ]);
@@ -204,7 +204,7 @@ export const UnifiedWorkspaceView: React.FC<UnifiedWorkspaceViewProps> = ({
         ...prev,
         {
           role: 'assistant',
-          content: `### Catálogo de Comandos Interactivos (Praxia UI)
+          content: `### Catálogo de Comandos Interactivos (OpenNavy UI)
 Selecciona o escribe cualquiera de los siguientes comandos:
 
 - **/tree** — Abre y resalta el árbol de navegación de archivos del repositorio.
@@ -267,7 +267,7 @@ Selecciona o escribe cualquiera de los siguientes comandos:
 **Inventario Local Detectado:**
 ${modelsList}
 
-*Tip:* Para cambiar de tier, ejecuta Praxia con \`--tier standard\` (3b) o \`--tier pro\` (7b).`,
+*Tip:* Para alternar entre modelos, usa gemma4:e4b (máxima calidad) o gemma4:e2b (ultrarrápido).`,
             timestamp: new Date(),
           },
         ]);
@@ -655,10 +655,10 @@ ${modelsList}
           <div className="p-3.5 border-b border-border-subtle bg-surface/80 flex items-center justify-between flex-shrink-0">
             <div className="flex items-center gap-2">
               <Sparkles className="size-4 text-brand" />
-              <h2 className="font-sans text-sm font-bold text-text">Praxia RAG Copilot</h2>
+              <h2 className="font-sans text-sm font-bold text-text">OpenNavy AI Copilot</h2>
             </div>
-            <span className="font-mono text-[10px] px-2 py-0.5 border border-border-subtle bg-surface-2 text-text-muted">
-              AST & Normas
+            <span className="font-mono text-[10px] px-2 py-0.5 border border-[#003893]/30 bg-[#003893]/10 text-[#003893] font-semibold">
+              Gemma 4 · AST & Tarjan
             </span>
           </div>
 

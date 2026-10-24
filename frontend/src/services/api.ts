@@ -217,7 +217,7 @@ export const api = {
     const url = window.URL.createObjectURL(blob);
     const a = document.createElement('a');
     a.href = url;
-    a.download = `Praxia_Report_${repoName}.pdf`;
+    a.download = `OpenNavy_Report_${repoName}.pdf`;
     document.body.appendChild(a);
     a.click();
     window.URL.revokeObjectURL(url);

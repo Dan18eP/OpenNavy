@@ -45,9 +45,8 @@ export function DottedSurface({
     const AMOUNTX = 40;
     const AMOUNTY = 60;
 
-    // Scene setup
     const scene = new THREE.Scene();
-    scene.fog = new THREE.Fog(theme === "dark" ? 0x090a0f : 0xffffff, 2000, 10000);
+    scene.fog = new THREE.Fog(0xffffff, 2000, 10000);
 
     const width = containerRef.current.clientWidth || window.innerWidth;
     const height = containerRef.current.clientHeight || window.innerHeight;
@@ -84,10 +83,15 @@ export function DottedSurface({
         const z = iy * SEPARATION - (AMOUNTY * SEPARATION) / 2;
 
         positions.push(x, y, z);
-        if (theme === "dark") {
-          colors.push(0.9, 0.9, 1.0);
+        if (iy < AMOUNTY * 0.5) {
+          // Amarillo Colombia (#FCD116)
+          colors.push(0.99, 0.82, 0.09);
+        } else if (iy < AMOUNTY * 0.75) {
+          // Azul Colombia (#003893)
+          colors.push(0.0, 0.22, 0.58);
         } else {
-          colors.push(0.1, 0.1, 0.1);
+          // Rojo Colombia (#CE1126)
+          colors.push(0.81, 0.07, 0.15);
         }
       }
     }

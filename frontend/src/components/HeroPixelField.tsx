@@ -33,12 +33,12 @@ function readPalette() {
   const token = (name: string, fallback: string) =>
     style.getPropertyValue(name).trim() || fallback
   return {
-    bg: token('--t-field-bg', '#0e0e14'),
-    dim: token('--t-field-dim', '#39482e'),
-    mid: token('--t-field-mid', '#678549'),
-    lit: token('--t-field-lit', '#9ece6a'),
-    hover: token('--t-field-hover', '#bbdd97'),
-    crest: token('--t-field-crest', '#daecc6'),
+    bg: token('--t-field-bg', '#ffffff'),
+    dim: token('--t-field-dim', '#e2e8f0'),
+    mid: token('--t-field-mid', '#003893'),
+    lit: token('--t-field-lit', '#fcd116'),
+    hover: token('--t-field-hover', '#ce1126'),
+    crest: token('--t-field-crest', '#003893'),
   }
 }
 

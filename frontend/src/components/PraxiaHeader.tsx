@@ -4,17 +4,16 @@ import {
   MenuBarsIcon,
   XIcon,
 } from '@/components/icons'
-import { OmarchyMarkDrawn } from '@/components/Brand'
 import { Button } from '@/components/ui/button'
 import { RepoItem } from '@/services/api'
 import { cn } from '@/lib/utils'
-import { Users, Globe, Linkedin } from 'lucide-react'
-import { PRAXIA_TEAM, CreditsModal } from '@/components/CreditsModal'
+import { Users, Globe, Linkedin, Compass, Anchor } from 'lucide-react'
+import { OPENNAVY_TEAM, CreditsModal } from '@/components/CreditsModal'
 
 export type TabType =
   | 'overview'
-  | 'audit'
   | 'workspace'
+  | 'audit'
   | 'docs'
   | 'credits'
   | 'findings'
@@ -43,12 +42,9 @@ export const PraxiaHeader: React.FC<PraxiaHeaderProps> = ({
   activeTab,
   onSelectTab,
   totalRepos,
-  findingsCount,
-  knowledgeDocsCount,
   repos,
   selectedRepoId,
   onSelectRepo,
-  onStartAudit,
 }) => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
   const [teamDropdownOpen, setTeamDropdownOpen] = useState(false)
@@ -69,18 +65,24 @@ export const PraxiaHeader: React.FC<PraxiaHeaderProps> = ({
     }
   }, [teamDropdownOpen])
 
-  const navLinks: { id: TabType; label: string; badge?: number }[] = [
+  // Only two navigation tabs as explicitly requested: "Inicio" and "Explorador y copiloto"
+  const navLinks: { id: TabType; label: string }[] = [
     { id: 'overview', label: 'Inicio' },
-    { id: 'audit', label: 'Auditoría', badge: findingsCount },
-    { id: 'workspace', label: 'Explorador & Copilot' },
-    { id: 'docs', label: 'Documentación', badge: knowledgeDocsCount },
+    { id: 'workspace', label: 'Explorador y copiloto' },
   ]
 
   return (
     <header className="pixel-container sticky top-0 z-[100]">
+      {/* Colombian Flag Tricolor Accent Strip (Amarillo 50%, Azul 25%, Rojo 25%) */}
+      <div className="h-[3px] w-full flex bg-transparent">
+        <div className="w-1/2 bg-[#FCD116]" title="Colombia - Amarillo" />
+        <div className="w-1/4 bg-[#003893]" title="Colombia - Azul" />
+        <div className="w-1/4 bg-[#CE1126]" title="Colombia - Rojo" />
+      </div>
+
       <div
         className={cn(
-          'group/bar border-b border-border-subtle bg-bg/90 backdrop-blur-md transition-colors',
+          'group/bar border-b border-border-subtle bg-bg/95 backdrop-blur-md transition-colors',
           mobileMenuOpen && 'bg-bg/98 backdrop-blur-xl',
         )}
         style={{
@@ -88,26 +90,39 @@ export const PraxiaHeader: React.FC<PraxiaHeaderProps> = ({
         }}
       >
         <div className="mx-auto flex h-14 max-w-7xl items-center gap-3 px-4 sm:px-6 lg:px-8">
-          {/* Logo Mark: draws authentic Omarchy geometry */}
+          {/* Logo Mark: Nautical Fleet Radar */}
           <button
             onClick={() => {
               onSelectTab('overview')
               window.scrollTo({ top: 0, behavior: 'smooth' })
             }}
-            aria-label="Praxia Home"
-            className="mark-draw-trigger relative flex items-center gap-2 focus-visible:outline-2 focus-visible:outline-brand"
+            aria-label="OpenNavy Home"
+            className="mark-draw-trigger relative flex items-center gap-2.5 focus-visible:outline-2 focus-visible:outline-brand cursor-pointer"
           >
-            <OmarchyMarkDrawn className="size-[22px] shrink-0 lg:size-[calc(var(--pxc)*2)]" />
-            <span className="font-sans text-sm font-semibold tracking-tight text-text hidden sm:inline">
-              PRAXIA
-            </span>
+            <div className="size-8 rounded-none border border-[#003893] bg-[#003893]/10 text-[#003893] flex items-center justify-center relative overflow-hidden shadow-sm">
+              <Compass className="size-4.5 text-[#003893]" />
+              <div className="absolute -bottom-1 -right-1 size-2 bg-[#FCD116] border border-[#003893]" />
+            </div>
+            <div className="flex flex-col text-left">
+              <div className="flex items-center gap-1.5">
+                <span className="font-mono text-sm font-bold tracking-tight text-[#0F172A]">
+                  OPEN<span className="text-[#003893]">NAVY</span>
+                </span>
+                <span className="text-[9px] font-mono font-bold px-1 py-0.2 bg-[#FCD116] text-[#0F172A] border border-[#003893]/30">
+                  CO
+                </span>
+              </div>
+              <span className="text-[10px] font-mono text-text-muted hidden sm:inline -mt-0.5">
+                Sovereign Fleet OS
+              </span>
+            </div>
           </button>
 
-          {/* Desktop Navigation */}
+          {/* Desktop Navigation: ONLY Inicio and Explorador y copiloto */}
           <nav
             data-nav-links
             aria-label="Main Navigation"
-            className="hidden items-center md:flex ml-2"
+            className="hidden items-center md:flex ml-4 gap-1"
           >
             {navLinks.map((link) => {
               const isActive = activeTab === link.id
@@ -121,17 +136,15 @@ export const PraxiaHeader: React.FC<PraxiaHeaderProps> = ({
                     }
                   }}
                   className={cn(
-                    'relative px-3 py-1.5 text-sm whitespace-nowrap transition-colors duration-150 ease-out focus-visible:outline-2 focus-visible:outline-ring',
+                    'relative px-3.5 py-1.5 text-xs font-mono tracking-wide transition-all duration-150 focus-visible:outline-2 focus-visible:outline-ring cursor-pointer border',
                     isActive
-                      ? 'text-text font-medium bg-surface-2'
-                      : 'text-text-secondary hover:bg-surface-2 hover:text-text',
+                      ? 'border-[#003893] bg-[#003893]/10 text-[#003893] font-bold shadow-xs'
+                      : 'border-transparent text-text-secondary hover:border-border-subtle hover:bg-surface-2 hover:text-text',
                   )}
                 >
                   {link.label}
-                  {typeof link.badge === 'number' && link.badge > 0 && (
-                    <span className="ml-1.5 px-1 py-0.2 text-[10px] font-mono bg-brand/15 text-brand border border-brand/30">
-                      {link.badge}
-                    </span>
+                  {isActive && (
+                    <span className="absolute bottom-0 left-0 right-0 h-[2px] bg-[#003893]" />
                   )}
                 </button>
               )
@@ -146,7 +159,7 @@ export const PraxiaHeader: React.FC<PraxiaHeaderProps> = ({
                 aria-label="Select active repository"
                 value={selectedRepoId || ''}
                 onChange={(e) => onSelectRepo(e.target.value)}
-                className="hidden lg:block h-8 max-w-[130px] truncate border border-border-strong bg-surface px-2 font-mono text-xs text-text focus-visible:outline-2 focus-visible:outline-ring"
+                className="hidden lg:block h-8 max-w-[150px] truncate border border-border-strong bg-surface px-2 font-mono text-xs text-text focus-visible:outline-2 focus-visible:outline-ring"
               >
                 {repos.map((r) => (
                   <option key={r.id} value={r.id}>
@@ -161,38 +174,38 @@ export const PraxiaHeader: React.FC<PraxiaHeaderProps> = ({
               <Button
                 variant="ghost"
                 size="icon"
-                aria-label="Equipo de desarrollo de Praxia"
+                aria-label="Tripulación de OpenNavy"
                 onClick={() => setTeamDropdownOpen(!teamDropdownOpen)}
                 className={cn(
-                  "hidden sm:inline-flex h-8 w-8 text-text-secondary hover:text-brand transition-colors",
-                  teamDropdownOpen && "bg-surface-2 text-brand"
+                  "hidden sm:inline-flex h-8 w-8 text-text-secondary hover:text-[#003893] transition-colors border border-transparent hover:border-border-subtle",
+                  teamDropdownOpen && "bg-surface-2 text-[#003893] border-border-strong"
                 )}
-                title="Equipo & Desarrolladores"
+                title="Tripulación de OpenNavy"
               >
                 <Users className="size-4" />
               </Button>
 
-              {/* Mini Selector Popover */}
+              {/* Team Popover */}
               {teamDropdownOpen && (
                 <div
                   className="absolute right-0 top-full mt-2 w-72 sm:w-80 border border-border-strong bg-surface p-3 shadow-2xl z-50 text-xs font-mono ring-elevation"
                 >
                   <div className="flex items-center justify-between pb-2 border-b border-border-subtle mb-2.5">
                     <div className="flex items-center gap-1.5 text-text font-bold">
-                      <Users className="size-3.5 text-brand" />
-                      <span>Equipo Praxia (4)</span>
+                      <Anchor className="size-3.5 text-[#003893]" />
+                      <span>Tripulación OpenNavy (3)</span>
                     </div>
-                    <span className="text-[10px] text-text-muted">Perfiles</span>
+                    <span className="text-[10px] text-text-muted">Oficiales</span>
                   </div>
 
                   <div className="space-y-2">
-                    {PRAXIA_TEAM.map((member, idx) => (
+                    {OPENNAVY_TEAM.map((member, idx) => (
                       <div
                         key={idx}
-                        className="p-2 border border-border-subtle/80 bg-surface-2/40 hover:border-brand/40 transition-colors flex items-center justify-between gap-2"
+                        className="p-2 border border-border-subtle bg-surface-2/60 hover:border-[#003893]/40 transition-colors flex items-center justify-between gap-2"
                       >
                         <div className="flex items-center gap-2 min-w-0">
-                          <span className="size-6 bg-brand-soft border border-brand/40 text-brand text-[10px] font-bold flex items-center justify-center flex-shrink-0">
+                          <span className="size-6 bg-[#003893]/10 border border-[#003893]/40 text-[#003893] text-[10px] font-bold flex items-center justify-center flex-shrink-0">
                             {member.initials}
                           </span>
                           <div className="truncate">
@@ -228,17 +241,6 @@ export const PraxiaHeader: React.FC<PraxiaHeaderProps> = ({
                               <GithubIcon className="size-3" />
                             </a>
                           )}
-                          {member.portfolio && (
-                            <a
-                              href={member.portfolio}
-                              target="_blank"
-                              rel="noopener noreferrer"
-                              className="p-1 border border-border-subtle hover:border-brand hover:text-brand text-text-secondary transition-colors"
-                              title={`Portafolio de ${member.name}`}
-                            >
-                              <Globe className="size-3" />
-                            </a>
-                          )}
                         </div>
                       </div>
                     ))}
@@ -249,9 +251,9 @@ export const PraxiaHeader: React.FC<PraxiaHeaderProps> = ({
                       setTeamDropdownOpen(false)
                       setIsCreditsModalOpen(true)
                     }}
-                    className="w-full mt-2.5 py-1.5 border border-brand/40 bg-brand-soft hover:bg-brand text-brand hover:text-brand-ink text-center text-[11px] font-semibold transition-colors block"
+                    className="w-full mt-2.5 py-1.5 border border-[#003893]/40 bg-[#003893]/10 hover:bg-[#003893] text-[#003893] hover:text-white text-center text-[11px] font-semibold transition-colors block cursor-pointer"
                   >
-                    Ver Créditos & Portafolios
+                    Ver Tripulación Completa
                   </button>
                 </div>
               )}
@@ -261,29 +263,29 @@ export const PraxiaHeader: React.FC<PraxiaHeaderProps> = ({
             <Button
               variant="ghost"
               size="icon"
-              aria-label="Praxia on GitHub"
-              className="hidden sm:inline-flex h-8 w-8 text-text-secondary hover:text-text"
+              aria-label="OpenNavy on GitHub"
+              className="hidden sm:inline-flex h-8 w-8 text-text-secondary hover:text-text border border-transparent hover:border-border-subtle"
               render={
                 <a
-                  href="https://github.com/Dan18eP/Praxia.git"
+                  href="https://github.com/Dan18eP/OpenNavy"
                   target="_blank"
                   rel="noopener noreferrer"
                 />
               }
             >
-              <GithubIcon className="size-5" />
+              <GithubIcon className="size-4.5" />
             </Button>
 
             {/* Mobile Hamburger Toggle */}
             <button
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              className="flex size-8 items-center justify-center text-text-secondary hover:text-text md:hidden"
+              className="flex size-8 items-center justify-center text-text-secondary hover:text-text md:hidden border border-border-subtle cursor-pointer"
               aria-label={mobileMenuOpen ? 'Close Menu' : 'Open Menu'}
             >
               {mobileMenuOpen ? (
-                <XIcon className="size-5" />
+                <XIcon className="size-4" />
               ) : (
-                <MenuBarsIcon className="size-[22px]" />
+                <MenuBarsIcon className="size-[20px]" />
               )}
             </button>
           </div>
@@ -291,7 +293,7 @@ export const PraxiaHeader: React.FC<PraxiaHeaderProps> = ({
 
         {/* Mobile Dropdown Menu */}
         {mobileMenuOpen && (
-          <div className="border-t border-border-subtle bg-bg/95 px-4 py-4 md:hidden">
+          <div className="border-t border-border-subtle bg-bg/98 px-4 py-4 md:hidden">
             <nav className="flex flex-col gap-1.5">
               {navLinks.map((link) => {
                 const isActive = activeTab === link.id
@@ -306,18 +308,13 @@ export const PraxiaHeader: React.FC<PraxiaHeaderProps> = ({
                       }
                     }}
                     className={cn(
-                      'flex items-center justify-between px-3 py-2 text-left font-mono text-sm',
+                      'flex items-center justify-between px-3 py-2 text-left font-mono text-xs border',
                       isActive
-                        ? 'bg-surface-2 text-brand font-medium'
-                        : 'text-text-secondary hover:bg-surface hover:text-text',
+                        ? 'bg-[#003893]/10 border-[#003893] text-[#003893] font-bold'
+                        : 'border-transparent text-text-secondary hover:bg-surface hover:text-text',
                     )}
                   >
                     <span>{link.label}</span>
-                    {typeof link.badge === 'number' && link.badge > 0 && (
-                      <span className="px-1 py-0.2 text-[10px] font-mono bg-brand/15 text-brand border border-brand/30">
-                        {link.badge}
-                      </span>
-                    )}
                   </button>
                 )
               })}
@@ -329,14 +326,14 @@ export const PraxiaHeader: React.FC<PraxiaHeaderProps> = ({
                   setIsCreditsModalOpen(true)
                   setMobileMenuOpen(false)
                 }}
-                className="flex items-center justify-center gap-2 px-3 py-2 border border-border-subtle hover:border-brand/40 bg-surface text-text-secondary hover:text-brand font-mono text-xs transition-colors"
+                className="flex items-center justify-center gap-2 px-3 py-2 border border-border-subtle hover:border-[#003893]/40 bg-surface text-text-secondary hover:text-[#003893] font-mono text-xs transition-colors"
               >
                 <Users className="size-3.5" />
-                <span>Equipo & Desarrolladores Praxia (4)</span>
+                <span>Tripulación OpenNavy (3 Oficiales)</span>
               </button>
               <div className="flex items-center justify-between text-xs text-text-muted font-mono pt-1">
-                <span>{totalRepos} repos active</span>
-                <span>Praxia v1.0</span>
+                <span>{totalRepos} repos activos</span>
+                <span>OpenNavy v1.0 · MIT</span>
               </div>
             </div>
           </div>
