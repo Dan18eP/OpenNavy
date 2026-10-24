@@ -36,7 +36,7 @@ class DomainIntentGuard:
         r'(?i)\b(?:receta\s+de\s+cocina|poema|escribe\s+un\s+cuento|el\s+clima\s+en|noticias\s+de)\b',
     ]
 
-    # Lista positiva: términos representativos del dominio de Praxia
+    # Lista positiva: términos representativos del dominio de OpenNavy
     DOMAIN_KEYWORDS = [
         'código', 'codigo', 'code', 'software', 'arquitectura', 'architecture',
         'refactor', 'refactorizar', 'función', 'funcion', 'function', 'método', 'metodo', 'method',
@@ -50,7 +50,7 @@ class DomainIntentGuard:
     ]
 
     STANDARD_REJECTION_MESSAGE = (
-        "Praxia es un sistema exclusivo de auditoría de arquitectura y calidad de código de software. "
+        "OpenNavy es una plataforma soberana de navegacion y arquitectura de codigo open source. "
         "No tengo autorización para participar en interacciones personales, insultos, operaciones no relacionadas "
         "o temas fuera del ámbito de ingeniería de software de este repositorio."
     )
@@ -72,14 +72,14 @@ class DomainIntentGuard:
             if re.search(pat, trimmed):
                 return False, (
                     "Solicitud rechazada bajo política de seguridad OWASP LLM01: Se ha detectado un intento "
-                    "de alterar las directivas del sistema o evadir las restricciones de dominio de Praxia."
+                    "de alterar las directivas del sistema o evadir las restricciones de dominio de OpenNavy."
                 )
 
         # 2. Comprobar peticiones de insultos o lenguaje hostil
         for pat in cls.ABUSIVE_PATTERNS:
             if re.search(pat, trimmed):
                 return False, (
-                    "Praxia está diseñado exclusivamente para auditoría técnica de software y revisión de código. "
+                    "OpenNavy esta disenado exclusivamente para auditoría técnica de software y revisión de código. "
                     "No participo en la generación de insultos, lenguaje abusivo o descalificaciones personales."
                 )
 

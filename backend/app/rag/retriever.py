@@ -50,7 +50,7 @@ class KnowledgeRetriever:
         formatted_parts = []
         for i, chunk in enumerate(chunks, 1):
             source_citation = f"{chunk.get('doc_path', 'doc')}#{chunk.get('chunk_id', '')}"
-            authority = chunk.get("authority", "Praxia Standard")
+            authority = chunk.get("authority", "OpenNavy Standard")
             rule_id = chunk.get("rule_id", "NORM")
             tier = chunk.get("source_tier", "")
             is_can = chunk.get("is_canonical") or "canonical/" in str(chunk.get("doc_path", "")).lower()

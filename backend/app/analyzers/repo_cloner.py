@@ -7,7 +7,8 @@ from pathlib import Path
 from typing import Optional, Tuple, Union
 from app.core.config import settings
 
-PRAXIA_SENTINEL_FILE = ".praxia_ephemeral"
+PRAXIA_SENTINEL_FILE = ".opennavy_ephemeral"
+LEGACY_PRAXIA_SENTINEL_FILE = ".praxia_ephemeral"
 
 
 def is_safe_ephemeral_dir(path: Union[Path, str], base_storage: Optional[Path] = None) -> bool:
