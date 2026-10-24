@@ -21,13 +21,13 @@ export const FindingsPanel: React.FC<FindingsPanelProps> = ({ findings }) => {
   const getSeverityBadgeClass = (sev: string) => {
     switch (sev.toLowerCase()) {
       case 'critical':
-        return 'border-rose-500/40 bg-rose-950/40 text-rose-300';
+        return 'border-red-300 bg-red-50 text-red-700 font-bold';
       case 'high':
-        return 'border-amber-500/40 bg-amber-950/40 text-amber-300';
+        return 'border-amber-300 bg-amber-50 text-amber-800 font-bold';
       case 'warning':
-        return 'border-yellow-500/40 bg-yellow-950/40 text-yellow-300';
+        return 'border-yellow-300 bg-yellow-50 text-yellow-800 font-bold';
       default:
-        return 'border-border-subtle bg-surface-2 text-text-secondary';
+        return 'border-border-subtle bg-surface-2 text-text font-medium';
     }
   };
 
@@ -49,10 +49,10 @@ export const FindingsPanel: React.FC<FindingsPanelProps> = ({ findings }) => {
           <button
             type="button"
             onClick={() => setSelectedSeverity('ALL')}
-            className={`font-mono text-xs px-3 py-1.5 border transition-all duration-150 ${
+            className={`font-mono text-xs px-3 py-1.5 border transition-all duration-150 cursor-pointer ${
               selectedSeverity === 'ALL'
-                ? 'border-brand bg-brand text-brand-ink font-semibold shadow-[0_0_12px_rgba(139,92,246,0.35)]'
-                : 'border-border-subtle bg-surface text-text-muted hover:text-text hover:border-brand/40'
+                ? 'border-[#003893] bg-[#003893] text-white font-semibold shadow-xs'
+                : 'border-border-subtle bg-surface text-text hover:text-[#003893] hover:border-[#003893]/40'
             }`}
           >
             Todos ({findings.length})
@@ -60,10 +60,10 @@ export const FindingsPanel: React.FC<FindingsPanelProps> = ({ findings }) => {
           <button
             type="button"
             onClick={() => setSelectedSeverity('CRITICAL')}
-            className={`font-mono text-xs px-3 py-1.5 border transition-all duration-150 ${
+            className={`font-mono text-xs px-3 py-1.5 border transition-all duration-150 cursor-pointer ${
               selectedSeverity === 'CRITICAL'
-                ? 'border-rose-500 bg-rose-600 text-white font-semibold'
-                : 'border-border-subtle bg-surface text-rose-400 hover:border-rose-500/50'
+                ? 'border-red-600 bg-red-600 text-white font-semibold shadow-xs'
+                : 'border-border-subtle bg-surface text-red-700 hover:border-red-400'
             }`}
           >
             Críticos ({criticalCount})
@@ -71,10 +71,10 @@ export const FindingsPanel: React.FC<FindingsPanelProps> = ({ findings }) => {
           <button
             type="button"
             onClick={() => setSelectedSeverity('HIGH')}
-            className={`font-mono text-xs px-3 py-1.5 border transition-all duration-150 ${
+            className={`font-mono text-xs px-3 py-1.5 border transition-all duration-150 cursor-pointer ${
               selectedSeverity === 'HIGH'
-                ? 'border-amber-500 bg-amber-600 text-white font-semibold'
-                : 'border-border-subtle bg-surface text-amber-400 hover:border-amber-500/50'
+                ? 'border-amber-600 bg-amber-600 text-white font-semibold shadow-xs'
+                : 'border-border-subtle bg-surface text-amber-800 hover:border-amber-400'
             }`}
           >
             Altos ({highCount})
@@ -82,10 +82,10 @@ export const FindingsPanel: React.FC<FindingsPanelProps> = ({ findings }) => {
           <button
             type="button"
             onClick={() => setSelectedSeverity('WARNING')}
-            className={`font-mono text-xs px-3 py-1.5 border transition-all duration-150 ${
+            className={`font-mono text-xs px-3 py-1.5 border transition-all duration-150 cursor-pointer ${
               selectedSeverity === 'WARNING'
-                ? 'border-yellow-500 bg-yellow-600 text-black font-semibold'
-                : 'border-border-subtle bg-surface text-yellow-400 hover:border-yellow-500/50'
+                ? 'border-yellow-600 bg-yellow-600 text-white font-semibold shadow-xs'
+                : 'border-border-subtle bg-surface text-yellow-800 hover:border-yellow-400'
             }`}
           >
             Advertencias ({warnCount})
@@ -118,19 +118,19 @@ export const FindingsPanel: React.FC<FindingsPanelProps> = ({ findings }) => {
                   >
                     {f.severidad}
                   </span>
-                  <span className="font-mono text-[11px] px-2 py-0.5 border border-border-subtle bg-surface-2 text-text-secondary">
+                  <span className="font-mono text-[11px] px-2 py-0.5 border border-border-subtle bg-surface-2 text-text font-medium">
                     {f.criterio.replace('_', ' ')}
                   </span>
                   <div className="flex items-center gap-1.5 font-mono text-xs text-text break-all">
-                    <FileCode2 className="size-4 text-brand flex-shrink-0" />
+                    <FileCode2 className="size-4 text-[#003893] flex-shrink-0" />
                     <strong>{f.file_path}</strong>
                     {f.line_number && <span className="text-text-muted">:L{f.line_number}</span>}
-                    {f.function_name && <span className="text-cyan-400">({f.function_name})</span>}
+                    {f.function_name && <span className="text-[#003893] font-semibold">({f.function_name})</span>}
                   </div>
                 </div>
 
                 {f.rag_source && (
-                  <div className="flex items-center gap-1.5 font-mono text-[11px] text-brand border border-brand/30 bg-brand-soft px-2.5 py-0.5 flex-shrink-0">
+                  <div className="flex items-center gap-1.5 font-mono text-[11px] text-[#003893] border border-[#003893]/30 bg-[#003893]/10 px-2.5 py-0.5 flex-shrink-0 font-medium">
                     <BookOpen className="size-3" />
                     <span>Fuente: {f.rag_source}</span>
                   </div>
@@ -138,19 +138,19 @@ export const FindingsPanel: React.FC<FindingsPanelProps> = ({ findings }) => {
               </div>
 
               {/* Explanation */}
-              <p className="font-sans text-sm text-text-secondary leading-relaxed">
+              <p className="font-sans text-sm text-text leading-relaxed">
                 {f.explicacion}
               </p>
 
               {/* Refactoring Suggestion */}
               {f.sugerencia && (
-                <div className="border-l-2 border-emerald-500 bg-emerald-950/20 p-3.5 flex items-start gap-3 mt-1">
-                  <Wrench className="size-4 text-emerald-400 flex-shrink-0 mt-0.5" />
+                <div className="border-l-2 border-emerald-600 bg-emerald-50/80 p-3.5 flex items-start gap-3 mt-1">
+                  <Wrench className="size-4 text-emerald-700 flex-shrink-0 mt-0.5" />
                   <div className="space-y-1">
-                    <span className="font-mono text-[11px] font-bold text-emerald-400 uppercase tracking-wider block">
+                    <span className="font-mono text-[11px] font-bold text-emerald-800 uppercase tracking-wider block">
                       Sugerencia de Refactorización:
                     </span>
-                    <p className="font-sans text-xs text-text-secondary leading-relaxed">{f.sugerencia}</p>
+                    <p className="font-sans text-xs text-text leading-relaxed">{f.sugerencia}</p>
                   </div>
                 </div>
               )}
