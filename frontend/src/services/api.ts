@@ -1,5 +1,28 @@
 const API_BASE = '/api/v1';
 
+async function handleResponse<T>(res: Response, defaultMessage: string): Promise<T> {
+  if (!res.ok) {
+    let errorDetail = '';
+    try {
+      const errJson = await res.json();
+      if (typeof errJson.detail === 'string') {
+        errorDetail = errJson.detail;
+      } else if (Array.isArray(errJson.detail)) {
+        errorDetail = errJson.detail.map((d: any) => `${d.loc?.join('.') || 'campo'}: ${d.msg}`).join(', ');
+      } else if (errJson.message) {
+        errorDetail = errJson.message;
+      }
+    } catch {
+      // response body was not json or empty
+    }
+    const finalMsg = errorDetail
+      ? `${defaultMessage} (${res.status}): ${errorDetail}`
+      : `${defaultMessage} (${res.status} ${res.statusText})`;
+    throw new Error(finalMsg);
+  }
+  return res.json();
+}
+
 export interface RepoItem {
   id: string;
   url: string;
@@ -86,6 +109,15 @@ export interface CodeCitation {
   label: string;
 }
 
+export interface FileTreeNode {
+  name: string;
+  path: string;
+  type: string;
+  size?: number;
+  language?: string;
+  children?: FileTreeNode[];
+}
+
 export interface ChatResponse {
   response: string;
   cited_sources?: string[];
@@ -120,29 +152,25 @@ export interface ChatSessionDetail {
 export const api = {
   async getHealth() {
     const res = await fetch(`${API_BASE}/health`);
-    return res.json();
+    return handleResponse<any>(res, 'Error al consultar estado del sistema');
   },
 
   async getRepos(): Promise<RepoItem[]> {
     const res = await fetch(`${API_BASE}/repos/`);
-    if (!res.ok) throw new Error('Error al obtener repositorios');
-    return res.json();
+    return handleResponse<RepoItem[]>(res, 'Error al obtener repositorios');
   },
 
   async getRepo(repoId: string): Promise<RepoItem> {
     const res = await fetch(`${API_BASE}/repos/${repoId}`);
-    if (!res.ok) throw new Error('Error al obtener repositorio');
-    return res.json();
+    return handleResponse<RepoItem>(res, 'Error al obtener repositorio');
   },
 
   async deleteRepo(repoId: string): Promise<{ success: boolean; message: string; repo_id: string }> {
     const res = await fetch(`${API_BASE}/repos/${repoId}`, {
       method: 'DELETE',
     });
-    if (!res.ok) throw new Error('Error al eliminar el repositorio');
-    return res.json();
+    return handleResponse<{ success: boolean; message: string; repo_id: string }>(res, 'Error al eliminar el repositorio');
   },
-
 
   async triggerAnalysis(repoUrl: string, branch: string = 'main') {
     const res = await fetch(`${API_BASE}/repos/analyze`, {
@@ -150,20 +178,17 @@ export const api = {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ repo_url: repoUrl, branch }),
     });
-    if (!res.ok) throw new Error('Error al iniciar análisis');
-    return res.json();
+    return handleResponse<any>(res, 'Error al iniciar análisis de repositorio');
   },
 
   async getLatestMetrics(repoId: string) {
     const res = await fetch(`${API_BASE}/repos/${repoId}/metrics`);
-    if (!res.ok) throw new Error('Error al obtener métricas');
-    return res.json();
+    return handleResponse<any>(res, 'Error al obtener métricas');
   },
 
   async getMetricsHistory(repoId: string) {
     const res = await fetch(`${API_BASE}/repos/${repoId}/metrics/history`);
-    if (!res.ok) throw new Error('Error al obtener historial');
-    return res.json();
+    return handleResponse<any>(res, 'Error al obtener historial de métricas');
   },
 
   async getFindings(repoId: string, severity?: string, criterio?: string): Promise<{ total_findings: number; findings: FindingItem[] }> {
@@ -172,32 +197,27 @@ export const api = {
     if (criterio) params.append('criterio', criterio);
     
     const res = await fetch(`${API_BASE}/repos/${repoId}/findings?${params.toString()}`);
-    if (!res.ok) throw new Error('Error al obtener hallazgos');
-    return res.json();
+    return handleResponse<{ total_findings: number; findings: FindingItem[] }>(res, 'Error al obtener hallazgos');
   },
 
   async getComplexity(repoId: string) {
     const res = await fetch(`${API_BASE}/repos/${repoId}/complexity`);
-    if (!res.ok) throw new Error('Error al obtener mapa de complejidad');
-    return res.json();
+    return handleResponse<any>(res, 'Error al obtener mapa de complejidad');
   },
 
   async getArchitecture(repoId: string): Promise<ArchitectureData> {
     const res = await fetch(`${API_BASE}/repos/${repoId}/architecture`);
-    if (!res.ok) throw new Error('Error al obtener arquitectura');
-    return res.json();
+    return handleResponse<ArchitectureData>(res, 'Error al obtener arquitectura de dependencias');
   },
 
   async getDependencies(repoId: string): Promise<DependencyAuditResponse> {
     const res = await fetch(`${API_BASE}/repos/${repoId}/dependencies`);
-    if (!res.ok) throw new Error('Error al obtener dependencias');
-    return res.json();
+    return handleResponse<DependencyAuditResponse>(res, 'Error al obtener dependencias');
   },
 
   async getKnowledge(repoId: string): Promise<{ total_documents: number; documents: KnowledgeDocument[] }> {
     const res = await fetch(`${API_BASE}/repos/${repoId}/knowledge`);
-    if (!res.ok) throw new Error('Error al obtener documentación');
-    return res.json();
+    return handleResponse<{ total_documents: number; documents: KnowledgeDocument[] }>(res, 'Error al obtener documentación');
   },
 
   async sendChatMessage(repoId: string, message: string): Promise<ChatResponse> {
@@ -206,13 +226,21 @@ export const api = {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ message }),
     });
-    if (!res.ok) throw new Error('Error en chat RAG');
-    return res.json();
+    return handleResponse<ChatResponse>(res, 'Error en chat RAG');
   },
 
   async downloadPdfReport(repoId: string, repoName: string = 'repository') {
     const res = await fetch(`${API_BASE}/repos/${repoId}/report/pdf`);
-    if (!res.ok) throw new Error('Error al generar el informe PDF');
+    if (!res.ok) {
+      let errorDetail = '';
+      try {
+        const errJson = await res.json();
+        errorDetail = errJson.detail || errJson.message || '';
+      } catch {
+        // ignore
+      }
+      throw new Error(`Error al generar el informe PDF (${res.status}): ${errorDetail || res.statusText}`);
+    }
     const blob = await res.blob();
     const url = window.URL.createObjectURL(blob);
     const a = document.createElement('a');
@@ -231,8 +259,7 @@ export const api = {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(data),
     });
-    if (!res.ok) throw new Error('Error al evaluar el assessment');
-    return res.json();
+    return handleResponse<any>(res, 'Error al evaluar el assessment');
   },
 
   async uploadAssessmentExcel(file: File) {
@@ -242,27 +269,26 @@ export const api = {
       method: 'POST',
       body: formData,
     });
-    if (!res.ok) throw new Error('Error al procesar el archivo Excel del assessment');
-    return res.json();
+    return handleResponse<any>(res, 'Error al procesar el archivo Excel del assessment');
   },
 
   async getAssessmentHistory() {
     const res = await fetch(`${API_BASE}/assessment/list`);
-    if (!res.ok) throw new Error('Error al listar assessments');
-    return res.json();
+    return handleResponse<any>(res, 'Error al listar assessments');
   },
 
   // ── Módulo DeepCode Explorer (DeepWiki Split-Pane) ──────────────────
   async getRepoTree(repoId: string) {
     const res = await fetch(`${API_BASE}/repos/${repoId}/tree`);
-    if (!res.ok) throw new Error('Error al obtener el árbol del repositorio');
-    return res.json();
+    return handleResponse<FileTreeNode[]>(res, 'Error al obtener el árbol del repositorio');
   },
 
   async getRepoFile(repoId: string, path: string) {
     const res = await fetch(`${API_BASE}/repos/${repoId}/file?path=${encodeURIComponent(path)}`);
-    if (!res.ok) throw new Error('Error al obtener el archivo');
-    return res.json();
+    return handleResponse<{ file_path: string; language: string; total_lines: number; content: string }>(
+      res,
+      `Error al leer archivo '${path}'`
+    );
   },
 
   async sendDeepQuery(repoId: string, message: string, activeFile?: string) {
@@ -271,8 +297,7 @@ export const api = {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ message, active_file: activeFile }),
     });
-    if (!res.ok) throw new Error('Error en consulta DeepCode');
-    return res.json();
+    return handleResponse<any>(res, 'Error en consulta DeepCode con Gemma 4');
   },
 
   // ── Módulo Sesiones de Conversación (/resume) ──────────────────
@@ -282,14 +307,12 @@ export const api = {
     if (source) params.append('source', source);
     const url = `${API_BASE}/sessions/?${params.toString()}`;
     const res = await fetch(url);
-    if (!res.ok) throw new Error('Error al listar sesiones de conversación');
-    return res.json();
+    return handleResponse<ChatSessionItem[]>(res, 'Error al listar sesiones de conversación');
   },
 
   async getSession(sessionId: string): Promise<ChatSessionDetail> {
     const res = await fetch(`${API_BASE}/sessions/${sessionId}`);
-    if (!res.ok) throw new Error('Error al obtener la sesión de conversación');
-    return res.json();
+    return handleResponse<ChatSessionDetail>(res, 'Error al obtener la sesión de conversación');
   },
 
   async saveSession(payload: {
@@ -305,8 +328,7 @@ export const api = {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(payload),
     });
-    if (!res.ok) throw new Error('Error al guardar la sesión de conversación');
-    return res.json();
+    return handleResponse<ChatSessionDetail>(res, 'Error al guardar la sesión de conversación');
   },
 
   async updateSession(
@@ -324,16 +346,14 @@ export const api = {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(payload),
     });
-    if (!res.ok) throw new Error('Error al actualizar la sesión de conversación');
-    return res.json();
+    return handleResponse<ChatSessionDetail>(res, 'Error al actualizar la sesión de conversación');
   },
 
   async deleteSession(sessionId: string): Promise<{ success: boolean; message: string }> {
     const res = await fetch(`${API_BASE}/sessions/${sessionId}`, {
       method: 'DELETE',
     });
-    if (!res.ok) throw new Error('Error al eliminar la sesión de conversación');
-    return res.json();
+    return handleResponse<{ success: boolean; message: string }>(res, 'Error al eliminar la sesión de conversación');
   },
 
   // OpenNavy: Course Plotter & Fleet Sonar
@@ -355,26 +375,22 @@ export const api = {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(payload),
     });
-    if (!res.ok) throw new Error('Error al trazar rumbo con el Almirante Gemma 4');
-    return res.json();
+    return handleResponse<any>(res, 'Error al trazar rumbo con el Almirante Gemma 4');
   },
 
   async getLatestBlueprint(): Promise<{ latest_blueprint: any | null }> {
     const res = await fetch(`${API_BASE}/sonar/blueprints/latest`);
-    if (!res.ok) throw new Error('Error al consultar el ultimo blueprint del Sonar');
-    return res.json();
+    return handleResponse<{ latest_blueprint: any | null }>(res, 'Error al consultar el último blueprint del Sonar');
   },
 
   async getSharedBlueprints(): Promise<{ count: number; blueprints: any[] }> {
     const res = await fetch(`${API_BASE}/sonar/blueprints`);
-    if (!res.ok) throw new Error('Error al consultar historial de blueprints');
-    return res.json();
+    return handleResponse<{ count: number; blueprints: any[] }>(res, 'Error al consultar historial de blueprints');
   },
 
   async getFleetStatus(): Promise<{ active_officers: number; officers: string[] }> {
     const res = await fetch(`${API_BASE}/sonar/status`);
-    if (!res.ok) throw new Error('Error al consultar estado del Sonar de Flota');
-    return res.json();
+    return handleResponse<{ active_officers: number; officers: string[] }>(res, 'Error al consultar estado del Sonar de Flota');
   },
 
   connectProgressStream(

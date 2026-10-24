@@ -21,6 +21,7 @@ import {
   FolderTree,
   Cpu,
   ShieldAlert,
+  AlertTriangle,
   GitFork,
   BookOpen,
   Layers,
@@ -66,6 +67,9 @@ export const UnifiedWorkspaceView: React.FC<UnifiedWorkspaceViewProps> = ({
   const [fileLanguage, setFileLanguage] = useState<string>('plaintext');
   const [highlightRange, setHighlightRange] = useState<[number, number] | null>(null);
   const [isLoadingFile, setIsLoadingFile] = useState<boolean>(false);
+  const [fileError, setFileError] = useState<string | null>(null);
+  const [isLoadingTree, setIsLoadingTree] = useState<boolean>(false);
+  const [treeError, setTreeError] = useState<string | null>(null);
   const [isFileTreeOpen, setIsFileTreeOpen] = useState<boolean>(true);
   const [treeSearch, setTreeSearch] = useState<string>('');
   const [expandedFolders, setExpandedFolders] = useState<Record<string, boolean>>({});
@@ -133,6 +137,8 @@ export const UnifiedWorkspaceView: React.FC<UnifiedWorkspaceViewProps> = ({
 
   const loadTree = async () => {
     if (!repoId) return;
+    setIsLoadingTree(true);
+    setTreeError(null);
     try {
       const data = await api.getRepoTree(repoId);
       setTree(data);
@@ -146,8 +152,12 @@ export const UnifiedWorkspaceView: React.FC<UnifiedWorkspaceViewProps> = ({
         setExpandedFolders(initialExpanded);
         findAndOpenFile(data);
       }
-    } catch (e) {
+    } catch (e: any) {
       console.error('Error cargando estructura del repositorio', e);
+      setTreeError(e.message || 'Error al obtener estructura de directorios del backend.');
+      setTree([]);
+    } finally {
+      setIsLoadingTree(false);
     }
   };
 
@@ -169,6 +179,7 @@ export const UnifiedWorkspaceView: React.FC<UnifiedWorkspaceViewProps> = ({
     setActiveFile(path);
     setHighlightRange(range || null);
     setIsLoadingFile(true);
+    setFileError(null);
 
     // Notificar posición al radar de colisión de Fleet Sonar (US-08)
     navigate(path);
@@ -183,8 +194,10 @@ export const UnifiedWorkspaceView: React.FC<UnifiedWorkspaceViewProps> = ({
           scrollToLine(range[0]);
         }, 150);
       }
-    } catch (e) {
+    } catch (e: any) {
       console.error('Error al abrir archivo', e);
+      setFileError(e.message || `No se pudo leer el archivo '${path}' desde el backend.`);
+      setFileContent('');
     } finally {
       setIsLoadingFile(false);
     }
@@ -403,8 +416,12 @@ ${modelsList}
       let res;
       try {
         res = await api.sendDeepQuery(repoId, promptToSend, activeFile || undefined);
-      } catch (deepErr) {
-        res = await api.sendChatMessage(repoId, promptToSend);
+      } catch (deepErr: any) {
+        try {
+          res = await api.sendChatMessage(repoId, promptToSend);
+        } catch (chatErr: any) {
+          throw new Error(`Inferencia DeepQuery: ${deepErr.message || 'Error'} | Chat RAG: ${chatErr.message || 'Error'}`);
+        }
       }
 
       const newAssistantMsg: WorkspaceMessage = {
@@ -947,7 +964,27 @@ ${modelsList}
 
                 {/* Tree List */}
                 <div className="flex-1 overflow-y-auto scroll-accent p-1">
-                  {tree.length === 0 ? (
+                  {isLoadingTree ? (
+                    <div className="p-4 text-center text-text-muted font-mono text-[11px] flex flex-col items-center justify-center gap-2">
+                      <Loader2 className="size-4 animate-spin text-[#0084C7]" />
+                      <span>Cargando árbol de archivos...</span>
+                    </div>
+                  ) : treeError ? (
+                    <div className="p-3 border border-[#E73427] bg-[#E73427]/10 text-xs font-mono text-[#E73427] space-y-2">
+                      <div className="font-bold flex items-center gap-1.5">
+                        <AlertTriangle className="size-4 flex-shrink-0" />
+                        <span>Error de Árbol</span>
+                      </div>
+                      <p className="text-[11px] leading-tight text-text break-words">{treeError}</p>
+                      <button
+                        type="button"
+                        onClick={loadTree}
+                        className="px-2 py-1 bg-[#E73427] text-white text-[10px] font-bold hover:opacity-90"
+                      >
+                        Reintentar
+                      </button>
+                    </div>
+                  ) : tree.length === 0 ? (
                     <div className="p-4 text-center text-text-muted font-mono text-[11px]">
                       Sin archivos disponibles
                     </div>
@@ -967,6 +1004,25 @@ ${modelsList}
                 <div className="h-full flex items-center justify-center gap-2 text-text-muted">
                   <Loader2 className="size-5 animate-spin text-brand" />
                   <span>Cargando contenido del archivo...</span>
+                </div>
+              ) : fileError ? (
+                <div className="h-full flex flex-col items-center justify-center p-6 text-center">
+                  <div className="p-4 border border-[#E73427] bg-[#E73427]/10 max-w-md space-y-2.5">
+                    <div className="flex items-center justify-center gap-2 text-[#E73427] font-bold font-mono text-sm">
+                      <AlertTriangle className="size-5 flex-shrink-0" />
+                      <span>Error al Cargar Archivo</span>
+                    </div>
+                    <p className="font-mono text-xs text-text break-words">{fileError}</p>
+                    {activeFile && (
+                      <button
+                        type="button"
+                        onClick={() => openFile(activeFile)}
+                        className="px-3 py-1.5 bg-[#E73427] text-white text-xs font-mono font-bold hover:opacity-90"
+                      >
+                        Reintentar Lectura
+                      </button>
+                    )}
+                  </div>
                 </div>
               ) : fileContent ? (
                 <div className="divide-y divide-transparent">

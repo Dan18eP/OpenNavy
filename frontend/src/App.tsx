@@ -60,9 +60,10 @@ export const App: React.FC = () => {
       setRepos(repoList)
 
       if (repoList.length > 0 && !selectedRepoId) {
-        setSelectedRepoId(repoList[0].id)
+        const preferred = repoList.find((r) => r.name.toLowerCase().includes('opennavy')) || repoList[0]
+        setSelectedRepoId(preferred.id)
       }
-    } catch (e) {
+    } catch (e: any) {
       console.error('Error loading initial data', e)
       setSystemStatus('error')
     }
@@ -77,20 +78,41 @@ export const App: React.FC = () => {
 
   const loadRepoData = async (repoId: string) => {
     try {
-      const [metricsRes, findingsRes, archRes, knowledgeRes] = await Promise.all([
+      const [metricsRes, findingsRes, archRes, knowledgeRes] = await Promise.allSettled([
         api.getLatestMetrics(repoId),
         api.getFindings(repoId),
         api.getArchitecture(repoId),
         api.getKnowledge(repoId),
       ])
 
-      setGlobalScore(metricsRes.global_score ?? null)
-      setLastAnalyzedAt(metricsRes.analyzed_at)
-      setMetrics(metricsRes.metrics || [])
-      setFindings(findingsRes.findings || [])
-      setArchitecture(archRes)
-      setKnowledgeDocs(knowledgeRes.documents || [])
-    } catch (e) {
+      if (metricsRes.status === 'fulfilled') {
+        setGlobalScore(metricsRes.value.global_score ?? null)
+        setLastAnalyzedAt(metricsRes.value.analyzed_at)
+        setMetrics(metricsRes.value.metrics || [])
+      } else {
+        setGlobalScore(null)
+        setLastAnalyzedAt(undefined)
+        setMetrics([])
+      }
+
+      if (findingsRes.status === 'fulfilled') {
+        setFindings(findingsRes.value.findings || [])
+      } else {
+        setFindings([])
+      }
+
+      if (archRes.status === 'fulfilled') {
+        setArchitecture(archRes.value)
+      } else {
+        setArchitecture(null)
+      }
+
+      if (knowledgeRes.status === 'fulfilled') {
+        setKnowledgeDocs(knowledgeRes.value.documents || [])
+      } else {
+        setKnowledgeDocs([])
+      }
+    } catch (e: any) {
       console.error('Error loading repo data', e)
     }
   }
@@ -119,20 +141,30 @@ export const App: React.FC = () => {
             loadRepoData(job.repo_id)
           } else if (eventData.step === 'failed') {
             setIsAnalyzing(false)
+            setCurrentProgressEvent({
+              step: 'failed',
+              progress: 100,
+              message: eventData.message || eventData.error || 'El análisis falló en el backend.',
+            })
           }
         },
         (err) => {
           console.error('SSE Error', err)
           setIsAnalyzing(false)
+          setCurrentProgressEvent({
+            step: 'failed',
+            progress: 100,
+            message: `Error en streaming SSE: ${err?.message || 'Conexión interrumpida con el backend.'}`,
+          })
         },
       )
-    } catch (e) {
+    } catch (e: any) {
       console.error('Error triggering analysis', e)
       setIsAnalyzing(false)
       setCurrentProgressEvent({
         step: 'failed',
         progress: 100,
-        message: 'No se pudo iniciar el análisis. Verifica que el backend esté activo.',
+        message: `Error al iniciar el análisis: ${e.message || 'Verifica que el backend esté activo.'}`,
       })
     }
   }
@@ -200,6 +232,22 @@ export const App: React.FC = () => {
     <div className="h-[100dvh] max-h-[100dvh] w-screen max-w-full overflow-hidden flex flex-col bg-bg text-text select-none">
       {/* Omarchy Theme Picker Modal */}
       <ThemePicker />
+
+      {/* Backend Connection Error Banner */}
+      {systemStatus === 'error' && (
+        <div className="bg-[#E73427] text-white px-4 py-2 font-mono text-xs flex items-center justify-between z-[200] flex-shrink-0">
+          <div className="flex items-center gap-2">
+            <span className="font-bold uppercase tracking-wide">Error de Conexión:</span>
+            <span>No se pudo conectar con el servidor backend de OpenNavy en http://localhost:8000. Verifica que FastAPI esté en ejecución.</span>
+          </div>
+          <button
+            onClick={loadHealthAndRepos}
+            className="px-2.5 py-0.5 bg-white text-[#E73427] font-bold text-[11px] hover:bg-slate-100 transition-colors"
+          >
+            Reconectar
+          </button>
+        </div>
+      )}
 
       {/* Omarchy Style Header */}
       <PraxiaHeader
