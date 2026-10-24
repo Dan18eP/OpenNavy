@@ -115,14 +115,14 @@ As defined in `docs/ARCHITECTURE.md`, OpenNavy strictly enforces a Ports and Ada
 
 ### Sprint 3: The Fleet Sonar (LAN Multiplayer and Collision Radar)
 *Objective: Coordinate co-located developer teams on the same local network with zero external cloud infrastructure.*
-*Status: IN PROGRESS*
+*Status: COMPLETED*
 
 - [x] **US-07: FastAPI WebSocket Sonar Hub (`/ws/sonar`)**
   - Owner: Daniel Echeverría
   - Description: Lightweight WebSocket event bus broadcasting peer presence and navigation events across the LAN.
   - Acceptance Criteria: Multiple concurrent clients connect via `ws://<HOST_IP>:8000/api/v1/sonar/ws/sonar` without user accounts.
 
-- [ ] **US-08: Architectural Collision Radar (Pre-Merge Conflict Detection)**
+- [x] **US-08: Architectural Collision Radar (Pre-Merge Conflict Detection)**
   - Owner: Dylan Gamero
   - Description: Cross-reference peer navigation against Tarjan's dependency matrix in real time on the frontend.
   - Acceptance Criteria:

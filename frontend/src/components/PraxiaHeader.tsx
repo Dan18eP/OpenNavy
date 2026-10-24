@@ -7,8 +7,9 @@ import {
 import { Button } from '@/components/ui/button'
 import { RepoItem } from '@/services/api'
 import { cn } from '@/lib/utils'
-import { Users, Globe, Linkedin, Anchor } from 'lucide-react'
+import { Users, Globe, Linkedin, Anchor, Radio } from 'lucide-react'
 import { OPENNAVY_TEAM, CreditsModal } from '@/components/CreditsModal'
+import { useFleetSonar } from '@/hooks/useFleetSonar'
 
 export type TabType =
   | 'overview'
@@ -50,6 +51,9 @@ export const PraxiaHeader: React.FC<PraxiaHeaderProps> = ({
   const [teamDropdownOpen, setTeamDropdownOpen] = useState(false)
   const [creditsModalOpen, setIsCreditsModalOpen] = useState(false)
   const dropdownRef = useRef<HTMLDivElement>(null)
+
+  // Fleet Sonar Real-time Telemetry (US-08 & US-09 - Dylan Gamero)
+  const { connected: sonarConnected, crew: sonarCrew, activeCollisions } = useFleetSonar()
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -171,6 +175,39 @@ export const PraxiaHeader: React.FC<PraxiaHeaderProps> = ({
                 ))}
               </select>
             )}
+
+            {/* Fleet Sonar Status Indicator */}
+            <button
+              onClick={() => onSelectTab('workspace')}
+              className={cn(
+                "hidden sm:flex items-center gap-1.5 px-2.5 py-1 h-8 border text-xs font-mono transition-colors cursor-pointer",
+                activeCollisions.length > 0
+                  ? "border-[#E73427] bg-[#E73427]/10 text-[#E73427] animate-pulse font-bold"
+                  : sonarConnected
+                  ? "border-border-subtle bg-surface hover:border-[#0084C7] text-text"
+                  : "border-border-subtle bg-surface text-text-muted"
+              )}
+              title={
+                activeCollisions.length > 0
+                  ? "Alerta de colisión arquitectónica activa"
+                  : "Fleet Sonar LAN activo"
+              }
+            >
+              <Radio
+                className={cn(
+                  "size-3.5",
+                  activeCollisions.length > 0
+                    ? "text-[#E73427] animate-bounce"
+                    : sonarConnected
+                    ? "text-[#0084C7] animate-pulse"
+                    : "text-text-muted"
+                )}
+              />
+              <span className="text-[11px] text-text-muted hidden md:inline">Sonar:</span>
+              <span className="text-[11px] font-bold">
+                {activeCollisions.length > 0 ? "COLISIÓN" : `${sonarCrew.length} en red`}
+              </span>
+            </button>
 
             {/* Team Profiles Selector */}
             <div className="relative" ref={dropdownRef}>
