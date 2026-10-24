@@ -32,9 +32,9 @@ class CorpusIndexer:
         for ch in chunks:
             # Validar que contenga metadatos mínimos requeridos
             if not ch.get("authority"):
-                ch["authority"] = "Praxia Engineering Standard"
+                ch["authority"] = "OpenNavy Engineering Standard"
             if not ch.get("rule_id"):
-                ch["rule_id"] = f"PRAXIA-{ch.get('criterion', 'GEN').upper()}"
+                ch["rule_id"] = f"NAVY-{ch.get('criterion', 'GEN').upper()}"
             if not ch.get("severity"):
                 ch["severity"] = "medium"
 

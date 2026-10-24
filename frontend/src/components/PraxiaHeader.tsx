@@ -39,7 +39,7 @@ interface PraxiaHeaderProps {
   onStartAudit?: () => void
 }
 
-export const PraxiaHeader: React.FC<PraxiaHeaderProps> = ({
+export const OpenNavyHeader: React.FC<PraxiaHeaderProps> = ({
   activeTab,
   onSelectTab,
   totalRepos,
@@ -388,3 +388,5 @@ export const PraxiaHeader: React.FC<PraxiaHeaderProps> = ({
     </header>
   )
 }
+
+export const PraxiaHeader = OpenNavyHeader;

@@ -5,7 +5,7 @@
 **Categoría:** Calidad Estática de Código / Estructura  
 **Autoridad de Referencia Canónica:** Thomas J. McCabe (IEEE TSE 1976) / NIST Special Publication 500-235 (SEI)  
 **Documento Canónico Vinculado:** `knowledge-base/canonical/nistspecialpublication500_235.md`  
-**Rule-ID:** PRAXIA-MCCABE-01  
+**Rule-ID:** NAVY-MCCABE-01  
 **Severidad:** high  
 **Versión:** 2.0 (Enriquecida con Casos Few-Shot de Auditoría)  
 
@@ -68,7 +68,7 @@ def process_event_payload(event_type: str, payload: dict) -> dict:
 
 ## 3. Umbrales Formales del NIST / SEI
 
-| Rango de Complejidad ($CC$) | Nivel de Riesgo | Cobertura Mínima de Casos de Prueba | Acción en Auditoría Praxia |
+| Rango de Complejidad ($CC$) | Nivel de Riesgo | Cobertura Mínima de Casos de Prueba | Acción en Auditoría OpenNavy |
 |---|---|---|---|
 | **1 – 10** | **Bajo Riesgo (Verde)** | 1 a 10 casos de prueba | Aprobado sin observaciones. |
 | **11 – 20** | **Riesgo Moderado (Amarillo)** | 11 a 20 casos de prueba | Advertencia. Refactorizar si la función posee cambios frecuentes. |

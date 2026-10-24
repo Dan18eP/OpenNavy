@@ -5,7 +5,7 @@
 **Categoría:** Calidad Estática de Código / DRY  
 **Autoridad de Referencia Canónica:** Martin Fowler (*Refactoring: Improving the Design of Existing Code*, Chapter 3: Duplicated Code)  
 **Documento Canónico Vinculado:** `knowledge-base/canonical/refactoring.improving.the.design.of.existing.code.2nd.edition.2018.11.md`  
-**Rule-ID:** PRAXIA-DRY-01  
+**Rule-ID:** NAVY-DRY-01  
 **Severidad:** medium  
 **Versión:** 2.0 (Enriquecida con Casos Few-Shot de Auditoría)  
 

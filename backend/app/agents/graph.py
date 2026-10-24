@@ -106,4 +106,5 @@ def build_analysis_graph():
 
 
 # Grafo compilado listo para invocación
-praxia_graph = build_analysis_graph()
+opennavy_graph = build_analysis_graph()
+praxia_graph = opennavy_graph

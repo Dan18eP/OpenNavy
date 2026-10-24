@@ -19,7 +19,7 @@ async def lifespan(app: FastAPI):
 app = FastAPI(
     title=settings.PROJECT_NAME,
     version=settings.VERSION,
-    description="Sistema de análisis y revisión de código multi-lenguaje con rúbrica RAG y documentación viva.",
+    description="OpenNavy - The Sovereign Fleet Navigator for Open Source Codebases (Carta Nautica, Trazador de Rumbo y Sonar de Flota).",
     lifespan=lifespan,
 )
 

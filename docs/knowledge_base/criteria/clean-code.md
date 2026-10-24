@@ -5,7 +5,7 @@
 **Categoría:** Legibilidad, Higiene y Refactorización  
 **Autoridad de Referencia Canónica:** Martin Fowler (*Refactoring: Improving the Design of Existing Code*, 2nd Ed. 2018)  
 **Documento Canónico Vinculado:** `knowledge-base/canonical/refactoring.improving.the.design.of.existing.code.2nd.edition.2018.11.md`  
-**Rule-ID:** PRAXIA-CLEAN-01  
+**Rule-ID:** NAVY-CLEAN-01  
 **Severidad:** medium  
 **Versión:** 2.0 (Enriquecida con Casos Few-Shot de Auditoría)  
 

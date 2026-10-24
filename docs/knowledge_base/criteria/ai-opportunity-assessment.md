@@ -1,7 +1,7 @@
 # Rúbrica Normativa: Evaluación de Oportunidad de Inteligencia Artificial (Sesión 01)
 
 **Autoridad:** Praxia Engineering Framework / Metodología de Evaluación de Oportunidad de IA (Sesión 01)  
-**Rule-ID:** PRAXIA-AI-OPPORTUNITY-01  
+**Rule-ID:** NAVY-AI-OPPORTUNITY-01  
 **Categoría:** ai_opportunity  
 **Severidad:** high  
 **Identificador:** `ai_opportunity_assessment`

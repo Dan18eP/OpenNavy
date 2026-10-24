@@ -120,4 +120,5 @@ export function OmarchyWordmark({
   );
 }
 
-export const PraxiaWordmark = OmarchyWordmark;
+export const OpenNavyWordmark = OmarchyWordmark;
+export const PraxiaWordmark = OpenNavyWordmark;
