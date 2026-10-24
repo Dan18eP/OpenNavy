@@ -1,0 +1,28 @@
+# Environment variables
+.env
+.env.local
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+.venv/
+env/
+venv/
+
+# Node / JS
+node_modules/
+dist/
+.next/
+coverage/
+
+# Database & Temporary
+*.db
+*.sqlite
+temp_repos/
+*.pyc
+.pytest_cache/
+
+# OS
+Thumbs.db
+.DS_Store
