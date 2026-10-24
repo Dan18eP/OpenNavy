@@ -27,7 +27,7 @@ export const ChatPanel: React.FC<ChatPanelProps> = ({ repoId }) => {
   const [messages, setMessages] = useState<Message[]>([
     {
       role: 'assistant',
-      content: '¡Hola! Soy Praxia AI. Puedes preguntarme sobre las métricas de este repositorio, por qué se violó algún principio SOLID, o cómo solucionar las dependencias circulares.',
+      content: '¡Hola! Soy OpenNavy AI Copilot. Puedes preguntarme sobre las métricas de este repositorio, por qué se violó algún principio SOLID, o cómo solucionar las dependencias circulares con Google Gemma 4.',
       timestamp: new Date(),
     },
   ]);

@@ -232,7 +232,7 @@ export const api = {
     const url = window.URL.createObjectURL(blob);
     const a = document.createElement('a');
     a.href = url;
-    a.download = `Praxia_Report_${repoName}.pdf`;
+    a.download = `OpenNavy_Report_${repoName}.pdf`;
     document.body.appendChild(a);
     a.click();
     window.URL.revokeObjectURL(url);
@@ -364,6 +364,18 @@ export const api = {
       body: JSON.stringify(payload),
     });
     if (!res.ok) throw new Error('Error al trazar rumbo con el Almirante Gemma 4');
+    return res.json();
+  },
+
+  async getLatestBlueprint(): Promise<{ latest_blueprint: any | null }> {
+    const res = await fetch(`${API_BASE}/sonar/blueprints/latest`);
+    if (!res.ok) throw new Error('Error al consultar el ultimo blueprint del Sonar');
+    return res.json();
+  },
+
+  async getSharedBlueprints(): Promise<{ count: number; blueprints: any[] }> {
+    const res = await fetch(`${API_BASE}/sonar/blueprints`);
+    if (!res.ok) throw new Error('Error al consultar historial de blueprints');
     return res.json();
   },
 
