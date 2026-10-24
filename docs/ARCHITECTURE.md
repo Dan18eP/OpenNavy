@@ -96,7 +96,7 @@ Implementa los puertos definidos por la aplicación:
 ### D. Capa de Presentacion (Web Cockpit)
 Reside en `frontend/` y está construida con React 18, Vite y TypeScript:
 * **`NauticalChart` / `ArchitectureView.tsx`:** Renderiza visualmente el grafo de dependencias y los arrecifes topológicos.
-* **`CoursePlotter` / `UnifiedWorkspaceView.tsx`:** Permite ingresar issues de texto o arrastrar capturas de error, presentando los waypoints resultantes con enlaces interactivos que manipulan el visor de código split-view.
+* **`CoursePlotter` (`CoursePlotterPanel.tsx` / `UnifiedWorkspaceView.tsx`):** Permite ingresar issues de texto o arrastrar capturas de error visuales (multimodal Base64 con Gemma 4), presentando los waypoints resultantes con enlaces interactivos que manipulan el visor de código AST split-view.
 * **`FleetSonarBanner`:** Muestra la presencia en tiempo real de los compañeros en la misma red LAN y despliega alertas visuales de colisión arquitectónica.
 
 ---

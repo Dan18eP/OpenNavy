@@ -28,11 +28,13 @@ import {
   History,
   RotateCcw,
   Radio,
+  Compass,
   X
 } from 'lucide-react';
 import { api, CodeCitation, ChatSessionItem } from '../services/api';
 import { useFleetSonar } from '../hooks/useFleetSonar';
 import { FleetSonarRadar } from './FleetSonarRadar';
+import { CoursePlotterPanel } from './CoursePlotterPanel';
 import { cn } from '../lib/utils';
 
 interface FileTreeNode {
@@ -74,11 +76,14 @@ export const UnifiedWorkspaceView: React.FC<UnifiedWorkspaceViewProps> = ({
   const [treeSearch, setTreeSearch] = useState<string>('');
   const [expandedFolders, setExpandedFolders] = useState<Record<string, boolean>>({});
 
+  // Left Panel Navigation: Course Plotter vs Nautical Copilot
+  const [activeLeftPanel, setActiveLeftPanel] = useState<'plotter' | 'chat'>('plotter');
+
   // Chat State
   const [messages, setMessages] = useState<WorkspaceMessage[]>([
     {
       role: 'assistant',
-      content: `Hola. Soy el Copilot de arquitectura **OpenNavy Fleet Copilot**. Puedo explicarte cómo está estructurado este repositorio (${repoName || 'repositorio'}), auditar módulos en tiempo real con Tree-sitter y citar las líneas exactas de código donde se ubican posibles violaciones o dependencias cíclicas con el algoritmo de Tarjan.\n\nPuedes escribir comandos slash como **/help**, **/tree**, **/models**, **/cycles**, **/solid** o **/secrets** directamente en el chat para activar paneles visuales interactivos.`,
+      content: `Hola. Soy el Copilot de arquitectura naval de **OpenNavy**. Puedo ayudarte a explorar este repositorio (${repoName || 'repositorio'}), auditar dependencias con Tarjan SCC y navegar waypoints calculados por Google Gemma 4.\n\nPuedes usar el **Trazador de Rumbo** para ingresar issues o capturas de bugs y saltar a los waypoints en el visor split-view, o activar el radar de **Fleet Sonar** para monitorear colisiones en la red LAN.`,
       timestamp: new Date(),
     },
   ]);
@@ -675,7 +680,7 @@ ${modelsList}
       <div className="h-10 border-b border-border-subtle bg-surface/80 px-4 flex items-center justify-between text-xs font-mono flex-shrink-0">
         <div className="flex items-center gap-3">
           <span className="px-2 py-0.5 border border-brand/40 bg-brand-soft text-brand font-semibold text-[11px]">
-            WORKSPACE COPILOT
+            OPENNAVY COCKPIT
           </span>
           <span className="text-text-muted hidden sm:inline">
             Repositorio: <strong className="text-text">{repoName || repoId || 'N/A'}</strong>
@@ -760,33 +765,63 @@ ${modelsList}
 
       {/* ── MAIN WORKSPACE SPLIT AREA ── */}
       <div className="flex-1 grid grid-cols-1 lg:grid-cols-12 min-h-0 overflow-hidden">
-        {/* ── LEFT: WORKSPACE COPILOT (5 COLUMNS) ── */}
+        {/* ── LEFT: WORKSPACE COPILOT & COURSE PLOTTER (5 COLUMNS) ── */}
         <div className="lg:col-span-5 border-b lg:border-b-0 lg:border-r border-border-subtle bg-surface/40 flex flex-col min-h-0 overflow-hidden">
-          {/* Copilot Header */}
-          <div className="p-3.5 border-b border-border-subtle bg-surface/80 flex items-center justify-between flex-shrink-0">
-            <div className="flex items-center gap-2">
-              <Sparkles className="size-4 text-brand" />
-              <h2 className="font-sans text-sm font-bold text-text">OpenNavy AI Copilot</h2>
+          {/* Mode Switcher Tabs */}
+          <div className="h-11 border-b border-border-subtle bg-surface px-2.5 flex items-center justify-between flex-shrink-0">
+            <div className="flex items-center gap-1 font-mono text-xs">
+              <button
+                type="button"
+                onClick={() => setActiveLeftPanel('plotter')}
+                className={`px-3 py-1.5 flex items-center gap-1.5 text-xs font-mono transition-colors ${
+                  activeLeftPanel === 'plotter'
+                    ? 'bg-brand text-bg font-bold border border-brand'
+                    : 'text-text-muted hover:text-text hover:bg-surface-2'
+                }`}
+              >
+                <Compass className="size-3.5" />
+                <span>Trazador de Rumbo</span>
+              </button>
+              <button
+                type="button"
+                onClick={() => setActiveLeftPanel('chat')}
+                className={`px-3 py-1.5 flex items-center gap-1.5 text-xs font-mono transition-colors ${
+                  activeLeftPanel === 'chat'
+                    ? 'bg-brand text-bg font-bold border border-brand'
+                    : 'text-text-muted hover:text-text hover:bg-surface-2'
+                }`}
+              >
+                <Sparkles className="size-3.5" />
+                <span>Copilot Náutico</span>
+              </button>
             </div>
-            <span className="font-mono text-[10px] px-2 py-0.5 border border-[#003893]/30 bg-[#003893]/10 text-[#003893] font-semibold">
+            <span className="font-mono text-[10px] px-2 py-0.5 border border-[#003893]/30 bg-[#003893]/10 text-[#003893] font-semibold hidden sm:inline">
               Gemma 4 · AST & Tarjan
             </span>
           </div>
 
-          {/* Quick Questions Pills */}
-          <div className="p-3 border-b border-border-subtle/60 bg-surface-2/30 flex items-center gap-1.5 overflow-x-auto scroll-accent flex-shrink-0">
-            {quickQuestions.map((q, idx) => (
-              <button
-                key={idx}
-                type="button"
-                onClick={() => handleSendMessage(q)}
-                disabled={isQuerying || !repoId}
-                className="font-mono text-[10px] px-2.5 py-1 border border-border-subtle bg-surface hover:border-brand/50 hover:bg-surface-2 text-text-muted hover:text-text whitespace-nowrap transition-colors flex-shrink-0 disabled:opacity-50"
-              >
-                {q}
-              </button>
-            ))}
-          </div>
+          {activeLeftPanel === 'plotter' ? (
+            <CoursePlotterPanel
+              repoId={repoId}
+              repoName={repoName}
+              onSelectWaypoint={(file, lines) => openFile(file, lines)}
+            />
+          ) : (
+            <div className="flex-1 flex flex-col min-h-0 overflow-hidden">
+              {/* Quick Questions Pills */}
+              <div className="p-3 border-b border-border-subtle/60 bg-surface-2/30 flex items-center gap-1.5 overflow-x-auto scroll-accent flex-shrink-0">
+                {quickQuestions.map((q, idx) => (
+                  <button
+                    key={idx}
+                    type="button"
+                    onClick={() => handleSendMessage(q)}
+                    disabled={isQuerying || !repoId}
+                    className="font-mono text-[10px] px-2.5 py-1 border border-border-subtle bg-surface hover:border-brand/50 hover:bg-surface-2 text-text-muted hover:text-text whitespace-nowrap transition-colors flex-shrink-0 disabled:opacity-50"
+                  >
+                    {q}
+                  </button>
+                ))}
+              </div>
 
           {/* Messages Scroll Area */}
           <div className="flex-1 overflow-y-auto scroll-accent p-4 space-y-4">
@@ -902,6 +937,8 @@ ${modelsList}
             </form>
           </div>
         </div>
+      )}
+    </div>
 
         {/* ── RIGHT: EXPLORER & SYNTAX CODE VIEWER (7 COLUMNS) ── */}
         <div className="lg:col-span-7 flex flex-col min-h-0 overflow-hidden bg-bg">
