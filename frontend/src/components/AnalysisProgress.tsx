@@ -78,16 +78,16 @@ export const AnalysisProgress: React.FC<AnalysisProgressProps> = ({ currentEvent
               key={st.id}
               className={`flex items-center gap-2 p-2 border font-mono text-[11px] transition-colors ${
                 isDone
-                  ? 'border-emerald-500/30 bg-emerald-950/20 text-emerald-300'
+                  ? 'border-emerald-300 bg-emerald-50 text-emerald-800 font-semibold'
                   : isCurrent
-                  ? 'border-brand bg-brand-soft text-brand-ink font-bold shadow-[0_0_10px_rgba(139,92,246,0.2)]'
+                  ? 'border-[#003893] bg-[#003893] text-white font-bold shadow-sm'
                   : 'border-border-subtle bg-bg-deep/60 text-text-muted'
               }`}
             >
               {isDone ? (
-                <CheckCircle2 className="size-3.5 text-emerald-400 flex-shrink-0" />
+                <CheckCircle2 className="size-3.5 text-emerald-600 flex-shrink-0" />
               ) : isCurrent ? (
-                <Loader2 className="size-3.5 text-brand animate-spin flex-shrink-0" />
+                <Loader2 className="size-3.5 text-white animate-spin flex-shrink-0" />
               ) : (
                 <span className="size-1.5 rounded-full bg-text-muted flex-shrink-0" />
               )}

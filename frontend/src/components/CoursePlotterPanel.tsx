@@ -21,6 +21,7 @@ import {
   RotateCcw
 } from 'lucide-react';
 import { api, CoursePlotResult, WaypointItem } from '../services/api';
+import { AiMessageRenderer } from './AiMessageRenderer';
 
 interface CoursePlotterPanelProps {
   repoId: string | null;
@@ -153,7 +154,7 @@ export const CoursePlotterPanel: React.FC<CoursePlotterPanelProps> = ({
           <Compass className="size-4 text-brand animate-pulse" />
           <h2 className="font-sans text-sm font-bold text-text">El Trazador de Rumbo (Course Plotter)</h2>
         </div>
-        <div className="flex items-center gap-1.5 font-mono text-[10px] px-2 py-0.5 border border-brand/40 bg-brand-soft text-brand font-semibold">
+        <div className="flex items-center gap-1.5 font-mono text-[10px] px-2 py-0.5 border border-[#003893]/30 bg-[#003893]/10 text-[#003893] font-semibold">
           <Sparkles className="size-3" />
           <span>Gemma 4 Multimodal</span>
         </div>
@@ -162,8 +163,8 @@ export const CoursePlotterPanel: React.FC<CoursePlotterPanelProps> = ({
       {/* Main Content Area */}
       <div className="flex-1 overflow-y-auto scroll-accent p-4 space-y-4">
         {errorMsg && (
-          <div className="p-3 border border-red-500/40 bg-red-950/20 text-red-300 text-xs flex items-center gap-2">
-            <AlertTriangle className="size-4 flex-shrink-0 text-red-400" />
+          <div className="p-3 border border-red-200 bg-red-50 text-red-700 text-xs flex items-center gap-2 font-mono">
+            <AlertTriangle className="size-4 flex-shrink-0 text-red-600" />
             <span>{errorMsg}</span>
           </div>
         )}
@@ -267,7 +268,7 @@ export const CoursePlotterPanel: React.FC<CoursePlotterPanelProps> = ({
             <button
               type="submit"
               disabled={isPlotting || !repoId}
-              className="w-full py-2.5 px-4 bg-brand text-bg font-mono font-semibold text-xs flex items-center justify-center gap-2 hover:bg-brand/90 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+              className="w-full py-2.5 px-4 bg-[#003893] text-white font-mono font-semibold text-xs flex items-center justify-center gap-2 hover:bg-[#002d75] transition-colors disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer shadow-sm"
             >
               {isPlotting ? (
                 <>
@@ -286,7 +287,7 @@ export const CoursePlotterPanel: React.FC<CoursePlotterPanelProps> = ({
           /* Results View */
           <div className="space-y-4">
             {/* Mission Header */}
-            <div className="p-3 border border-border-subtle bg-surface flex items-start justify-between gap-3">
+            <div className="p-3 border border-border-subtle bg-surface flex items-start justify-between gap-3 shadow-xs">
               <div>
                 <div className="font-mono text-[10px] text-text-muted">Plan de Vuelo Náutico:</div>
                 <div className="font-sans text-xs font-semibold text-text mt-0.5 line-clamp-2">
@@ -296,24 +297,24 @@ export const CoursePlotterPanel: React.FC<CoursePlotterPanelProps> = ({
               <button
                 type="button"
                 onClick={handleResetCourse}
-                className="inline-flex items-center gap-1 font-mono text-[10px] px-2 py-1 border border-border-subtle bg-surface-2 hover:bg-surface text-text-muted hover:text-text transition-colors flex-shrink-0"
+                className="inline-flex items-center gap-1 font-mono text-[10px] px-2.5 py-1 border border-border-subtle bg-surface-2 hover:bg-surface text-text hover:text-[#003893] transition-colors flex-shrink-0 cursor-pointer"
                 title="Trazar otro rumbo"
               >
-                <RotateCcw className="size-3 text-brand" />
+                <RotateCcw className="size-3 text-[#003893]" />
                 <span>Nuevo Rumbo</span>
               </button>
             </div>
 
             {/* Gemma 4 Thought Process Accordion */}
             {result.thought_process && (
-              <div className="border border-brand/40 bg-surface overflow-hidden">
+              <div className="border border-[#003893]/30 bg-surface overflow-hidden shadow-xs">
                 <button
                   type="button"
                   onClick={() => setIsThoughtExpanded(!isThoughtExpanded)}
-                  className="w-full p-2.5 bg-brand-soft/50 border-b border-brand/20 flex items-center justify-between text-left text-xs font-mono text-brand font-semibold"
+                  className="w-full p-2.5 bg-[#003893]/10 border-b border-[#003893]/20 flex items-center justify-between text-left text-xs font-mono text-[#003893] font-semibold cursor-pointer"
                 >
                   <div className="flex items-center gap-2">
-                    <Sparkles className="size-3.5 text-brand" />
+                    <Sparkles className="size-3.5 text-[#003893]" />
                     <span>Flujo de Razonamiento del Almirante (&lt;|think|&gt;)</span>
                   </div>
                   {isThoughtExpanded ? (
@@ -323,8 +324,11 @@ export const CoursePlotterPanel: React.FC<CoursePlotterPanelProps> = ({
                   )}
                 </button>
                 {isThoughtExpanded && (
-                  <div className="p-3 text-xs font-mono leading-relaxed text-text whitespace-pre-wrap bg-surface/70 border-t border-border-subtle/50 max-h-48 overflow-y-auto scroll-accent">
-                    {result.thought_process}
+                  <div className="p-3.5 text-xs font-mono leading-relaxed text-text bg-surface/90 border-t border-border-subtle max-h-56 overflow-y-auto scroll-accent">
+                    <AiMessageRenderer
+                      content={result.thought_process}
+                      onOpenFile={(file, range) => onSelectWaypoint(file, range)}
+                    />
                   </div>
                 )}
               </div>
@@ -334,12 +338,12 @@ export const CoursePlotterPanel: React.FC<CoursePlotterPanelProps> = ({
             <div className="space-y-2">
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-2">
-                  <MapPin className="size-4 text-brand" />
+                  <MapPin className="size-4 text-[#003893]" />
                   <h3 className="font-sans text-xs font-bold text-text uppercase tracking-wider">
                     Waypoints (Coordenadas Exactas)
                   </h3>
                 </div>
-                <span className="font-mono text-[10px] px-2 py-0.5 border border-brand/40 bg-brand-soft text-brand font-bold">
+                <span className="font-mono text-[10px] px-2 py-0.5 border border-[#003893]/30 bg-[#003893]/10 text-[#003893] font-bold">
                   {result.waypoints.length} puntos
                 </span>
               </div>
@@ -356,23 +360,23 @@ export const CoursePlotterPanel: React.FC<CoursePlotterPanelProps> = ({
                       onClick={() => handleWaypointClick(wp, idx)}
                       className={`p-2.5 border cursor-pointer transition-all ${
                         isSelected
-                          ? 'border-brand bg-brand-soft/40 shadow-sm'
-                          : 'border-border-subtle bg-surface hover:border-brand/60 hover:bg-surface-2'
+                          ? 'border-[#003893] bg-[#003893]/10 shadow-sm'
+                          : 'border-border-subtle bg-surface hover:border-[#003893]/50 hover:bg-surface-2'
                       }`}
                     >
                       <div className="flex items-center justify-between gap-2">
                         <div className="flex items-center gap-1.5 font-mono text-xs font-semibold text-text truncate">
-                          <FileCode className="size-3.5 text-brand flex-shrink-0" />
+                          <FileCode className="size-3.5 text-[#003893] flex-shrink-0" />
                           <span className="truncate">{wp.file}</span>
                         </div>
-                        <span className="font-mono text-[10px] px-1.5 py-0.5 border border-brand/40 bg-brand-soft text-brand font-bold flex-shrink-0">
+                        <span className="font-mono text-[10px] px-1.5 py-0.5 border border-[#003893]/30 bg-surface-2 text-[#003893] font-bold flex-shrink-0">
                           L{startLine}-{endLine}
                         </span>
                       </div>
                       <div className="mt-1 text-[11px] text-text-muted leading-relaxed">
                         {wp.reason}
                       </div>
-                      <div className="mt-2 flex items-center justify-end font-mono text-[10px] text-brand gap-1">
+                      <div className="mt-2 flex items-center justify-end font-mono text-[10px] text-[#003893] gap-1 font-semibold">
                         <span>Ver en AST split-view</span>
                         <ExternalLink className="size-3" />
                       </div>
@@ -384,15 +388,15 @@ export const CoursePlotterPanel: React.FC<CoursePlotterPanelProps> = ({
 
             {/* Reef Warnings (Tarjan SCC Cyclic Alerts) */}
             {result.reef_warnings && result.reef_warnings.length > 0 && (
-              <div className="p-3 border border-amber-500/50 bg-amber-950/20 space-y-2">
-                <div className="flex items-center gap-2 text-amber-400 font-sans text-xs font-bold uppercase tracking-wider">
-                  <ShieldAlert className="size-4 text-amber-400 animate-pulse flex-shrink-0" />
+              <div className="p-3 border border-amber-300 bg-amber-50 space-y-2">
+                <div className="flex items-center gap-2 text-amber-800 font-sans text-xs font-bold uppercase tracking-wider">
+                  <ShieldAlert className="size-4 text-amber-600 animate-pulse flex-shrink-0" />
                   <span>Arrecifes Topológicos (Acoplamiento Crítico)</span>
                 </div>
-                <div className="space-y-1 font-mono text-[11px] text-amber-200/90 leading-relaxed">
+                <div className="space-y-1 font-mono text-[11px] text-amber-900 leading-relaxed">
                   {result.reef_warnings.map((warn, wIdx) => (
                     <div key={wIdx} className="flex items-start gap-1.5">
-                      <span className="text-amber-400">•</span>
+                      <span className="text-amber-600 font-bold">•</span>
                       <span>{warn}</span>
                     </div>
                   ))}
@@ -404,7 +408,7 @@ export const CoursePlotterPanel: React.FC<CoursePlotterPanelProps> = ({
             {result.action_steps && result.action_steps.length > 0 && (
               <div className="space-y-2">
                 <div className="flex items-center gap-2">
-                  <ListChecks className="size-4 text-brand" />
+                  <ListChecks className="size-4 text-[#003893]" />
                   <h3 className="font-sans text-xs font-bold text-text uppercase tracking-wider">
                     Plan de Implementación Paso a Paso
                   </h3>
@@ -415,7 +419,7 @@ export const CoursePlotterPanel: React.FC<CoursePlotterPanelProps> = ({
                       key={sIdx}
                       className="p-2 border border-border-subtle bg-surface text-xs font-mono flex items-start gap-2"
                     >
-                      <span className="px-1.5 py-0.5 border border-brand/40 bg-brand-soft text-brand font-bold text-[10px]">
+                      <span className="px-1.5 py-0.5 border border-[#003893]/30 bg-[#003893]/10 text-[#003893] font-bold text-[10px] flex-shrink-0">
                         {sIdx + 1}
                       </span>
                       <span className="text-text leading-relaxed">{step}</span>
@@ -427,14 +431,14 @@ export const CoursePlotterPanel: React.FC<CoursePlotterPanelProps> = ({
 
             {/* Pull Request & Commit Draft Template */}
             {result.pr_template && (
-              <div className="border border-border-subtle bg-surface overflow-hidden">
+              <div className="border border-border-subtle bg-surface overflow-hidden shadow-xs">
                 <div className="p-2.5 bg-surface-2 border-b border-border-subtle flex items-center justify-between">
                   <button
                     type="button"
                     onClick={() => setIsPrExpanded(!isPrExpanded)}
-                    className="flex items-center gap-2 text-xs font-mono font-semibold text-text"
+                    className="flex items-center gap-2 text-xs font-mono font-semibold text-text cursor-pointer"
                   >
-                    <GitPullRequest className="size-3.5 text-brand" />
+                    <GitPullRequest className="size-3.5 text-[#003893]" />
                     <span>Borrador de Pull Request (Conventional Commit)</span>
                     {isPrExpanded ? <ChevronUp className="size-3" /> : <ChevronDown className="size-3" />}
                   </button>
@@ -442,16 +446,16 @@ export const CoursePlotterPanel: React.FC<CoursePlotterPanelProps> = ({
                   <button
                     type="button"
                     onClick={handleCopyPrTemplate}
-                    className="inline-flex items-center gap-1 font-mono text-[10px] px-2 py-0.5 border border-border-subtle bg-surface hover:border-brand text-text-muted hover:text-text transition-colors"
+                    className="inline-flex items-center gap-1 font-mono text-[10px] px-2.5 py-1 border border-[#003893]/30 bg-[#003893]/10 text-[#003893] hover:bg-[#003893] hover:text-white transition-colors cursor-pointer font-semibold"
                   >
                     {copiedPr ? (
                       <>
-                        <Check className="size-3 text-emerald-400" />
-                        <span className="text-emerald-400">Copiado</span>
+                        <Check className="size-3 text-emerald-600" />
+                        <span className="text-emerald-700">Copiado</span>
                       </>
                     ) : (
                       <>
-                        <Copy className="size-3 text-brand" />
+                        <Copy className="size-3 text-[#003893]" />
                         <span>Copiar PR</span>
                       </>
                     )}
@@ -459,7 +463,7 @@ export const CoursePlotterPanel: React.FC<CoursePlotterPanelProps> = ({
                 </div>
 
                 {isPrExpanded && (
-                  <div className="p-3 bg-surface-3/50 text-[11px] font-mono leading-relaxed whitespace-pre-wrap text-text max-h-48 overflow-y-auto scroll-accent">
+                  <div className="p-3 bg-surface-2 text-[11px] font-mono leading-relaxed whitespace-pre-wrap text-text max-h-48 overflow-y-auto scroll-accent border-t border-border-subtle">
                     {result.pr_template}
                   </div>
                 )}

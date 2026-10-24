@@ -42,8 +42,8 @@ export const ArchitectureView: React.FC<ArchitectureViewProps> = ({ architecture
           <span
             className={`font-mono text-xs px-3 py-1 border uppercase tracking-wider font-semibold flex-shrink-0 ${
               hasCycles
-                ? 'border-rose-500/40 bg-rose-950/40 text-rose-300'
-                : 'border-emerald-500/40 bg-emerald-950/40 text-emerald-300'
+                ? 'border-red-300 bg-red-50 text-red-700 font-bold'
+                : 'border-emerald-300 bg-emerald-50 text-emerald-800 font-bold'
             }`}
           >
             {hasCycles ? 'Dependencias Circulares Detectadas' : 'Grafo Acíclico (DAG)'}
@@ -52,14 +52,14 @@ export const ArchitectureView: React.FC<ArchitectureViewProps> = ({ architecture
 
         {/* Circular Dependency Warning Alert */}
         {hasCycles ? (
-          <div className="border border-rose-500/30 bg-rose-950/20 p-5 mt-4 space-y-3">
-            <div className="flex items-center gap-2 text-rose-300">
-              <AlertOctagon className="size-5 flex-shrink-0 text-rose-400" />
-              <h3 className="font-sans font-bold text-sm text-rose-200">
+          <div className="border border-red-200 bg-red-50/80 p-5 mt-4 space-y-3">
+            <div className="flex items-center gap-2 text-red-700">
+              <AlertOctagon className="size-5 flex-shrink-0 text-red-600" />
+              <h3 className="font-sans font-bold text-sm text-red-800">
                 Alerta Arquitectónica: Ciclos de Importación Detectados ({cycles.length})
               </h3>
             </div>
-            <p className="font-sans text-xs text-text-secondary leading-relaxed">
+            <p className="font-sans text-xs text-text leading-relaxed">
               Los siguientes módulos forman bucles cerrados de dependencia. Esto viola el principio{' '}
               <strong className="text-text font-mono">Acyclic Dependencies Principle (ADP)</strong> y bloquea el desacoplamiento:
             </p>
@@ -75,13 +75,13 @@ export const ArchitectureView: React.FC<ArchitectureViewProps> = ({ architecture
                       <span
                         className={
                           mIdx === 0 || mIdx === cycle.length - 1
-                            ? 'text-rose-400 font-semibold'
-                            : 'text-text-secondary'
+                            ? 'text-red-700 font-bold'
+                            : 'text-text'
                         }
                       >
                         {mod}
                       </span>
-                      {mIdx < cycle.length - 1 && <ArrowRight className="size-3.5 text-brand" />}
+                      {mIdx < cycle.length - 1 && <ArrowRight className="size-3.5 text-[#003893]" />}
                     </React.Fragment>
                   ))}
                 </div>
@@ -89,9 +89,9 @@ export const ArchitectureView: React.FC<ArchitectureViewProps> = ({ architecture
             </div>
           </div>
         ) : (
-          <div className="border border-emerald-500/30 bg-emerald-950/20 p-4 mt-4 flex items-center gap-3">
-            <CheckCircle2 className="size-5 text-emerald-400 flex-shrink-0" />
-            <span className="font-mono text-xs text-emerald-200">
+          <div className="border border-emerald-200 bg-emerald-50/80 p-4 mt-4 flex items-center gap-3">
+            <CheckCircle2 className="size-5 text-emerald-600 flex-shrink-0" />
+            <span className="font-mono text-xs text-emerald-900 font-medium">
               No se detectaron dependencias circulares. La dirección del flujo entre capas respeta el orden topológico acíclico.
             </span>
           </div>

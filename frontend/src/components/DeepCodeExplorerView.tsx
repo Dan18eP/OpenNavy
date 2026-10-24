@@ -169,7 +169,7 @@ export const DeepCodeExplorerView: React.FC<DeepExplorerProps> = ({ repoId, repo
           onClick={() => openFile(node.path)}
           className={`flex items-center gap-1.5 py-1 px-2 text-xs font-mono cursor-pointer transition-colors ${
             isSelected
-              ? 'bg-brand-soft text-brand-ink font-semibold border-l-2 border-brand'
+              ? 'bg-[#003893]/15 text-[#003893] font-bold border-l-2 border-[#003893]'
               : 'text-text-muted hover:text-text hover:bg-surface-2'
           }`}
         >
@@ -207,7 +207,7 @@ export const DeepCodeExplorerView: React.FC<DeepExplorerProps> = ({ repoId, repo
           key={`${start}-${label}`}
           type="button"
           onClick={() => openFile(filePath, [startLine, endLine])}
-          className="inline-flex items-center gap-1 mx-1 px-2 py-0.5 border border-brand/40 bg-brand-soft hover:bg-brand text-brand-ink font-mono text-[11px] align-baseline transition-colors"
+          className="inline-flex items-center gap-1 mx-1 px-2 py-0.5 border border-[#003893]/40 bg-[#003893]/10 hover:bg-[#003893] text-[#003893] hover:text-white font-mono text-[11px] align-baseline transition-colors cursor-pointer font-medium"
           title={`Abrir ${filePath} en líneas ${startLine}-${endLine}`}
         >
           <ExternalLink className="w-3 h-3 inline" />
@@ -234,8 +234,8 @@ export const DeepCodeExplorerView: React.FC<DeepExplorerProps> = ({ repoId, repo
           <div className="flex items-center gap-2">
             <span className="text-xs font-mono text-text font-bold">{repoName}</span>
           </div>
-          <span className="inline-flex items-center gap-1 text-[11px] font-mono px-2 py-0.5 border border-brand/40 bg-brand-soft text-brand">
-            <Zap className="w-3 h-3 text-brand" /> Fast RAG
+          <span className="inline-flex items-center gap-1 text-[11px] font-mono px-2 py-0.5 border border-[#003893]/30 bg-[#003893]/10 text-[#003893] font-medium">
+            <Zap className="w-3 h-3 text-[#003893]" /> Fast RAG
           </span>
         </div>
 
@@ -246,8 +246,8 @@ export const DeepCodeExplorerView: React.FC<DeepExplorerProps> = ({ repoId, repo
               <div
                 className={`inline-block p-4 border max-w-[90%] text-left ${
                   m.role === 'user'
-                    ? 'bg-brand/20 text-text border-brand/40'
-                    : 'bg-surface-2/40 text-text-secondary border-border-subtle'
+                    ? 'bg-[#003893]/10 text-text border-[#003893]/30'
+                    : 'bg-surface-2/40 text-text border-border-subtle'
                 }`}
               >
                 <div className="whitespace-pre-wrap leading-relaxed font-sans text-xs sm:text-[13.5px]">
@@ -257,7 +257,7 @@ export const DeepCodeExplorerView: React.FC<DeepExplorerProps> = ({ repoId, repo
                 {/* Citaciones exactas de código clicables */}
                 {m.citations && m.citations.length > 0 && (
                   <div className="mt-3 pt-2.5 border-t border-border-subtle space-y-1.5">
-                    <span className="text-[11px] font-mono uppercase tracking-wider text-brand block">
+                    <span className="text-[11px] font-mono uppercase tracking-wider text-[#003893] font-semibold block">
                       Citas de código interactivo:
                     </span>
                     <div className="flex flex-wrap gap-1.5">
@@ -266,7 +266,7 @@ export const DeepCodeExplorerView: React.FC<DeepExplorerProps> = ({ repoId, repo
                           key={i}
                           type="button"
                           onClick={() => openFile(c.file_path, [c.start_line, c.end_line])}
-                          className="inline-flex items-center gap-1.5 px-2.5 py-0.5 bg-brand-soft hover:bg-brand text-brand-ink text-[11px] font-mono border border-brand/40 transition-colors"
+                          className="inline-flex items-center gap-1.5 px-2.5 py-0.5 bg-[#003893]/10 hover:bg-[#003893] text-[#003893] hover:text-white text-[11px] font-mono border border-[#003893]/30 transition-colors cursor-pointer font-medium"
                         >
                           <ExternalLink className="w-3 h-3" />
                           <span>{c.label}</span>
@@ -304,7 +304,7 @@ export const DeepCodeExplorerView: React.FC<DeepExplorerProps> = ({ repoId, repo
           <button
             type="submit"
             disabled={isQuerying || !inputMessage.trim()}
-            className="px-5 py-2.5 bg-brand hover:bg-brand/90 text-brand-ink font-mono font-bold text-xs flex items-center justify-center transition-colors disabled:opacity-40"
+            className="px-5 py-2.5 bg-[#003893] hover:bg-[#002d75] text-white font-mono font-bold text-xs flex items-center justify-center transition-colors disabled:opacity-40 cursor-pointer"
           >
             <Send className="w-4 h-4" />
           </button>

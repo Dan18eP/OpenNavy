@@ -35,6 +35,7 @@ import { api, CodeCitation, ChatSessionItem } from '../services/api';
 import { useFleetSonar } from '../hooks/useFleetSonar';
 import { FleetSonarRadar } from './FleetSonarRadar';
 import { CoursePlotterPanel } from './CoursePlotterPanel';
+import { AiMessageRenderer } from './AiMessageRenderer';
 import { cn } from '../lib/utils';
 
 interface FileTreeNode {
@@ -528,68 +529,6 @@ ${modelsList}
     setTimeout(() => setCopiedCode(false), 2000);
   };
 
-  const renderMessageContent = (content: string, citations?: CodeCitation[]) => {
-    const citationRegex = /`?\[([a-zA-Z0-9_\-\./\\]+):(\d+)(?:-(\d+))?\]`?/g;
-    const parts = [];
-    let lastIndex = 0;
-    let match;
-
-    while ((match = citationRegex.exec(content)) !== null) {
-      const start = match.index;
-      const end = citationRegex.lastIndex;
-
-      if (start > lastIndex) {
-        parts.push(content.slice(lastIndex, start));
-      }
-
-      const filePath = match[1];
-      const startLine = parseInt(match[2], 10);
-      const endLine = match[3] ? parseInt(match[3], 10) : startLine;
-      const label = `${filePath}:${startLine}${match[3] ? '-' + endLine : ''}`;
-
-      parts.push(
-        <button
-          key={`${start}-${label}`}
-          type="button"
-          onClick={() => openFile(filePath, [startLine, endLine])}
-          className="inline-flex items-center gap-1 mx-1 px-2 py-0.5 border border-brand/50 bg-brand-soft text-brand-ink font-mono text-[11px] align-baseline hover:bg-brand transition-colors cursor-pointer"
-          title={`Abrir ${filePath} en líneas ${startLine}-${endLine}`}
-        >
-          <Code2 className="size-3 text-brand" />
-          <span>{label}</span>
-        </button>
-      );
-
-      lastIndex = end;
-    }
-
-    if (lastIndex < content.length) {
-      parts.push(content.slice(lastIndex));
-    }
-
-    return (
-      <div className="space-y-2">
-        <p className="whitespace-pre-wrap leading-relaxed">{parts}</p>
-
-        {citations && citations.length > 0 && (
-          <div className="mt-3 pt-2.5 border-t border-border-subtle/60 flex flex-wrap gap-1.5 items-center">
-            <span className="font-mono text-[10px] text-text-muted mr-1">Citas de código:</span>
-            {citations.map((c, i) => (
-              <button
-                key={i}
-                type="button"
-                onClick={() => openFile(c.file_path, [c.start_line, c.end_line])}
-                className="inline-flex items-center gap-1 px-2 py-0.5 border border-brand/40 bg-surface-2 text-text font-mono text-[10px] hover:border-brand hover:text-brand transition-colors"
-              >
-                <Code2 className="size-3 text-brand" />
-                <span>{c.file_path}:{c.start_line}-{c.end_line}</span>
-              </button>
-            ))}
-          </div>
-        )}
-      </div>
-    );
-  };
 
   const renderTreeNodes = (nodes: FileTreeNode[], depth: number = 0) => {
     return nodes
@@ -642,7 +581,7 @@ ${modelsList}
             style={{ paddingLeft: `${depth * 10 + 16}px` }}
             className={`flex items-center justify-between gap-1.5 py-1 px-2 text-xs font-mono cursor-pointer transition-colors ${
               isSelected
-                ? 'bg-brand-soft text-brand-ink font-semibold border-l-2 border-brand'
+                ? 'bg-[#003893]/15 text-[#003893] font-bold border-l-2 border-[#003893]'
                 : isColliding
                 ? 'bg-[#E73427]/10 text-[#E73427] border-l-2 border-[#E73427]'
                 : 'text-text-muted hover:text-text hover:bg-surface-2'
@@ -773,9 +712,9 @@ ${modelsList}
               <button
                 type="button"
                 onClick={() => setActiveLeftPanel('plotter')}
-                className={`px-3 py-1.5 flex items-center gap-1.5 text-xs font-mono transition-colors ${
+                className={`px-3 py-1.5 flex items-center gap-1.5 text-xs font-mono transition-colors cursor-pointer ${
                   activeLeftPanel === 'plotter'
-                    ? 'bg-brand text-bg font-bold border border-brand'
+                    ? 'bg-[#003893] text-white font-bold border border-[#003893] shadow-xs'
                     : 'text-text-muted hover:text-text hover:bg-surface-2'
                 }`}
               >
@@ -785,9 +724,9 @@ ${modelsList}
               <button
                 type="button"
                 onClick={() => setActiveLeftPanel('chat')}
-                className={`px-3 py-1.5 flex items-center gap-1.5 text-xs font-mono transition-colors ${
+                className={`px-3 py-1.5 flex items-center gap-1.5 text-xs font-mono transition-colors cursor-pointer ${
                   activeLeftPanel === 'chat'
-                    ? 'bg-brand text-bg font-bold border border-brand'
+                    ? 'bg-[#003893] text-white font-bold border border-[#003893] shadow-xs'
                     : 'text-text-muted hover:text-text hover:bg-surface-2'
                 }`}
               >
@@ -816,7 +755,7 @@ ${modelsList}
                     type="button"
                     onClick={() => handleSendMessage(q)}
                     disabled={isQuerying || !repoId}
-                    className="font-mono text-[10px] px-2.5 py-1 border border-border-subtle bg-surface hover:border-brand/50 hover:bg-surface-2 text-text-muted hover:text-text whitespace-nowrap transition-colors flex-shrink-0 disabled:opacity-50"
+                    className="font-mono text-[10px] px-2.5 py-1 border border-border-subtle bg-surface hover:border-[#003893]/50 hover:bg-surface-2 text-text hover:text-[#003893] whitespace-nowrap transition-colors flex-shrink-0 disabled:opacity-50 cursor-pointer"
                   >
                     {q}
                   </button>
@@ -837,7 +776,7 @@ ${modelsList}
                   <div
                     className={`size-6 rounded-none flex items-center justify-center flex-shrink-0 mt-0.5 border ${
                       isAssistant
-                        ? 'border-brand/40 bg-brand-soft text-brand'
+                        ? 'border-[#003893]/40 bg-[#003893]/10 text-[#003893]'
                         : 'border-border-strong bg-surface text-text'
                     }`}
                   >
@@ -845,15 +784,21 @@ ${modelsList}
                   </div>
 
                   <div
-                    className={`p-3 max-w-[85%] border font-sans text-xs ${
+                    className={`p-3.5 max-w-[88%] border font-sans text-xs ${
                       isAssistant
-                        ? 'border-border-subtle bg-surface/90 text-text'
-                        : 'border-brand/40 bg-brand text-brand-ink font-medium shadow-[0_0_12px_rgba(139,92,246,0.25)]'
+                        ? 'border-border-subtle bg-surface text-text shadow-sm'
+                        : 'border-[#003893] bg-[#003893] text-white font-medium shadow-sm'
                     }`}
                   >
-                    {isAssistant
-                      ? renderMessageContent(msg.content, msg.citations)
-                      : msg.content}
+                    {isAssistant ? (
+                      <AiMessageRenderer
+                        content={msg.content}
+                        citations={msg.citations}
+                        onOpenFile={openFile}
+                      />
+                    ) : (
+                      <div className="whitespace-pre-wrap leading-relaxed">{msg.content}</div>
+                    )}
                   </div>
                 </div>
               );
@@ -929,7 +874,7 @@ ${modelsList}
               <button
                 type="submit"
                 disabled={isQuerying || !inputMessage.trim() || !repoId}
-                className="px-4 py-2 border border-brand bg-brand text-brand-ink font-mono text-xs font-semibold hover:opacity-95 transition-opacity disabled:opacity-50 flex items-center gap-1.5"
+                className="px-4 py-2 border border-[#003893] bg-[#003893] text-white font-mono text-xs font-semibold hover:bg-[#002d75] transition-colors disabled:opacity-50 flex items-center gap-1.5 cursor-pointer"
               >
                 <Send className="size-3.5" />
                 <span className="hidden sm:inline">Enviar</span>
@@ -1076,7 +1021,7 @@ ${modelsList}
                         id={`workspace-line-${lineNum}`}
                         className={`flex py-0.5 px-2 transition-colors duration-150 ${
                           isHighlighted
-                            ? 'bg-brand-soft/70 border-l-2 border-brand text-brand-ink font-semibold'
+                            ? 'bg-[#FFC72C]/25 border-l-2 border-[#B45309] text-text font-semibold'
                             : 'hover:bg-surface-2/40 text-text'
                         }`}
                       >
@@ -1185,7 +1130,7 @@ ${modelsList}
                     <button
                       type="button"
                       onClick={() => resumeSession(sess.id)}
-                      className="px-3 py-1.5 border border-brand bg-brand text-brand-ink font-mono text-xs font-semibold hover:opacity-95 transition-opacity flex items-center gap-1.5 flex-shrink-0"
+                      className="px-3 py-1.5 border border-[#003893] bg-[#003893] text-white font-mono text-xs font-semibold hover:bg-[#002d75] transition-colors flex items-center gap-1.5 flex-shrink-0 cursor-pointer"
                     >
                       <RotateCcw className="size-3.5" />
                       <span>Reanudar</span>

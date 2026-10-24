@@ -48,6 +48,11 @@ export const App: React.FC = () => {
 
   // 1. Cargar Estado Inicial del Backend
   useEffect(() => {
+    const currentTheme = localStorage.getItem('omarchy-site-theme');
+    if (!currentTheme || currentTheme === 'tokyo-night' || currentTheme === 'obsidian-synth') {
+      localStorage.setItem('omarchy-site-theme', 'opennavy');
+      document.documentElement.dataset.theme = 'opennavy';
+    }
     loadHealthAndRepos()
   }, [])
 
