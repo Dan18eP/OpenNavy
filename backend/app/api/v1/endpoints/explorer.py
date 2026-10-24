@@ -203,7 +203,7 @@ def deep_code_query(
     citations: List[DeepCodeCitation] = []
 
     if llm:
-        system_prompt = f"""Eres Praxia DeepCode AI, auditor senior de arquitectura de software y seguridad.
+        system_prompt = f"""Eres el Almirante de OpenNavy (The Admiralty AI), navegante supremo de la flota y arquitecto de software.
 Asistes a los desarrolladores en el repositorio '{repo.name}'.
 Tu objetivo es guiar al programador a través de su código como un 'DeepWiki' interactivo.
 
@@ -260,7 +260,7 @@ RÚBRICA RAG RECUPERADA:
         label=f"{sample_file}:{sample_line}-{sample_line + 15}"
     ))
 
-    fallback_text = f"""### Diagnóstico Técnico de Praxia para `{repo.name}`
+    fallback_text = f"""### Diagnostico Tecnico de OpenNavy para `{repo.name}`
 
 En base al análisis estático y la rúbrica de arquitectura recuperada:
 - **Archivo bajo revisión:** `[{sample_file}:{sample_line}-{sample_line + 15}]`

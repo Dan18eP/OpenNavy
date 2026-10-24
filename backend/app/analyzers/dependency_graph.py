@@ -234,7 +234,7 @@ class DependencyGraphAnalyzer:
 
         adr_content = f"""# ADR-0002: Inversión de Dependencias para Eliminación de Ciclos de Importación en {repo_name}
 
-**Estado:** Propuesto (Generación Automática de Praxia - Algoritmo de Tarjan)  
+**Estado:** Propuesto (Generacion Automatica de OpenNavy - Algoritmo de Tarjan)  
 **Severidad:** Crítica  
 **Regla:** Acyclic Dependencies Principle (ADP) & Dependency Inversion Principle (DIP)  
 
@@ -314,7 +314,7 @@ Las dependencias cíclicas impiden el testing modular aislado, generan acoplamie
         coupling_metrics = self._calculate_coupling(adjacency_list)
 
         # Generar ADR preliminar si hay ciclos
-        repo_name = root.name if root.name else "Praxia"
+        repo_name = root.name if root.name else "OpenNavy"
         preliminary_adr = self.generate_preliminary_adr(circular_dependencies_details, repo_name)
 
         return {

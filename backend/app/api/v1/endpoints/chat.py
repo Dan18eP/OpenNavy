@@ -72,7 +72,7 @@ def chat_with_repo(
 
     if llm:
         system_prompt = (
-            f"Eres Praxia AI, un arquitecto de software y auditor senior de calidad de código.\n"
+            f"Eres el Almirante de OpenNavy, navegante supremo de la flota y arquitecto de software.\n"
             f"Estás asistiendo al equipo en el repositorio '{repo.name}'.\n"
             f"Score Global actual: {last_run.global_score if last_run else 'N/A'}/100\n"
             f"Métricas registradas: {metrics_summary}\n"
@@ -131,7 +131,7 @@ def chat_with_repo(
     ))
 
     response_text = (
-        f"**Análisis de Praxia para el repositorio '{repo.name}':**\n\n"
+        f"**Analisis de OpenNavy para el repositorio '{repo.name}':**\n\n"
         f"Score Global de Salud: **{last_run.global_score if last_run else 'N/A'}/100**.\n\n"
         f"**Métricas registradas:** {metrics_summary}\n\n"
         f"**Rúbricas y Criterios Técnicos RAG:**\n{rag_context_text}\n\n"

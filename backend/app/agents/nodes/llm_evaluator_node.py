@@ -250,7 +250,7 @@ def _evaluate_single_dependency(dep: Dict[str, Any]) -> Optional[Dict[str, Any]]
             "criterio": "dependency_version_control",
             "veredicto": "sugerencia",
             "explicacion": f"Actualización disponible para '{pkg_name}' (v{cur_v} → v{rec_v}): {reason}",
-            "fragmento_rag_citado": "Praxia Engineering Standard | Dependency Lifecycle Management",
+            "fragmento_rag_citado": "OpenNavy Engineering Standard | Dependency Lifecycle Management",
             "severidad": "info",
             "sugerencia": f"Ejecutar: {dep.get('upgrade_command', '')}",
         }
@@ -345,7 +345,7 @@ def llm_evaluator_node(state: AnalysisState) -> Dict[str, Any]:
             "veredicto": "violacion",
             "explicacion": (
                 f"Se detectó una credencial sensible en texto plano ({sec_type}: {sec_sample}). "
-                "Praxia ha enmascarado forzosamente este valor para evitar fugas de información antes de cualquier interacción con modelos LLM."
+                "OpenNavy ha enmascarado forzosamente este valor para evitar fugas de información antes de cualquier interacción con modelos LLM."
             ),
             "fragmento_rag_citado": "OWASP Top 10:2021 | A02: Cryptographic Failures & A07: Identification and Authentication Failures (Hardcoded Credentials)",
             "severidad": "critical",
@@ -390,7 +390,7 @@ def llm_evaluator_node(state: AnalysisState) -> Dict[str, Any]:
                         "Retorna hallazgos técnicos en formato conciso."
                     )
                     ai_resp = llm.invoke([
-                        {"role": "system", "content": "Eres un auditor senior de software Praxia. Evalúa modularidad y principios de diseño."},
+                        {"role": "system", "content": "Eres el Almirante de OpenNavy, auditor senior de arquitectura. Evalúa modularidad y principios de diseño."},
                         {"role": "user", "content": prompt_user}
                     ])
                     resp_text = ai_resp.content if hasattr(ai_resp, "content") else str(ai_resp)

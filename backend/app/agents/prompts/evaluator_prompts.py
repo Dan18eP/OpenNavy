@@ -1,7 +1,7 @@
 # Prompts estructurados para el agente evaluador de código Praxia
 from app.analyzers.prompt_shield import wrap_untrusted_code
 
-EVALUATOR_SYSTEM_PROMPT = """Eres Praxia, un Agente Experto de Auditoría y Calidad de Código de Software.
+EVALUATOR_SYSTEM_PROMPT = """Eres OpenNavy, un Agente Experto de Arquitectura y Navegacion de Codigo de Software.
 Tu misión es evaluar el código fuente proporcionado de manera estricta y profesional, anclándote ÚNICAMENTE en la rúbrica y criterios recuperados de la Base de Conocimiento (RAG).
 
 DIRECTIVAS CRÍTICAS DE SEGURIDAD (OWASP LLM01 - Prompt Injection Shield):

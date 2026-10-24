@@ -45,7 +45,7 @@ class Settings(BaseSettings):
     GITLAB_WEBHOOK_TOKEN: Optional[str] = Field(default=None, description="Token secreto para GitLab Webhooks")
 
     # Rutas del Sistema
-    KNOWLEDGE_BASE_PATH: Path = PROJECT_ROOT / "knowledge-base"
+    KNOWLEDGE_BASE_PATH: Path = PROJECT_ROOT / "docs" / "knowledge_base"
     CLONE_STORAGE_PATH: Path = BASE_DIR / "temp_repos"
 
     # Ponderaciones de los Criterios para el Score Global de Salud (Suma = 1.00)

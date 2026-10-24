@@ -44,7 +44,7 @@ class PRCommentFormatter:
         if has_cycles:
             lines.extend([
                 "> ️ **ALERTA ARQUITECTÓNICA:** Se detectaron dependencias circulares en este cambio. "
-                "Revisa la pestaña de Arquitectura en el panel de Praxia.",
+                "Revisa la pestaña de Arquitectura en el panel de OpenNavy.",
                 ""
             ])
 
@@ -52,7 +52,7 @@ class PRCommentFormatter:
             f" **Hallazgos detectados en este PR:** {findings_count}",
             "",
             "---",
-            "*Reporte autogenerado por Praxia AI con rúbrica RAG y LangGraph.*",
+            "*Reporte autogenerado por OpenNavy Admiral con topografia AST y LangGraph.*",
         ])
 
         return "\n".join(lines)
