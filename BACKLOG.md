@@ -130,7 +130,7 @@ As defined in `docs/ARCHITECTURE.md`, OpenNavy strictly enforces a Ports and Ada
     2. If two peers inspect or modify strongly coupled modules, both receive an immediate `COLLISION_ALERT` visual banner.
     3. Display distance/proximity metrics between active files.
 
-- [ ] **US-09: Shared Blueprint Broadcast**
+- [x] **US-09: Shared Blueprint Broadcast**
   - Owner: Dylan Gamero / Daniel Echeverría
   - Description: When a developer plots a course with Gemma 4, the plan is broadcast to all active crew members on the network.
   - Acceptance Criteria: All connected laptops receive the `SHARED_BLUEPRINT` event within 200ms over LAN.

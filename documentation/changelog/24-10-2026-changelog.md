@@ -6,3 +6,4 @@
 - Saturday-24/10/2026-12:03 - Daniel Echeverría : Creación del README.md oficial en inglés, con enfoque profesional para open source, especificación de arquitectura hexagonal, guía de despliegue local con Gemma 4, sin emojis y bajo licencia MIT.
 - Saturday-24/10/2026-12:07 - Daniel Echeverría : Depuración y eliminación de caracteres emoji en código backend y frontend (course.py, webhooks.py, pdf_report.py, DependenciesModal.tsx) garantizando cumplimiento de directriz de estilo.
 - Saturday-24/10/2026-12:18 - Daniel Echeverría : Integración del logotipo SVG de OpenNavy (assets/logo_opennavy.svg) en el encabezado del README.md en la rama develop.
+- Saturday-24/10/2026-12:35 - Daniel Echeverría : Implementación de US-09 en rama feature/backend-blueprint-broadcast con buffer de blueprints en FleetSonarManager, rutas REST /blueprints/latest, suite de tests automatizados (4 passed) y script de diagnóstico de LAN scripts/check-lan.py.
