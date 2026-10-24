@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Sparkles, BookOpen, FileSpreadsheet, FileText } from 'lucide-react';
 import { KnowledgeDocument } from '../services/api';
 import { AssessmentDashboardView } from './AssessmentDashboardView';
+import { AiMessageRenderer } from './AiMessageRenderer';
 
 interface KnowledgeDocsViewProps {
   documents: KnowledgeDocument[];
@@ -31,9 +32,9 @@ export const KnowledgeDocsView: React.FC<KnowledgeDocsViewProps> = ({ documents 
           <button
             type="button"
             onClick={() => setSubTab('docs')}
-            className={`font-mono text-xs px-3 py-1.5 flex items-center gap-1.5 transition-all ${
+            className={`font-mono text-xs px-3 py-1.5 flex items-center gap-1.5 transition-all cursor-pointer ${
               subTab === 'docs'
-                ? 'bg-brand text-brand-ink font-semibold shadow-[0_0_12px_rgba(139,92,246,0.25)]'
+                ? 'bg-[#003893] text-white font-semibold shadow-sm'
                 : 'text-text-muted hover:text-text'
             }`}
           >
@@ -44,9 +45,9 @@ export const KnowledgeDocsView: React.FC<KnowledgeDocsViewProps> = ({ documents 
           <button
             type="button"
             onClick={() => setSubTab('assessment')}
-            className={`font-mono text-xs px-3 py-1.5 flex items-center gap-1.5 transition-all ${
+            className={`font-mono text-xs px-3 py-1.5 flex items-center gap-1.5 transition-all cursor-pointer ${
               subTab === 'assessment'
-                ? 'bg-brand text-brand-ink font-semibold shadow-[0_0_12px_rgba(139,92,246,0.25)]'
+                ? 'bg-[#003893] text-white font-semibold shadow-sm'
                 : 'text-text-muted hover:text-text'
             }`}
           >
@@ -85,9 +86,9 @@ export const KnowledgeDocsView: React.FC<KnowledgeDocsViewProps> = ({ documents 
                       key={doc.id || idx}
                       type="button"
                       onClick={() => setSelectedIndex(idx)}
-                      className={`w-full text-left p-3 border transition-all duration-150 flex flex-col gap-1.5 ${
+                      className={`w-full text-left p-3 border transition-all duration-150 flex flex-col gap-1.5 cursor-pointer ${
                         isSelected
-                          ? 'border-brand/50 bg-brand-soft text-text shadow-[0_0_12px_rgba(139,92,246,0.2)]'
+                          ? 'border-[#003893]/50 bg-[#003893]/10 text-text shadow-sm'
                           : 'border-transparent bg-transparent text-text-muted hover:text-text hover:bg-surface-2 hover:border-border-subtle'
                       }`}
                     >
@@ -95,8 +96,8 @@ export const KnowledgeDocsView: React.FC<KnowledgeDocsViewProps> = ({ documents 
                         <span
                           className={`font-mono text-[10px] uppercase font-bold px-1.5 py-0.5 border ${
                             doc.tipo === 'adr'
-                              ? 'border-amber-500/40 bg-amber-950/40 text-amber-300'
-                              : 'border-brand/40 bg-brand/20 text-brand'
+                              ? 'border-amber-400 bg-amber-50 text-amber-800'
+                              : 'border-[#003893]/40 bg-[#003893]/10 text-[#003893]'
                           }`}
                         >
                           {doc.tipo.toUpperCase()}
@@ -125,13 +126,13 @@ export const KnowledgeDocsView: React.FC<KnowledgeDocsViewProps> = ({ documents 
                     {activeDoc.path}
                   </span>
                 </div>
-                <span className="font-mono text-[11px] uppercase tracking-wider font-semibold px-2.5 py-1 border border-emerald-500/40 bg-emerald-950/30 text-emerald-300 flex-shrink-0">
+                <span className="font-mono text-[11px] uppercase tracking-wider font-semibold px-2.5 py-1 border border-emerald-300 bg-emerald-50 text-emerald-800 flex-shrink-0">
                   Autogenerado por IA
                 </span>
               </div>
 
-              <div className="font-mono text-xs text-text-secondary leading-relaxed whitespace-pre-wrap bg-bg-deep/90 p-5 border border-border-subtle overflow-x-auto scroll-accent max-h-[calc(100vh-320px)]">
-                {activeDoc.contenido}
+              <div className="bg-surface p-5 border border-border-subtle overflow-x-auto scroll-accent max-h-[calc(100vh-320px)]">
+                <AiMessageRenderer content={activeDoc.contenido} />
               </div>
             </div>
           </div>

@@ -86,23 +86,23 @@ export const AssessmentDashboardView: React.FC = () => {
       case 'op':
         return {
           border: 'border-emerald-500/40',
-          bg: 'bg-emerald-950/20',
-          badgeBg: 'bg-emerald-950/40 text-emerald-300 border-emerald-500/40',
-          dot: 'bg-emerald-400',
+          bg: 'bg-emerald-50/70',
+          badgeBg: 'bg-emerald-100 text-emerald-800 border-emerald-400 font-bold',
+          dot: 'bg-emerald-600',
         };
       case 'auto':
         return {
           border: 'border-amber-500/40',
-          bg: 'bg-amber-950/20',
-          badgeBg: 'bg-amber-950/40 text-amber-300 border-amber-500/40',
-          dot: 'bg-amber-400',
+          bg: 'bg-amber-50/70',
+          badgeBg: 'bg-amber-100 text-amber-800 border-amber-400 font-bold',
+          dot: 'bg-amber-600',
         };
       default:
         return {
-          border: 'border-brand/40',
+          border: 'border-[#003893]/40',
           bg: 'bg-surface',
-          badgeBg: 'bg-brand-soft text-brand-ink border-brand/40',
-          dot: 'bg-brand',
+          badgeBg: 'bg-[#003893]/10 text-[#003893] border-[#003893]/40 font-bold',
+          dot: 'bg-[#003893]',
         };
     }
   };
@@ -114,8 +114,8 @@ export const AssessmentDashboardView: React.FC = () => {
       {/* Header Banner */}
       <div className="p-6 border border-border-subtle bg-surface/90 flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
         <div>
-          <div className="flex items-center gap-2 text-xs font-mono uppercase tracking-widest text-brand mb-1">
-            <Compass className="w-4 h-4 text-brand" /> Sesión 01 · Secure AI Engineering Series
+          <div className="flex items-center gap-2 text-xs font-mono uppercase tracking-widest text-[#003893] mb-1">
+            <Compass className="w-4 h-4 text-[#003893]" /> Sesión 01 · Secure AI Engineering Series
           </div>
           <h2 className="text-xl font-bold font-sans tracking-tight text-text">
             AI Opportunity Assessment
@@ -127,7 +127,7 @@ export const AssessmentDashboardView: React.FC = () => {
 
         {/* Upload Excel Button */}
         <div>
-          <label className="flex items-center gap-2 px-4 py-2 border border-brand/40 bg-brand-soft hover:bg-brand text-brand-ink font-mono text-xs cursor-pointer transition-colors">
+          <label className="flex items-center gap-2 px-4 py-2 border border-[#003893] bg-[#003893] hover:bg-[#002d75] text-white font-mono text-xs cursor-pointer transition-colors shadow-sm">
             <Upload className="w-4 h-4" />
             <span>Cargar Levantamiento (.xlsx)</span>
             <input type="file" accept=".xlsx,.xlsm" className="hidden" onChange={handleFileUpload} />
@@ -188,7 +188,7 @@ export const AssessmentDashboardView: React.FC = () => {
 
           {/* Autonomía y Riesgos */}
           <div className="p-6 border border-border-subtle bg-surface/90 space-y-4">
-            <h4 className="text-xs font-mono uppercase tracking-widest text-brand flex items-center gap-2">
+            <h4 className="text-xs font-mono uppercase tracking-widest text-[#003893] flex items-center gap-2 font-bold">
               <ShieldAlert className="w-4 h-4" /> Nivel de Autonomía y Exposición
             </h4>
             <div className="grid grid-cols-2 gap-3">
@@ -198,10 +198,10 @@ export const AssessmentDashboardView: React.FC = () => {
               </div>
               <div className="p-3 border border-border-subtle bg-bg-deep/80">
                 <span className="text-[10px] text-text-muted block font-mono">Riesgo Inicial</span>
-                <span className="text-sm font-bold text-amber-300 font-mono">{assessmentData.riesgo_nivel || 'Medio'}</span>
+                <span className="text-sm font-bold text-amber-700 font-mono">{assessmentData.riesgo_nivel || 'Medio'}</span>
               </div>
             </div>
-            <p className="text-xs font-sans text-text-secondary leading-relaxed">
+            <p className="text-xs font-sans text-text leading-relaxed">
               {assessmentData.riesgo_desc || 'No se registraron riesgos adicionales.'}
             </p>
           </div>
@@ -211,7 +211,7 @@ export const AssessmentDashboardView: React.FC = () => {
         <div className="lg:col-span-7 space-y-6">
           <div className="p-6 border border-border-subtle bg-surface/90 space-y-4">
             <div className="flex justify-between items-center pb-3 border-b border-border-subtle">
-              <h4 className="text-xs font-mono uppercase tracking-widest text-brand flex items-center gap-2">
+              <h4 className="text-xs font-mono uppercase tracking-widest text-[#003893] flex items-center gap-2 font-bold">
                 <FileCheck className="w-4 h-4" /> Perfil de las 7 Capacidades
               </h4>
               <span className="text-xs text-text-muted font-mono">Sesión 01 · Paso 2</span>
@@ -244,9 +244,9 @@ export const AssessmentDashboardView: React.FC = () => {
                           setAssessmentData(updated);
                           runEvaluation(updated);
                         }}
-                        className={`px-2.5 py-0.5 border transition-colors ${
+                        className={`px-2.5 py-0.5 border transition-colors cursor-pointer ${
                           isSi
-                            ? 'bg-emerald-950/40 border-emerald-500 text-emerald-300 font-bold'
+                            ? 'bg-emerald-100 border-emerald-500 text-emerald-800 font-bold'
                             : 'bg-transparent border-border-subtle text-text-muted hover:text-text'
                         }`}
                       >
@@ -259,9 +259,9 @@ export const AssessmentDashboardView: React.FC = () => {
                           setAssessmentData(updated);
                           runEvaluation(updated);
                         }}
-                        className={`px-2.5 py-0.5 border transition-colors ${
+                        className={`px-2.5 py-0.5 border transition-colors cursor-pointer ${
                           isNo
-                            ? 'bg-rose-950/40 border-rose-500 text-rose-300 font-bold'
+                            ? 'bg-red-100 border-red-500 text-red-800 font-bold'
                             : 'bg-transparent border-border-subtle text-text-muted hover:text-text'
                         }`}
                       >
@@ -274,9 +274,9 @@ export const AssessmentDashboardView: React.FC = () => {
                           setAssessmentData(updated);
                           runEvaluation(updated);
                         }}
-                        className={`px-2.5 py-0.5 border transition-colors ${
+                        className={`px-2.5 py-0.5 border transition-colors cursor-pointer ${
                           !isSi && !isNo
-                            ? 'bg-amber-950/40 border-amber-500 text-amber-300 font-bold'
+                            ? 'bg-amber-100 border-amber-500 text-amber-800 font-bold'
                             : 'bg-transparent border-border-subtle text-text-muted hover:text-text'
                         }`}
                       >

@@ -82,7 +82,7 @@ export const RepoSelector: React.FC<RepoSelectorProps> = ({
                   type="button"
                   onClick={() => setIsDeleteModalOpen(true)}
                   title={`Eliminar repositorio ${selectedRepo.name}`}
-                  className="border border-rose-500/40 bg-rose-950/40 hover:bg-rose-900/50 text-rose-300 font-mono text-xs px-3 py-1.5 flex items-center gap-1.5 transition-colors"
+                  className="border border-red-300 bg-red-50 hover:bg-red-100 text-red-700 font-mono text-xs px-3 py-1.5 flex items-center gap-1.5 transition-colors cursor-pointer"
                 >
                   <Trash2 className="size-3.5" />
                   <span>Eliminar</span>
@@ -102,9 +102,9 @@ export const RepoSelector: React.FC<RepoSelectorProps> = ({
                 setRepoType('remote');
                 setUrl('');
               }}
-              className={`font-mono text-xs px-3 py-1.5 transition-colors ${
+              className={`font-mono text-xs px-3 py-1.5 transition-colors cursor-pointer ${
                 repoType === 'remote'
-                  ? 'bg-brand text-brand-ink font-bold'
+                  ? 'bg-[#003893] text-white font-bold'
                   : 'text-text-muted hover:text-text'
               }`}
             >
@@ -116,9 +116,9 @@ export const RepoSelector: React.FC<RepoSelectorProps> = ({
                 setRepoType('local');
                 setUrl('');
               }}
-              className={`font-mono text-xs px-3 py-1.5 transition-colors ${
+              className={`font-mono text-xs px-3 py-1.5 transition-colors cursor-pointer ${
                 repoType === 'local'
-                  ? 'bg-brand text-brand-ink font-bold'
+                  ? 'bg-[#003893] text-white font-bold'
                   : 'text-text-muted hover:text-text'
               }`}
             >
@@ -160,7 +160,7 @@ export const RepoSelector: React.FC<RepoSelectorProps> = ({
           <button
             type="submit"
             disabled={isAnalyzing || !url.trim()}
-            className="px-5 py-2 bg-brand hover:bg-brand/90 text-brand-ink font-mono font-bold text-xs flex items-center justify-center gap-2 transition-colors disabled:opacity-40"
+            className="px-5 py-2 bg-[#003893] hover:bg-[#002d75] text-white font-mono font-bold text-xs flex items-center justify-center gap-2 transition-colors disabled:opacity-40 cursor-pointer"
           >
             {isAnalyzing ? (
               <>
@@ -184,19 +184,19 @@ export const RepoSelector: React.FC<RepoSelectorProps> = ({
           onClick={() => !isDeleting && setIsDeleteModalOpen(false)}
         >
           <div
-            className="w-full max-w-md border border-rose-500/40 bg-surface p-6 space-y-4 shadow-2xl"
+            className="w-full max-w-md border border-red-300 bg-surface p-6 space-y-4 shadow-2xl"
             onClick={(e) => e.stopPropagation()}
           >
             <div className="flex items-start justify-between">
               <div className="flex items-center gap-3">
-                <div className="p-2 border border-rose-500/40 bg-rose-950/40 text-rose-300">
-                  <AlertTriangle className="size-5 text-rose-400" />
+                <div className="p-2 border border-red-200 bg-red-50 text-red-600">
+                  <AlertTriangle className="size-5 text-red-600" />
                 </div>
                 <div>
                   <h3 className="font-sans font-bold text-base text-text">
                     ¿Eliminar repositorio?
                   </h3>
-                  <p className="font-mono text-xs text-rose-400">
+                  <p className="font-mono text-xs text-red-600">
                     Esta acción es irreversible
                   </p>
                 </div>

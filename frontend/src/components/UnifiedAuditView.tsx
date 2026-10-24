@@ -101,13 +101,13 @@ export const UnifiedAuditView: React.FC<UnifiedAuditViewProps> = ({
   const getSeverityBadgeClass = (sev: string = '') => {
     switch (sev.toLowerCase()) {
       case 'critical':
-        return 'border-rose-500/40 bg-rose-950/40 text-rose-300';
+        return 'border-red-500/50 bg-red-50 text-red-700 font-bold';
       case 'high':
-        return 'border-amber-500/40 bg-amber-950/40 text-amber-300';
+        return 'border-amber-500/50 bg-amber-50 text-amber-800 font-bold';
       case 'warning':
-        return 'border-yellow-500/40 bg-yellow-950/40 text-yellow-300';
+        return 'border-yellow-600/50 bg-yellow-50 text-yellow-800 font-bold';
       default:
-        return 'border-border-subtle bg-surface-2 text-text-secondary';
+        return 'border-border-subtle bg-surface-2 text-[#003893] font-semibold';
     }
   };
 
@@ -121,18 +121,18 @@ export const UnifiedAuditView: React.FC<UnifiedAuditViewProps> = ({
     if (score >= 80) {
       return {
         label: `${score}/100 · Óptimo`,
-        color: 'border-emerald-500/40 bg-emerald-950/40 text-emerald-300',
+        color: 'border-emerald-600/40 bg-emerald-50 text-emerald-800 font-bold',
       };
     }
     if (score >= 60) {
       return {
         label: `${score}/100 · Riesgo Moderado`,
-        color: 'border-amber-500/40 bg-amber-950/40 text-amber-300',
+        color: 'border-amber-600/40 bg-amber-50 text-amber-800 font-bold',
       };
     }
     return {
       label: `${score}/100 · Crítico`,
-      color: 'border-rose-500/40 bg-rose-950/40 text-rose-300',
+      color: 'border-red-600/40 bg-red-50 text-red-800 font-bold',
     };
   };
 
@@ -141,11 +141,11 @@ export const UnifiedAuditView: React.FC<UnifiedAuditViewProps> = ({
   return (
     <div className="w-full h-full overflow-y-auto scroll-accent p-4 sm:p-6 lg:p-8 space-y-6">
       {/* ── 1. TOP KPI DASHBOARD BAR ── */}
-      <div className="border border-border-subtle bg-surface/90 p-5 backdrop-blur-sm shadow-[0_4px_20px_rgba(0,0,0,0.3)]">
+      <div className="border border-border-subtle bg-surface/90 p-5 backdrop-blur-sm shadow-sm">
         <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-5 pb-5 border-b border-border-subtle">
           <div>
             <div className="flex items-center gap-2.5">
-              <span className="font-mono text-xs px-2.5 py-0.5 border border-brand/40 bg-brand-soft text-brand font-semibold">
+              <span className="font-mono text-xs px-2.5 py-0.5 border border-[#003893]/30 bg-[#003893]/10 text-[#003893] font-semibold">
                 AUDITORÍA INTEGRAL
               </span>
               <span className={`font-mono text-xs px-2.5 py-0.5 border font-semibold ${scoreBadge.color}`}>
@@ -166,9 +166,9 @@ export const UnifiedAuditView: React.FC<UnifiedAuditViewProps> = ({
               <button
                 type="button"
                 onClick={onOpenDependencies}
-                className="inline-flex items-center gap-2 px-3.5 py-2 border border-border-subtle bg-surface text-text hover:border-brand/50 hover:bg-surface-2 font-mono text-xs font-semibold transition-all"
+                className="inline-flex items-center gap-2 px-3.5 py-2 border border-border-subtle bg-surface text-text hover:border-[#003893]/50 hover:bg-surface-2 font-mono text-xs font-semibold transition-all"
               >
-                <Package className="size-4 text-brand" />
+                <Package className="size-4 text-[#003893]" />
                 <span>Auditoría de Dependencias</span>
               </button>
             )}
@@ -178,7 +178,7 @@ export const UnifiedAuditView: React.FC<UnifiedAuditViewProps> = ({
                 type="button"
                 onClick={onDownloadPdf}
                 disabled={isDownloadingPdf}
-                className="inline-flex items-center gap-2 px-4 py-2 border border-brand bg-brand text-brand-ink font-mono text-xs font-semibold shadow-[0_0_12px_rgba(139,92,246,0.3)] hover:opacity-95 transition-all disabled:opacity-50"
+                className="inline-flex items-center gap-2 px-4 py-2 border border-[#003893] bg-[#003893] text-white font-mono text-xs font-semibold shadow-sm hover:bg-[#002d75] transition-all disabled:opacity-50"
               >
                 <Download className="size-4" />
                 <span>{isDownloadingPdf ? 'Generando PDF...' : 'Exportar Informe PDF'}</span>
@@ -195,30 +195,30 @@ export const UnifiedAuditView: React.FC<UnifiedAuditViewProps> = ({
             <span className="font-mono text-[10px] text-text-muted">Reglas AST evaluadas</span>
           </div>
 
-          <div className="p-3.5 border border-rose-500/20 bg-rose-950/10">
-            <span className="font-mono text-[11px] text-rose-300 block">CRÍTICOS</span>
-            <span className="font-mono text-2xl font-bold text-rose-300 mt-0.5 block">{criticalCount}</span>
-            <span className="font-mono text-[10px] text-rose-400/80">Refactor urgente requerido</span>
+          <div className="p-3.5 border border-red-200 bg-red-50/70">
+            <span className="font-mono text-[11px] text-red-700 font-semibold block">CRÍTICOS</span>
+            <span className="font-mono text-2xl font-bold text-red-700 mt-0.5 block">{criticalCount}</span>
+            <span className="font-mono text-[10px] text-red-600/80">Refactor urgente requerido</span>
           </div>
 
-          <div className="p-3.5 border border-amber-500/20 bg-amber-950/10">
-            <span className="font-mono text-[11px] text-amber-300 block">ALTOS / ADVERTENCIAS</span>
-            <span className="font-mono text-2xl font-bold text-amber-300 mt-0.5 block">
+          <div className="p-3.5 border border-amber-200 bg-amber-50/70">
+            <span className="font-mono text-[11px] text-amber-800 font-semibold block">ALTOS / ADVERTENCIAS</span>
+            <span className="font-mono text-2xl font-bold text-amber-800 mt-0.5 block">
               {highCount + warnCount}
             </span>
-            <span className="font-mono text-[10px] text-amber-400/80">
+            <span className="font-mono text-[10px] text-amber-700/80">
               {highCount} altos · {warnCount} advertencias
             </span>
           </div>
 
-          <div className={`p-3.5 border ${hasCycles ? 'border-rose-500/30 bg-rose-950/20' : 'border-emerald-500/30 bg-emerald-950/20'}`}>
-            <span className={`font-mono text-[11px] block ${hasCycles ? 'text-rose-300' : 'text-emerald-300'}`}>
+          <div className={`p-3.5 border ${hasCycles ? 'border-red-200 bg-red-50/70' : 'border-emerald-200 bg-emerald-50/70'}`}>
+            <span className={`font-mono text-[11px] font-semibold block ${hasCycles ? 'text-red-700' : 'text-emerald-800'}`}>
               ESTADO ARQUITECTURA
             </span>
-            <span className={`font-mono text-base font-bold mt-1.5 block truncate ${hasCycles ? 'text-rose-300' : 'text-emerald-300'}`}>
+            <span className={`font-mono text-base font-bold mt-1.5 block truncate ${hasCycles ? 'text-red-700' : 'text-emerald-800'}`}>
               {hasCycles ? `${cycles.length} Ciclos Tarjan` : 'DAG Acíclico'}
             </span>
-            <span className={`font-mono text-[10px] ${hasCycles ? 'text-rose-400/80' : 'text-emerald-400/80'}`}>
+            <span className={`font-mono text-[10px] ${hasCycles ? 'text-red-600/80' : 'text-emerald-700/80'}`}>
               {hasCycles ? 'Violación de Principio ADP' : 'Cumple principio ADP'}
             </span>
           </div>
@@ -233,8 +233,8 @@ export const UnifiedAuditView: React.FC<UnifiedAuditViewProps> = ({
             onClick={() => setActiveSubTab('all')}
             className={`font-mono text-xs px-3.5 py-2 border transition-all ${
               activeSubTab === 'all'
-                ? 'border-brand bg-brand text-brand-ink font-semibold shadow-[0_0_12px_rgba(139,92,246,0.3)]'
-                : 'border-border-subtle bg-surface text-text-muted hover:text-text hover:border-brand/40'
+                ? 'border-[#003893] bg-[#003893] text-white font-semibold shadow-sm'
+                : 'border-border-subtle bg-surface text-text-muted hover:text-text hover:border-[#003893]/40'
             }`}
           >
             Todos los Hallazgos ({findings.length})
@@ -245,14 +245,14 @@ export const UnifiedAuditView: React.FC<UnifiedAuditViewProps> = ({
             onClick={() => setActiveSubTab('architecture')}
             className={`font-mono text-xs px-3.5 py-2 border transition-all flex items-center gap-1.5 ${
               activeSubTab === 'architecture'
-                ? 'border-brand bg-brand text-brand-ink font-semibold shadow-[0_0_12px_rgba(139,92,246,0.3)]'
-                : 'border-border-subtle bg-surface text-text-muted hover:text-text hover:border-brand/40'
+                ? 'border-[#003893] bg-[#003893] text-white font-semibold shadow-sm'
+                : 'border-border-subtle bg-surface text-text-muted hover:text-text hover:border-[#003893]/40'
             }`}
           >
             <Layers className="size-3.5" />
             <span>Arquitectura & Ciclos (ADP)</span>
             {hasCycles && (
-              <span className="size-2 rounded-full bg-rose-400 animate-pulse ml-0.5" />
+              <span className="size-2 rounded-full bg-red-500 animate-pulse ml-0.5" />
             )}
           </button>
 
@@ -261,8 +261,8 @@ export const UnifiedAuditView: React.FC<UnifiedAuditViewProps> = ({
             onClick={() => setActiveSubTab('solid')}
             className={`font-mono text-xs px-3.5 py-2 border transition-all ${
               activeSubTab === 'solid'
-                ? 'border-brand bg-brand text-brand-ink font-semibold shadow-[0_0_12px_rgba(139,92,246,0.3)]'
-                : 'border-border-subtle bg-surface text-text-muted hover:text-text hover:border-brand/40'
+                ? 'border-[#003893] bg-[#003893] text-white font-semibold shadow-sm'
+                : 'border-border-subtle bg-surface text-text-muted hover:text-text hover:border-[#003893]/40'
             }`}
           >
             Principios SOLID
@@ -273,8 +273,8 @@ export const UnifiedAuditView: React.FC<UnifiedAuditViewProps> = ({
             onClick={() => setActiveSubTab('smells')}
             className={`font-mono text-xs px-3.5 py-2 border transition-all ${
               activeSubTab === 'smells'
-                ? 'border-brand bg-brand text-brand-ink font-semibold shadow-[0_0_12px_rgba(139,92,246,0.3)]'
-                : 'border-border-subtle bg-surface text-text-muted hover:text-text hover:border-brand/40'
+                ? 'border-[#003893] bg-[#003893] text-white font-semibold shadow-sm'
+                : 'border-border-subtle bg-surface text-text-muted hover:text-text hover:border-[#003893]/40'
             }`}
           >
             Complejidad & Smells
@@ -289,7 +289,7 @@ export const UnifiedAuditView: React.FC<UnifiedAuditViewProps> = ({
               onClick={() => setSelectedSeverity('ALL')}
               className={`font-mono text-xs px-2.5 py-1 border transition-all ${
                 selectedSeverity === 'ALL'
-                  ? 'border-brand/60 bg-brand-soft text-brand-ink font-semibold'
+                  ? 'border-[#003893] bg-[#003893] text-white font-semibold'
                   : 'border-border-subtle bg-surface text-text-muted hover:text-text'
               }`}
             >
@@ -300,8 +300,8 @@ export const UnifiedAuditView: React.FC<UnifiedAuditViewProps> = ({
               onClick={() => setSelectedSeverity('CRITICAL')}
               className={`font-mono text-xs px-2.5 py-1 border transition-all ${
                 selectedSeverity === 'CRITICAL'
-                  ? 'border-rose-500 bg-rose-950 text-rose-300 font-semibold'
-                  : 'border-border-subtle bg-surface text-text-muted hover:text-rose-300'
+                  ? 'border-red-600 bg-red-600 text-white font-semibold'
+                  : 'border-border-subtle bg-surface text-text-muted hover:text-red-700'
               }`}
             >
               Crítico ({criticalCount})
@@ -311,8 +311,8 @@ export const UnifiedAuditView: React.FC<UnifiedAuditViewProps> = ({
               onClick={() => setSelectedSeverity('HIGH')}
               className={`font-mono text-xs px-2.5 py-1 border transition-all ${
                 selectedSeverity === 'HIGH'
-                  ? 'border-amber-500 bg-amber-950 text-amber-300 font-semibold'
-                  : 'border-border-subtle bg-surface text-text-muted hover:text-amber-300'
+                  ? 'border-amber-600 bg-amber-600 text-white font-semibold'
+                  : 'border-border-subtle bg-surface text-text-muted hover:text-amber-800'
               }`}
             >
               Alto ({highCount})
@@ -322,8 +322,8 @@ export const UnifiedAuditView: React.FC<UnifiedAuditViewProps> = ({
               onClick={() => setSelectedSeverity('WARNING')}
               className={`font-mono text-xs px-2.5 py-1 border transition-all ${
                 selectedSeverity === 'WARNING'
-                  ? 'border-yellow-500 bg-yellow-950 text-yellow-300 font-semibold'
-                  : 'border-border-subtle bg-surface text-text-muted hover:text-yellow-300'
+                  ? 'border-yellow-600 bg-yellow-600 text-white font-semibold'
+                  : 'border-border-subtle bg-surface text-text-muted hover:text-yellow-800'
               }`}
             >
               Advertencias ({warnCount})
@@ -338,7 +338,7 @@ export const UnifiedAuditView: React.FC<UnifiedAuditViewProps> = ({
           <div className="border border-border-subtle bg-surface/90 p-6">
             <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b border-border-subtle">
               <div className="flex items-center gap-3">
-                <div className="p-2 border border-brand/30 bg-brand-soft text-brand">
+                <div className="p-2 border border-[#003893]/30 bg-[#003893]/10 text-[#003893]">
                   <Layers className="size-5" />
                 </div>
                 <div>
@@ -354,8 +354,8 @@ export const UnifiedAuditView: React.FC<UnifiedAuditViewProps> = ({
               <span
                 className={`font-mono text-xs px-3 py-1 border uppercase tracking-wider font-semibold flex-shrink-0 ${
                   hasCycles
-                    ? 'border-rose-500/40 bg-rose-950/40 text-rose-300'
-                    : 'border-emerald-500/40 bg-emerald-950/40 text-emerald-300'
+                    ? 'border-red-300 bg-red-50 text-red-700 font-bold'
+                    : 'border-emerald-300 bg-emerald-50 text-emerald-800 font-bold'
                 }`}
               >
                 {hasCycles ? 'Dependencias Circulares Detectadas' : 'Grafo Acíclico (DAG)'}
@@ -364,14 +364,14 @@ export const UnifiedAuditView: React.FC<UnifiedAuditViewProps> = ({
 
             {/* Circular Dependency Warning Alert */}
             {hasCycles ? (
-              <div className="border border-rose-500/30 bg-rose-950/20 p-5 mt-4 space-y-4">
-                <div className="flex items-center gap-2 text-rose-300">
-                  <AlertOctagon className="size-5 flex-shrink-0 text-rose-400" />
-                  <h3 className="font-sans font-bold text-sm text-rose-200">
+              <div className="border border-red-200 bg-red-50/80 p-5 mt-4 space-y-4">
+                <div className="flex items-center gap-2 text-red-700">
+                  <AlertOctagon className="size-5 flex-shrink-0 text-red-600" />
+                  <h3 className="font-sans font-bold text-sm text-red-800">
                     Alerta de Violación ADP: {cycles.length} Ciclo(s) de Importación Detectados por Tarjan
                   </h3>
                 </div>
-                <p className="font-mono text-xs text-text-secondary leading-relaxed">
+                <p className="font-mono text-xs text-text leading-relaxed">
                   Las dependencias circulares acoplan fuertemente los módulos, impiden pruebas unitarias aisladas y complican el despliegue independiente. Aplica el principio de inversión de dependencias (DIP) o introduce un mediador.
                 </p>
 
@@ -379,16 +379,16 @@ export const UnifiedAuditView: React.FC<UnifiedAuditViewProps> = ({
                   {cycles.map((cycle, idx) => (
                     <div
                       key={idx}
-                      className="border border-rose-500/40 bg-rose-950/30 p-3.5 font-mono text-xs flex flex-wrap items-center gap-2"
+                      className="border border-red-200 bg-red-100/60 p-3.5 font-mono text-xs flex flex-wrap items-center gap-2"
                     >
-                      <span className="text-rose-400 font-bold">Ciclo #{idx + 1}:</span>
+                      <span className="text-red-800 font-bold">Ciclo #{idx + 1}:</span>
                       {cycle.map((modulePath, mIdx) => (
                         <React.Fragment key={mIdx}>
-                          <span className="px-2 py-0.5 bg-rose-900/50 border border-rose-500/30 text-rose-200 font-semibold">
+                          <span className="px-2 py-0.5 bg-white border border-red-300 text-red-900 font-semibold shadow-xs">
                             {modulePath}
                           </span>
                           {mIdx < cycle.length - 1 && (
-                            <ArrowRight className="size-3 text-rose-400" />
+                            <ArrowRight className="size-3 text-red-600" />
                           )}
                         </React.Fragment>
                       ))}
@@ -397,13 +397,13 @@ export const UnifiedAuditView: React.FC<UnifiedAuditViewProps> = ({
                 </div>
               </div>
             ) : (
-              <div className="border border-emerald-500/30 bg-emerald-950/20 p-5 mt-4 flex items-center gap-3">
-                <CheckCircle2 className="size-6 text-emerald-400 flex-shrink-0" />
+              <div className="border border-emerald-200 bg-emerald-50/70 p-5 mt-4 flex items-center gap-3">
+                <CheckCircle2 className="size-6 text-emerald-600 flex-shrink-0" />
                 <div>
-                  <h3 className="font-sans font-bold text-sm text-emerald-200">
+                  <h3 className="font-sans font-bold text-sm text-emerald-900">
                     Grafo de Dependencias Limpio y Acíclico
                   </h3>
-                  <p className="font-mono text-xs text-emerald-300/80 mt-0.5">
+                  <p className="font-mono text-xs text-emerald-800/90 mt-0.5">
                     No se detectaron ciclos de importación ni violaciones al Principio de Dependencias Acíclicas (ADP). La estructura respeta la dirección de control sin acoplamientos recursivos.
                   </p>
                 </div>
@@ -512,12 +512,12 @@ export const UnifiedAuditView: React.FC<UnifiedAuditViewProps> = ({
 
                         {isExpanded && (
                           <div className="mt-3 pt-3 border-t border-border-subtle font-mono text-xs">
-                            <div className="bg-emerald-950/20 p-3 border-l-2 border-emerald-500 text-text-secondary leading-relaxed">
-                              <div className="flex items-center gap-1.5 text-emerald-400 font-semibold mb-1">
-                                <Wrench className="size-3.5" />
+                            <div className="bg-emerald-50/80 p-3.5 border-l-2 border-emerald-600 text-text leading-relaxed">
+                              <div className="flex items-center gap-1.5 text-emerald-800 font-semibold mb-1">
+                                <Wrench className="size-3.5 text-emerald-700" />
                                 <span>Sugerencia de Refactorización:</span>
                               </div>
-                              <p className="font-sans text-xs text-text-secondary whitespace-pre-wrap mt-1">
+                              <p className="font-sans text-xs text-text whitespace-pre-wrap mt-1">
                                 {finding.sugerencia}
                               </p>
                             </div>
