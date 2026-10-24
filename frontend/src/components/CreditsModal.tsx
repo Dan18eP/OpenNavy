@@ -68,7 +68,7 @@ export const CreditsModal: React.FC<CreditsModalProps> = ({ isOpen, onClose }) =
               <span className="font-mono text-xs text-text-muted">3 Oficiales</span>
             </div>
             <h2 className="font-sans text-xl font-bold tracking-tight text-text mt-1.5">
-              Créditos & Desarrolladores
+              Tripulación & Desarrolladores
             </h2>
             <p className="font-mono text-xs text-text-muted mt-0.5">
               Equipo de ingeniería responsable de la arquitectura, inferencia local con Gemma 4 y cabina náutica de OpenNavy

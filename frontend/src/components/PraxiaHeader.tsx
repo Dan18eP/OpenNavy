@@ -72,7 +72,7 @@ export const PraxiaHeader: React.FC<PraxiaHeaderProps> = ({
   // Only two navigation tabs without badges
   const navLinks: { id: TabType; label: string }[] = [
     { id: 'overview', label: 'Inicio' },
-    { id: 'workspace', label: 'Explorador y copiloto' },
+    { id: 'workspace', label: 'Trazador & Explorador' },
   ]
 
   return (

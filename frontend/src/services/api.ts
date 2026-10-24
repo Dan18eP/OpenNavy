@@ -125,6 +125,31 @@ export interface ChatResponse {
   timestamp?: string;
 }
 
+export interface WaypointItem {
+  file: string;
+  lines: [number, number] | number[];
+  reason: string;
+}
+
+export interface CoursePlotResult {
+  mission: string;
+  thought_process: string;
+  waypoints: WaypointItem[];
+  reef_warnings: string[];
+  action_steps: string[];
+  pr_template: string;
+  drift_risk?: {
+    total_impacted_modules: number;
+    direct_impact_count: number;
+    indirect_impact_count: number;
+    risk_level: 'LOW' | 'MEDIUM' | 'HIGH' | 'CRITICAL';
+    layer_violations: any[];
+    preliminary_adr: any;
+    blast_radius: any[];
+  };
+  blast_radius?: any[];
+}
+
 export interface ChatSessionItem {
   id: string;
   repo_id?: string;
@@ -362,24 +387,7 @@ export const api = {
     mission: string;
     image_base64?: string;
     officer_name?: string;
-  }): Promise<{
-    mission: string;
-    thought_process: string;
-    waypoints: Array<{ file: string; lines: [number, number]; reason: string }>;
-    reef_warnings: string[];
-    action_steps: string[];
-    pr_template: string;
-    drift_risk?: {
-      total_impacted_modules: number;
-      direct_impact_count: number;
-      indirect_impact_count: number;
-      risk_level: 'LOW' | 'MEDIUM' | 'HIGH' | 'CRITICAL';
-      layer_violations: any[];
-      preliminary_adr: any;
-      blast_radius: any[];
-    };
-    blast_radius?: any[];
-  }> {
+  }): Promise<CoursePlotResult> {
     const res = await fetch(`${API_BASE}/course/plot`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
