@@ -56,7 +56,7 @@ def _build_architecture_summary(repo_name: str, now_str: str, eval_report: Dict[
 
 ---
 
-## 📊 Desglose de Criterios
+##  Desglose de Criterios
 | Criterio | Puntaje |
 |---|---|
 | Índice de Mantenibilidad | {scores.get('maintainability_index', 0)} / 100 |
@@ -68,7 +68,7 @@ def _build_architecture_summary(repo_name: str, now_str: str, eval_report: Dict[
 
 ---
 
-## 🔍 Hallazgos Principales
+##  Hallazgos Principales
 - **Total de Hallazgos:** {eval_report.get('total_findings', 0)}
 - **Hallazgos Críticos:** {eval_report.get('critical_findings', 0)}
 - **Hallazgos de Severidad Alta:** {eval_report.get('high_findings', 0)}

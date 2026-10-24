@@ -264,7 +264,7 @@ export const DependenciesModal: React.FC<DependenciesModalProps> = ({
                     </code>
                   </div>
 
-                  <span className="text-text-muted">➔</span>
+                  <span className="text-text-muted"></span>
 
                   <div className="flex items-center gap-1.5">
                     <span className="text-text-muted">Recomendada:</span>

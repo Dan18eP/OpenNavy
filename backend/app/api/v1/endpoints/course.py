@@ -66,7 +66,7 @@ async def plot_course(
         '  ],\n'
         '  "reef_warnings": ["Advertencias de acoplamiento o dependencias circulares..."],\n'
         '  "action_steps": ["Paso 1...", "Paso 2...", "Paso 3..."],\n'
-        '  "pr_template": "### 📌 Cambios realizados\\n..."\n'
+        '  "pr_template": "###  Cambios realizados\\n..."\n'
         "}"
     )
 
@@ -107,7 +107,7 @@ async def plot_course(
             ],
             reef_warnings=parsed.get("reef_warnings", ["No se detectaron arrecifes críticos."]),
             action_steps=parsed.get("action_steps", ["1. Inspeccionar módulos", "2. Aplicar cambio", "3. Ejecutar tests"]),
-            pr_template=parsed.get("pr_template", "### 📌 Pull Request generado por OpenNavy"),
+            pr_template=parsed.get("pr_template", "###  Pull Request generado por OpenNavy"),
         )
 
         # Difundir el nuevo Blueprint por el Sonar de Flota
@@ -136,7 +136,7 @@ async def plot_course(
                 "2. Conectar middleware para rechazar tokens expirados",
                 "3. Crear prueba unitaria en `tests/test_auth.py`",
             ],
-            pr_template="### 📌 Pull Request (OpenNavy Course Plotter)\n- Implementa expiración estricta de tokens\n- Valida compatibilidad hacia atrás\n",
+            pr_template="###  Pull Request (OpenNavy Course Plotter)\n- Implementa expiración estricta de tokens\n- Valida compatibilidad hacia atrás\n",
         )
 
         await sonar_hub.broadcast_course_plotted(

@@ -22,14 +22,14 @@ class PRCommentFormatter:
         metrics: Dict[str, float],
         has_cycles: bool,
     ) -> str:
-        status_emoji = "🟢" if global_score >= 80 else "🟡" if global_score >= 60 else "🔴"
+        status_emoji = "" if global_score >= 80 else "" if global_score >= 60 else ""
         status_text = "SALUDABLE" if global_score >= 80 else "REQUIERE ATENCIÓN" if global_score >= 60 else "DEUDA TÉCNICA CRÍTICA"
 
         lines = [
             f"## {status_emoji} Praxia — Reporte de Calidad de Código",
             f"**Score Global de Salud:** `{global_score:.1f} / 100` — **{status_text}**",
             "",
-            "### 📊 Desglose de Criterios de Calidad",
+            "###  Desglose de Criterios de Calidad",
             "| Criterio | Puntaje | Umbral |",
             "|---|---|---|",
             f"| Índice de Mantenibilidad | `{metrics.get('maintainability_index', 0):.1f}/100` | ≥ 65 |",
@@ -43,13 +43,13 @@ class PRCommentFormatter:
 
         if has_cycles:
             lines.extend([
-                "> ⚠️ **ALERTA ARQUITECTÓNICA:** Se detectaron dependencias circulares en este cambio. "
+                "> ️ **ALERTA ARQUITECTÓNICA:** Se detectaron dependencias circulares en este cambio. "
                 "Revisa la pestaña de Arquitectura en el panel de Praxia.",
                 ""
             ])
 
         lines.extend([
-            f"🔍 **Hallazgos detectados en este PR:** {findings_count}",
+            f" **Hallazgos detectados en este PR:** {findings_count}",
             "",
             "---",
             "*Reporte autogenerado por Praxia AI con rúbrica RAG y LangGraph.*",

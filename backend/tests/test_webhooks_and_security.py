@@ -65,7 +65,7 @@ def test_pr_comment_formatter_healthy_repo():
     assert "88.5 / 100" in comment
     assert "Índice de Mantenibilidad" in comment
     assert "SALUDABLE" in comment
-    assert "🟢" in comment
+    assert "" in comment
 
 
 def test_pr_comment_formatter_critical_repo_with_cycles():
@@ -77,7 +77,7 @@ def test_pr_comment_formatter_critical_repo_with_cycles():
         has_cycles=True,
     )
     assert "DEUDA TÉCNICA CRÍTICA" in comment
-    assert "🔴" in comment
+    assert "" in comment
     assert "ALERTA ARQUITECTÓNICA" in comment
 
 
