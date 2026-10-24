@@ -8,7 +8,7 @@ import { HeroShader } from '@/components/HeroShader'
 import { DottedSurface } from '@/components/ui/dotted-surface'
 import { SectionAnchor } from '@/components/SectionHeading'
 import { Button } from '@/components/ui/button'
-import { Compass, Ship, ShieldCheck, Cpu } from 'lucide-react'
+import { Ship, ShieldCheck, Cpu } from 'lucide-react'
 
 interface OmarchyHomePageProps {
   onStartAudit?: () => void
@@ -22,10 +22,6 @@ interface OmarchyHomePageProps {
 export function OmarchyHomePage({
   onStartAudit,
   onNavigate,
-  onOpenDependencies,
-  findingsCount = 0,
-  score,
-  lastAnalyzed,
 }: OmarchyHomePageProps) {
   const [painted, setPainted] = useState(false)
   const [intro, setIntro] = useState(false)
@@ -58,31 +54,18 @@ export function OmarchyHomePage({
           (intro ? ' hero-intro' : '')
         }
       >
-        {/* Three.js 3D Dotted Surface Background with Colombian Flag Gradient */}
+        {/* Three.js 3D Dotted Surface Background with MLH Gradient */}
         <DottedSurface className="absolute inset-0 z-0 opacity-75" />
 
         {/* Hero Pixel Field with Wordmark Laser-Etch & Interactive Cursor Matrix */}
         <HeroShader onPainted={() => setPainted(true)} transparent={true} />
 
         <div className="pointer-events-none relative flex flex-1 flex-col items-center justify-center px-6 z-10">
-          {/* Badge: Fleet Sovereign OS */}
-          <div
-            data-hero-stagger
-            className="pointer-events-auto mb-4 inline-flex items-center gap-2 px-3 py-1 border border-[#003893]/30 bg-white/90 shadow-xs backdrop-blur-xs font-mono text-xs text-[#003893]"
-          >
-            <Compass className="size-3.5 text-[#003893]" />
-            <span className="font-bold">OPENNAVY FLEET OS</span>
-            <span className="text-text-muted">·</span>
-            <span className="text-[#CE1126] font-semibold">SOVEREIGN AI</span>
-            <span className="text-text-muted">·</span>
-            <span className="text-emerald-700 font-semibold">GEMMA 4</span>
-          </div>
-
           {/* Wordmark Slot */}
           <PraxiaWordmark
             data-hero-wordmark
             className={
-              'w-[88%] max-w-4xl text-[#003893] drop-shadow-[0_4px_20px_rgba(0,56,147,0.15)]' +
+              'w-[88%] max-w-4xl text-[#192531] drop-shadow-[0_4px_24px_rgba(25,37,49,0.12)]' +
               (painted ? ' invisible' : '')
             }
             background={WORDMARK_BANDS}
@@ -119,7 +102,7 @@ export function OmarchyHomePage({
             >
               <Button
                 size="lg"
-                className="h-10 px-5 bg-[#003893] hover:bg-[#002868] text-white border border-[#003893] font-mono text-xs font-semibold shadow-xs cursor-pointer"
+                className="h-10 px-6 bg-[#E73427] hover:bg-[#D6281B] text-white font-mono text-xs font-semibold shadow-xs cursor-pointer border border-[#E73427]"
                 onClick={onStartAudit}
               >
                 <DownloadIcon data-icon="inline-start" className="mr-1.5 size-4" />
@@ -128,31 +111,31 @@ export function OmarchyHomePage({
               <Button
                 size="lg"
                 variant="outline"
-                className="h-10 px-5 border-[#003893]/40 bg-white hover:bg-surface-2 text-[#003893] font-mono text-xs font-semibold shadow-xs cursor-pointer"
+                className="h-10 px-6 border-[#192531]/30 bg-white hover:bg-surface-2 text-[#192531] font-mono text-xs font-semibold shadow-xs cursor-pointer hover:border-[#192531]"
                 onClick={() => onNavigate?.('workspace')}
               >
-                <PlayIcon data-icon="inline-start" className="mr-1.5 size-4 text-[#FCD116] fill-[#FCD116]" />
+                <PlayIcon data-icon="inline-start" className="mr-1.5 size-4 text-[#FFC72C] fill-[#FFC72C]" />
                 Explorador y copiloto
               </Button>
             </div>
 
-            {/* Features bar */}
+            {/* Features bar without badges */}
             <div
               data-hero-stagger
               className="mt-8 flex flex-wrap items-center justify-center gap-4 text-xs font-mono text-text-muted"
             >
               <div className="flex items-center gap-1.5">
-                <Ship className="size-3.5 text-[#003893]" />
+                <Ship className="size-3.5 text-[#192531]" />
                 <span>Carta Náutica (AST + Tarjan)</span>
               </div>
               <span className="text-border-strong">•</span>
               <div className="flex items-center gap-1.5">
-                <Cpu className="size-3.5 text-[#F59E0B]" />
+                <Cpu className="size-3.5 text-[#FFC72C]" />
                 <span>Google Gemma 4 Local</span>
               </div>
               <span className="text-border-strong">•</span>
               <div className="flex items-center gap-1.5">
-                <ShieldCheck className="size-3.5 text-[#CE1126]" />
+                <ShieldCheck className="size-3.5 text-[#E73427]" />
                 <span>100% Soberano & Sin Nube</span>
               </div>
             </div>

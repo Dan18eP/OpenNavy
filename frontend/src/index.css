@@ -47,10 +47,11 @@
   --color-border: var(--t-border-subtle);
   --color-input: var(--t-border-strong);
   --color-ring: var(--t-brand);
-  --color-flag-yellow: #fcd116;
-  --color-flag-blue: #003893;
-  --color-flag-red: #ce1126;
-  --color-flag-white: #ffffff;
+  --color-mlh-red: #e73427;
+  --color-mlh-navy: #192531;
+  --color-mlh-blue: #0084c7;
+  --color-mlh-gold: #ffc72c;
+  --color-mlh-white: #ffffff;
 }
 
 @theme {
@@ -75,35 +76,35 @@
 
 :root,
 [data-theme='opennavy'] {
-  --t-bg-deep: #f8fafc;
+  --t-bg-deep: #f5f6f8;
   --t-bg: #ffffff;
   --t-surface: #ffffff;
-  --t-surface-2: #f1f5f9;
-  --t-border-subtle: rgba(0, 56, 147, 0.14);
-  --t-border-strong: rgba(0, 56, 147, 0.32);
-  --t-text: #0f172a;
-  --t-text-secondary: #003893;
-  --t-text-muted: #475569;
-  --t-brand: #003893;
-  --t-brand-soft: rgba(0, 56, 147, 0.08);
+  --t-surface-2: #f5f6f8;
+  --t-border-subtle: rgba(25, 37, 49, 0.12);
+  --t-border-strong: rgba(25, 37, 49, 0.25);
+  --t-text: #192531;
+  --t-text-secondary: #0084c7;
+  --t-text-muted: #64748b;
+  --t-brand: #e73427;
+  --t-brand-soft: rgba(231, 52, 39, 0.08);
   --t-brand-ink: #ffffff;
-  --t-elevation: 0 1px 3px 0 rgba(0, 56, 147, 0.08), 0 0 0 1px rgba(0, 56, 147, 0.12);
-  --t-elevation-hover: 0 4px 6px -1px rgba(0, 56, 147, 0.12), 0 0 0 1px rgba(252, 209, 22, 0.8);
-  --t-img-outline: rgba(0, 56, 147, 0.15);
-  --t-scroll-thumb: rgba(0, 56, 147, 0.25);
-  --t-selection: rgba(252, 209, 22, 0.35);
+  --t-elevation: 0 1px 3px 0 rgba(25, 37, 49, 0.08), 0 0 0 1px rgba(25, 37, 49, 0.1);
+  --t-elevation-hover: 0 4px 6px -1px rgba(231, 52, 39, 0.12), 0 0 0 1px rgba(231, 52, 39, 0.6);
+  --t-img-outline: rgba(25, 37, 49, 0.12);
+  --t-scroll-thumb: rgba(25, 37, 49, 0.2);
+  --t-selection: rgba(255, 199, 44, 0.35);
   --t-field-bg: #ffffff;
-  --t-field-dim: #e2e8f0;
-  --t-field-mid: #003893;
-  --t-field-lit: #fcd116;
-  --t-field-hover: #ce1126;
-  --t-field-crest: #003893;
+  --t-field-dim: #e5e7eb;
+  --t-field-mid: #0084c7;
+  --t-field-lit: #ffc72c;
+  --t-field-hover: #e73427;
+  --t-field-crest: #192531;
   color-scheme: light;
-  --t-hdr-text: #0f172a;
-  --t-hdr-text-2: #003893;
-  --t-hdr-brand: #003893;
+  --t-hdr-text: #192531;
+  --t-hdr-text-2: #0084c7;
+  --t-hdr-brand: #e73427;
   --t-hdr-ink: #ffffff;
-  --t-hdr-surface-2: #f1f5f9;
+  --t-hdr-surface-2: #f5f6f8;
   --t-hdr-surface: #ffffff;
 }
 

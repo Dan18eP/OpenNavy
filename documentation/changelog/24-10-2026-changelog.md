@@ -8,3 +8,4 @@
 - Saturday-24/10/2026-12:18 - Daniel Echeverría : Integración del logotipo SVG de OpenNavy (assets/logo_opennavy.svg) en el encabezado del README.md en la rama develop.
 - [Saturday]-[24/10/2026]-[12:13]-[Dylan Gamero] : Corrección de retrocompatibilidad en config.py y health.py para alineación de OPENNAVY_TIER y arranque operativo de backend y frontend.
 - [Saturday]-[24/10/2026]-[12:31]-[Dylan Gamero] : Rebranding integral de frontend a OpenNavy, paleta blanca con tonos de la bandera de Colombia (amarillo, azul y rojo), simplificación de navegación a Inicio y Explorador y copiloto, preservación de estética pixelada y actualización de tripulación exclusiva a Daniel Echeverría, Dylan Gamero y Brandon Carranza.
+- [Saturday]-[24/10/2026]-[12:38]-[Dylan Gamero] : Integración del logotipo naval en el navbar, calibración estética a la paleta oficial de MLH (blanco, rojo, azul marino y dorado) y eliminación total de badges numéricas y decorativas.

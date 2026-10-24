@@ -34,11 +34,11 @@ function readPalette() {
     style.getPropertyValue(name).trim() || fallback
   return {
     bg: token('--t-field-bg', '#ffffff'),
-    dim: token('--t-field-dim', '#e2e8f0'),
-    mid: token('--t-field-mid', '#003893'),
-    lit: token('--t-field-lit', '#fcd116'),
-    hover: token('--t-field-hover', '#ce1126'),
-    crest: token('--t-field-crest', '#003893'),
+    dim: token('--t-field-dim', '#e5e7eb'),
+    mid: token('--t-field-mid', '#0084c7'),
+    lit: token('--t-field-lit', '#ffc72c'),
+    hover: token('--t-field-hover', '#e73427'),
+    crest: token('--t-field-crest', '#192531'),
   }
 }
 

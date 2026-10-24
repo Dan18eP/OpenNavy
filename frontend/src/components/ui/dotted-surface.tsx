@@ -83,15 +83,15 @@ export function DottedSurface({
         const z = iy * SEPARATION - (AMOUNTY * SEPARATION) / 2;
 
         positions.push(x, y, z);
-        if (iy < AMOUNTY * 0.5) {
-          // Amarillo Colombia (#FCD116)
-          colors.push(0.99, 0.82, 0.09);
+        if (iy < AMOUNTY * 0.45) {
+          // MLH Gold Yellow (#FFC72C)
+          colors.push(1.0, 0.78, 0.17);
         } else if (iy < AMOUNTY * 0.75) {
-          // Azul Colombia (#003893)
-          colors.push(0.0, 0.22, 0.58);
+          // MLH Electric Blue (#0084C7)
+          colors.push(0.0, 0.52, 0.78);
         } else {
-          // Rojo Colombia (#CE1126)
-          colors.push(0.81, 0.07, 0.15);
+          // MLH Red (#E73427)
+          colors.push(0.91, 0.20, 0.15);
         }
       }
     }

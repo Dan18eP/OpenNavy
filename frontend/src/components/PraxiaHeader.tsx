@@ -7,7 +7,7 @@ import {
 import { Button } from '@/components/ui/button'
 import { RepoItem } from '@/services/api'
 import { cn } from '@/lib/utils'
-import { Users, Globe, Linkedin, Compass, Anchor } from 'lucide-react'
+import { Users, Globe, Linkedin, Anchor } from 'lucide-react'
 import { OPENNAVY_TEAM, CreditsModal } from '@/components/CreditsModal'
 
 export type TabType =
@@ -65,7 +65,7 @@ export const PraxiaHeader: React.FC<PraxiaHeaderProps> = ({
     }
   }, [teamDropdownOpen])
 
-  // Only two navigation tabs as explicitly requested: "Inicio" and "Explorador y copiloto"
+  // Only two navigation tabs without badges
   const navLinks: { id: TabType; label: string }[] = [
     { id: 'overview', label: 'Inicio' },
     { id: 'workspace', label: 'Explorador y copiloto' },
@@ -73,11 +73,11 @@ export const PraxiaHeader: React.FC<PraxiaHeaderProps> = ({
 
   return (
     <header className="pixel-container sticky top-0 z-[100]">
-      {/* Colombian Flag Tricolor Accent Strip (Amarillo 50%, Azul 25%, Rojo 25%) */}
+      {/* MLH Accent Strip (Rojo MLH 50%, Azul Eléctrico 25%, Dorado MLH 25%) */}
       <div className="h-[3px] w-full flex bg-transparent">
-        <div className="w-1/2 bg-[#FCD116]" title="Colombia - Amarillo" />
-        <div className="w-1/4 bg-[#003893]" title="Colombia - Azul" />
-        <div className="w-1/4 bg-[#CE1126]" title="Colombia - Rojo" />
+        <div className="w-1/2 bg-[#E73427]" title="MLH Red" />
+        <div className="w-1/4 bg-[#0084C7]" title="MLH Electric Blue" />
+        <div className="w-1/4 bg-[#FFC72C]" title="MLH Gold" />
       </div>
 
       <div
@@ -90,30 +90,33 @@ export const PraxiaHeader: React.FC<PraxiaHeaderProps> = ({
         }}
       >
         <div className="mx-auto flex h-14 max-w-7xl items-center gap-3 px-4 sm:px-6 lg:px-8">
-          {/* Logo Mark: Nautical Fleet Radar */}
+          {/* Logo en Navbar con Estética MLH / OpenNavy y Fondo Blanco */}
           <button
             onClick={() => {
               onSelectTab('overview')
               window.scrollTo({ top: 0, behavior: 'smooth' })
             }}
             aria-label="OpenNavy Home"
-            className="mark-draw-trigger relative flex items-center gap-2.5 focus-visible:outline-2 focus-visible:outline-brand cursor-pointer"
+            className="relative flex items-center gap-2.5 focus-visible:outline-2 focus-visible:outline-[#E73427] cursor-pointer group"
           >
-            <div className="size-8 rounded-none border border-[#003893] bg-[#003893]/10 text-[#003893] flex items-center justify-center relative overflow-hidden shadow-sm">
-              <Compass className="size-4.5 text-[#003893]" />
-              <div className="absolute -bottom-1 -right-1 size-2 bg-[#FCD116] border border-[#003893]" />
+            {/* Isotipo del Barco en Hexágono */}
+            <div className="h-9 w-9 bg-white border border-[#192531]/20 p-1 flex items-center justify-center shadow-xs group-hover:border-[#E73427] transition-colors">
+              <svg viewBox="0 0 100 100" className="size-full">
+                <path d="M 32 14 L 12 26 L 12 74 L 50 96 L 88 74 L 88 26 L 68 14" fill="none" stroke="#CBD5E1" strokeWidth="6" strokeLinecap="round" strokeLinejoin="round" />
+                <path d="M 28 83 L 50 96 L 72 83" fill="none" stroke="#192531" strokeWidth="7" strokeLinecap="round" strokeLinejoin="round" />
+                <path d="M 30 36 L 48 50 L 30 64" fill="none" stroke="#FFC72C" strokeWidth="9" strokeLinecap="round" strokeLinejoin="round" />
+                <path d="M 56 24 L 74 64 L 56 64 Z" fill="#0084C7" />
+                <line x1="34" y1="74" x2="74" y2="74" stroke="#E73427" strokeWidth="8" strokeLinecap="round" />
+              </svg>
             </div>
+
+            {/* Tipografía de Marca limpia sin badges */}
             <div className="flex flex-col text-left">
-              <div className="flex items-center gap-1.5">
-                <span className="font-mono text-sm font-bold tracking-tight text-[#0F172A]">
-                  OPEN<span className="text-[#003893]">NAVY</span>
-                </span>
-                <span className="text-[9px] font-mono font-bold px-1 py-0.2 bg-[#FCD116] text-[#0F172A] border border-[#003893]/30">
-                  CO
-                </span>
-              </div>
-              <span className="text-[10px] font-mono text-text-muted hidden sm:inline -mt-0.5">
-                Sovereign Fleet OS
+              <span className="font-mono text-sm font-extrabold tracking-tight text-[#192531]">
+                OPEN<span className="text-[#E73427]">NAVY</span>
+              </span>
+              <span className="text-[10px] font-mono text-[#64748B] -mt-0.5 font-medium">
+                The Sovereign Fleet Navigator
               </span>
             </div>
           </button>
@@ -138,13 +141,13 @@ export const PraxiaHeader: React.FC<PraxiaHeaderProps> = ({
                   className={cn(
                     'relative px-3.5 py-1.5 text-xs font-mono tracking-wide transition-all duration-150 focus-visible:outline-2 focus-visible:outline-ring cursor-pointer border',
                     isActive
-                      ? 'border-[#003893] bg-[#003893]/10 text-[#003893] font-bold shadow-xs'
+                      ? 'border-[#E73427] bg-[#E73427]/10 text-[#E73427] font-bold shadow-xs'
                       : 'border-transparent text-text-secondary hover:border-border-subtle hover:bg-surface-2 hover:text-text',
                   )}
                 >
                   {link.label}
                   {isActive && (
-                    <span className="absolute bottom-0 left-0 right-0 h-[2px] bg-[#003893]" />
+                    <span className="absolute bottom-0 left-0 right-0 h-[2px] bg-[#E73427]" />
                   )}
                 </button>
               )
@@ -177,8 +180,8 @@ export const PraxiaHeader: React.FC<PraxiaHeaderProps> = ({
                 aria-label="Tripulación de OpenNavy"
                 onClick={() => setTeamDropdownOpen(!teamDropdownOpen)}
                 className={cn(
-                  "hidden sm:inline-flex h-8 w-8 text-text-secondary hover:text-[#003893] transition-colors border border-transparent hover:border-border-subtle",
-                  teamDropdownOpen && "bg-surface-2 text-[#003893] border-border-strong"
+                  "hidden sm:inline-flex h-8 w-8 text-text-secondary hover:text-[#E73427] transition-colors border border-transparent hover:border-border-subtle",
+                  teamDropdownOpen && "bg-surface-2 text-[#E73427] border-border-strong"
                 )}
                 title="Tripulación de OpenNavy"
               >
@@ -192,7 +195,7 @@ export const PraxiaHeader: React.FC<PraxiaHeaderProps> = ({
                 >
                   <div className="flex items-center justify-between pb-2 border-b border-border-subtle mb-2.5">
                     <div className="flex items-center gap-1.5 text-text font-bold">
-                      <Anchor className="size-3.5 text-[#003893]" />
+                      <Anchor className="size-3.5 text-[#E73427]" />
                       <span>Tripulación OpenNavy (3)</span>
                     </div>
                     <span className="text-[10px] text-text-muted">Oficiales</span>
@@ -202,10 +205,10 @@ export const PraxiaHeader: React.FC<PraxiaHeaderProps> = ({
                     {OPENNAVY_TEAM.map((member, idx) => (
                       <div
                         key={idx}
-                        className="p-2 border border-border-subtle bg-surface-2/60 hover:border-[#003893]/40 transition-colors flex items-center justify-between gap-2"
+                        className="p-2 border border-border-subtle bg-surface-2/60 hover:border-[#E73427]/40 transition-colors flex items-center justify-between gap-2"
                       >
                         <div className="flex items-center gap-2 min-w-0">
-                          <span className="size-6 bg-[#003893]/10 border border-[#003893]/40 text-[#003893] text-[10px] font-bold flex items-center justify-center flex-shrink-0">
+                          <span className="size-6 bg-[#E73427]/10 border border-[#E73427]/40 text-[#E73427] text-[10px] font-bold flex items-center justify-center flex-shrink-0">
                             {member.initials}
                           </span>
                           <div className="truncate">
@@ -251,7 +254,7 @@ export const PraxiaHeader: React.FC<PraxiaHeaderProps> = ({
                       setTeamDropdownOpen(false)
                       setIsCreditsModalOpen(true)
                     }}
-                    className="w-full mt-2.5 py-1.5 border border-[#003893]/40 bg-[#003893]/10 hover:bg-[#003893] text-[#003893] hover:text-white text-center text-[11px] font-semibold transition-colors block cursor-pointer"
+                    className="w-full mt-2.5 py-1.5 border border-[#E73427]/40 bg-[#E73427]/10 hover:bg-[#E73427] text-[#E73427] hover:text-white text-center text-[11px] font-semibold transition-colors block cursor-pointer"
                   >
                     Ver Tripulación Completa
                   </button>
@@ -310,7 +313,7 @@ export const PraxiaHeader: React.FC<PraxiaHeaderProps> = ({
                     className={cn(
                       'flex items-center justify-between px-3 py-2 text-left font-mono text-xs border',
                       isActive
-                        ? 'bg-[#003893]/10 border-[#003893] text-[#003893] font-bold'
+                        ? 'bg-[#E73427]/10 border-[#E73427] text-[#E73427] font-bold'
                         : 'border-transparent text-text-secondary hover:bg-surface hover:text-text',
                     )}
                   >
@@ -326,7 +329,7 @@ export const PraxiaHeader: React.FC<PraxiaHeaderProps> = ({
                   setIsCreditsModalOpen(true)
                   setMobileMenuOpen(false)
                 }}
-                className="flex items-center justify-center gap-2 px-3 py-2 border border-border-subtle hover:border-[#003893]/40 bg-surface text-text-secondary hover:text-[#003893] font-mono text-xs transition-colors"
+                className="flex items-center justify-center gap-2 px-3 py-2 border border-border-subtle hover:border-[#E73427]/40 bg-surface text-text-secondary hover:text-[#E73427] font-mono text-xs transition-colors"
               >
                 <Users className="size-3.5" />
                 <span>Tripulación OpenNavy (3 Oficiales)</span>
