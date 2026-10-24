@@ -26,3 +26,7 @@ temp_repos/
 # OS
 Thumbs.db
 .DS_Store
+
+# Binaries & Executables
+bin/*.exe
+*.exe
