@@ -5,14 +5,14 @@
 **Categoría:** Arquitectura y Diseño de Software  
 **Autoridad de Referencia Canónica:** Robert C. Martin (Uncle Bob - *Clean Architecture*, Prentice Hall 2017)  
 **Documento Canónico Vinculado:** `knowledge-base/canonical/book___clean_architecture___robert_cecil_martin.md`  
-**Rule-ID:** PRAXIA-SOLID-01  
+**Rule-ID:** NAVY-SOLID-01  
 **Severidad:** high  
 **Versión:** 2.0 (Enriquecida con Casos Few-Shot de Auditoría)  
 
 ---
 
 ## 1. Visión General y Fundamento Canónico
-Los principios **SOLID**, formulados por Robert C. Martin, constituyen el pilar fundamental para el diseño de código orientado a objetos y modular. En Praxia, este criterio opera como **guía de remediación operativa de 2º nivel**, complementando la teoría formal del libro canónico *Clean Architecture* alojado en `knowledge-base/canonical/`.
+Los principios **SOLID**, formulados por Robert C. Martin, constituyen el pilar fundamental para el diseño de código orientado a objetos y modular. En OpenNavy, este criterio opera como **guía de remediación operativa de 2º nivel**, complementando la teoría formal del libro canónico *Clean Architecture* alojado en `knowledge-base/canonical/`.
 
 El motor evaluador identifica violaciones estructurales en clases y funciones, utilizando los siguientes casos de entrenamiento (*few-shots*) para guiar la refactorización.
 

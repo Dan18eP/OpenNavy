@@ -1,7 +1,7 @@
 """
 Integración con Issue Trackers y Métricas DORA.
 
-Este módulo conecta Praxia con sistemas externos (Jira, GitHub Issues, Linear)
+Este módulo conecta OpenNavy con sistemas externos (Jira, GitHub Issues, Linear)
 para calcular los últimos dos criterios de calidad:
 - Densidad de Defectos (defectos reportados por KLOC)
 - Change Failure Rate / Tasa de Fallos en Cambios (DORA)

@@ -3,8 +3,8 @@
 **Identificador:** `naming_conventions`  
 **Tipo:** `team_standard`  
 **Categoría:** Guías de Estilo y Nomenclatura  
-**Autoridad:** Praxia Engineering Standards Board  
-**Rule-ID:** PRAXIA-TEAM-STYLE-01  
+**Autoridad:** OpenNavy Engineering Standards Board  
+**Rule-ID:** NAVY-TEAM-STYLE-01  
 **Severidad:** medium  
 **Versión:** 2.0  
 
@@ -12,7 +12,7 @@
 
 ## 1. Convenciones por Lenguaje y Ámbito
 
-### 1.1 Python (PEP 8 Adaptado a Praxia)
+### 1.1 Python (PEP 8 Adaptado a OpenNavy)
 - **Módulos y Paquetes:** `snake_case` en minúsculas (ej. `order_service.py`, `auth_utils/`).
 - **Clases y Modelos:** `PascalCase` (ej. `UserRepository`, `AnalysisState`, `HybridVectorStore`).
 - **Funciones y Métodos:** `snake_case` descriptivo comenzando con verbo (ej. `calculate_total()`, `find_by_email()`).

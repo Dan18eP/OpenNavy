@@ -3,8 +3,8 @@
 **Identificador:** `module_doc_tmp4i6q5211`  
 **Tipo:** `module_doc`  
 **Categoría:** Documentación Viva de Repositorio  
-**Autoridad:** Praxia Architecture Synthesizer  
-**Rule-ID:** PRAXIA-LIVE-DOC-01  
+**Autoridad:** OpenNavy Architecture Synthesizer  
+**Rule-ID:** NAVY-LIVE-DOC-01  
 **Fecha:** 2026-10-20  
 **Score Global de Calidad:** 90.2 / 100  
 **Estado:** SALUDABLE  

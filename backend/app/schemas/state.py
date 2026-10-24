@@ -87,8 +87,11 @@ class AssessmentItem(BaseModel):
     roi_estimado: str
 
 
-# Contrato enriquecido para nodos atómicos de Praxia (HU-CORE-01)
-class PraxiaGraphState(TypedDict):
+# Contrato enriquecido para nodos atomicos de OpenNavy (HU-CORE-01)
+class OpenNavyGraphState(TypedDict):
+    pass
+PraxiaGraphState = OpenNavyGraphState
+class _OldPraxiaGraphState(TypedDict):
     run_id: str
     repo_id: str
     repo_url: str

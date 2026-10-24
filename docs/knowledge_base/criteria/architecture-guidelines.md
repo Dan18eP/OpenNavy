@@ -7,7 +7,7 @@
 **Documentos Canónicos Vinculados:**  
 - `knowledge-base/canonical/iso_iec_5055_2021.md`  
 - `knowledge-base/canonical/book___clean_architecture___robert_cecil_martin.md`  
-**Rule-ID:** PRAXIA-ARCH-01  
+**Rule-ID:** NAVY-ARCH-01  
 **Severidad:** critical  
 **Versión:** 2.0 (Enriquecida con Casos Few-Shot de Auditoría)  
 

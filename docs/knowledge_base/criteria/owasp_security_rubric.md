@@ -25,6 +25,6 @@
 
 ---
 
-## 3. Criterios de Aceptación de Seguridad en Praxia
+## 3. Criterios de Aceptación de Seguridad en OpenNavy
 - Ningún secreto ni credencial en texto plano puede persistirse ni enviarse a un LLM externo.
 - Toda firma de webhook debe verificarse con HMAC-SHA256 en tiempo constante antes del procesamiento.

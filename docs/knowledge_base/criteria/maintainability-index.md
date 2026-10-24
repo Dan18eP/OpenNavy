@@ -7,7 +7,7 @@
 - ISO/IEC 25010:2023 (*Systems and software Quality Requirements and Evaluation — Maintainability Model*)  
 - Software Engineering Institute (SEI CMU / Coleman et al.)  
 **Documento Canónico Vinculado:** `knowledge-base/canonical/iso_iec_25010_2023.md`  
-**Rule-ID:** PRAXIA-MI-01  
+**Rule-ID:** NAVY-MI-01  
 **Severidad:** high  
 **Versión:** 2.0 (Enriquecida con Casos Few-Shot de Auditoría)  
 
@@ -57,7 +57,7 @@ class InvoiceAssembler:
 
 ## 3. Umbrales de Calificación
 
-| Rango de MI (0 a 100) | Calificación de Calidad | Severidad | Acción Requerida en Praxia |
+| Rango de MI (0 a 100) | Calificación de Calidad | Severidad | Acción Requerida en OpenNavy |
 |---|---|---|---|
 | **$\ge 65.0$** | **Alta Mantenibilidad (Verde)** | `INFO` | Aprobado. Código modular y limpio. |
 | **$50.0 – 64.9$** | **Mantenibilidad Moderada (Amarillo)** | `WARNING` | Revisar en code review. Evaluar simplificación de expresiones. |

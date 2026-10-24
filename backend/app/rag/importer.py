@@ -1,6 +1,6 @@
 """
 Pipeline automatizado de ingesta y conversión de fuentes normativas crudas (PDF, DOCX)
-a Markdown estructurado con metadatos canónicos para el RAG de Praxia (ADR-002).
+a Markdown estructurado con metadatos canónicos para el RAG de OpenNavy (ADR-002).
 """
 
 import os
@@ -143,7 +143,7 @@ class DocumentIngestor:
             category = "ai_opportunity"
         else:
             authority = "Recognized Engineering Authority"
-            rule_id = f"PRAXIA-{stem_lower.upper()[:12]}"
+            rule_id = f"NAVY-{stem_lower.upper()[:12]}"
             category = "general"
 
         meta = {
@@ -159,7 +159,7 @@ class DocumentIngestor:
         return meta
 
     def _render_frontmatter(self, meta: Dict[str, str]) -> str:
-        """Renderiza cabecera compatible tanto con YAML como con el parser de Praxia."""
+        """Renderiza cabecera compatible tanto con YAML como con el parser de OpenNavy."""
         return (
             f"# Documento Canónico Certificado: {meta.get('criterion', '').upper()}\n\n"
             f"**Autoridad:** {meta['authority']}  \n"

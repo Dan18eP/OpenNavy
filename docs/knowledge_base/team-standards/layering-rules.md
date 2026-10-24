@@ -3,15 +3,15 @@
 **Identificador:** `layering_rules`  
 **Tipo:** `team_standard`  
 **Categoría:** Arquitectura y Modularidad  
-**Autoridad:** Praxia Engineering Standards Board  
-**Rule-ID:** PRAXIA-TEAM-ARCH-01  
+**Autoridad:** OpenNavy Engineering Standards Board  
+**Rule-ID:** NAVY-TEAM-ARCH-01  
 **Severidad:** high  
 **Versión:** 2.0  
 
 ---
 
 ## 1. Estructura de Capas de la Aplicación
-El backend de Praxia y los servicios analizados siguen un diseño estricto en capas inspirado en Ports & Adapters y Clean Architecture:
+El backend de OpenNavy y los servicios analizados siguen un diseño estricto en capas inspirado en Ports & Adapters y Clean Architecture:
 
 ```
 backend/app/

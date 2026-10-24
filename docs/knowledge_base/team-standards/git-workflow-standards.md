@@ -3,8 +3,8 @@
 **Identificador:** `git_workflow_standards`  
 **Tipo:** `team_standard`  
 **Categoría:** Gobernanza y Proceso de Desarrollo  
-**Autoridad:** Praxia Engineering Standards Board  
-**Rule-ID:** PRAXIA-TEAM-GIT-01  
+**Autoridad:** OpenNavy Engineering Standards Board  
+**Rule-ID:** NAVY-TEAM-GIT-01  
 **Severidad:** high  
 **Versión:** 1.0  
 
