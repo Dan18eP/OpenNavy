@@ -18,9 +18,9 @@ export const Navbar: React.FC<NavbarProps> = ({ systemStatus, totalRepos }) => {
           <div>
             <div style={{ display: 'flex', alignItems: 'center', gap: '8px', flexWrap: 'wrap' }}>
               <h1 style={{ fontSize: '1.25rem', fontWeight: 800, letterSpacing: '-0.02em', margin: 0 }}>
-                PRAXIA<span style={{ color: '#3BE6C2' }}>.ai</span>
+                OPENNAVY<span style={{ color: '#003893' }}>.ai</span>
               </h1>
-              <span className="badge badge-info" style={{ fontSize: '0.65rem', padding: '2px 8px', background: 'rgba(59, 230, 194, 0.15)', color: '#3BE6C2', border: '1px solid rgba(59, 230, 194, 0.3)' }}>v2.0 RAG & DeepCode</span>
+              <span className="badge badge-info" style={{ fontSize: '0.65rem', padding: '2px 8px', background: 'rgba(0, 56, 147, 0.15)', color: '#003893', border: '1px solid rgba(0, 56, 147, 0.3)' }}>v1.0 Sovereign</span>
             </div>
             <p className="navbar-tagline" style={{ fontSize: '0.75rem', color: 'var(--text-muted)', margin: 0 }}>
               Autonomous Code Auditing & AI Opportunity Assessment

@@ -6,7 +6,7 @@ import { runThemeViewTransition } from '@/lib/theme-transition'
 import { SITE_THEMES } from './site-themes.ts'
 export { SITE_THEMES, type SiteTheme } from './site-themes.ts'
 
-export const DEFAULT_THEME = 'tokyo-night'
+export const DEFAULT_THEME = 'opennavy'
 export const THEME_KEY = 'omarchy-site-theme'
 /** Fired on <window> after a theme lands, for canvas renderers to re-read. */
 export const THEME_EVENT = 'omarchy-theme'

@@ -23,11 +23,9 @@ export function OmarchyMark({ className }: { className?: string }) {
 }
 
 const BRAND_BANDS: [color: string, rows: number][] = [
-  ['var(--t-field-crest)', 5],
-  ['var(--t-field-hover)', 2],
-  ['var(--t-field-lit)', 4],
-  ['var(--t-field-mid)', 3],
-  ['var(--t-field-dim)', 5],
+  ['#FFC72C', 8], // MLH Gold
+  ['#0084C7', 5], // MLH Blue
+  ['#E73427', 6], // MLH Red
 ];
 const BAND_ROWS = BRAND_BANDS.reduce((sum, [, rows]) => sum + rows, 0);
 

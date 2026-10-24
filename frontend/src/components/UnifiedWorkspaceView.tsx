@@ -26,9 +26,13 @@ import {
   Layers,
   History,
   RotateCcw,
+  Radio,
   X
 } from 'lucide-react';
 import { api, CodeCitation, ChatSessionItem } from '../services/api';
+import { useFleetSonar } from '../hooks/useFleetSonar';
+import { FleetSonarRadar } from './FleetSonarRadar';
+import { cn } from '../lib/utils';
 
 interface FileTreeNode {
   name: string;
@@ -70,7 +74,7 @@ export const UnifiedWorkspaceView: React.FC<UnifiedWorkspaceViewProps> = ({
   const [messages, setMessages] = useState<WorkspaceMessage[]>([
     {
       role: 'assistant',
-      content: `Hola. Soy el Copilot de arquitectura **Praxia Workspace**. Puedo explicarte cómo está estructurado este repositorio (${repoName || 'repositorio'}), auditar módulos en tiempo real y citar las líneas exactas de código donde se ubican posibles violaciones o dependencias cíclicas.\n\nPuedes escribir comandos slash como **/help**, **/tree**, **/models**, **/cycles**, **/solid** o **/secrets** directamente en el chat para activar paneles visuales interactivos.`,
+      content: `Hola. Soy el Copilot de arquitectura **OpenNavy Fleet Copilot**. Puedo explicarte cómo está estructurado este repositorio (${repoName || 'repositorio'}), auditar módulos en tiempo real con Tree-sitter y citar las líneas exactas de código donde se ubican posibles violaciones o dependencias cíclicas con el algoritmo de Tarjan.\n\nPuedes escribir comandos slash como **/help**, **/tree**, **/models**, **/cycles**, **/solid** o **/secrets** directamente en el chat para activar paneles visuales interactivos.`,
       timestamp: new Date(),
     },
   ]);
@@ -82,6 +86,18 @@ export const UnifiedWorkspaceView: React.FC<UnifiedWorkspaceViewProps> = ({
   const [isSessionsModalOpen, setIsSessionsModalOpen] = useState<boolean>(false);
   const [savedSessions, setSavedSessions] = useState<ChatSessionItem[]>([]);
   const [isLoadingSessions, setIsLoadingSessions] = useState<boolean>(false);
+
+  // Fleet Sonar Real-time Telemetry & Radar (US-08 & US-09 - Dylan Gamero)
+  const {
+    connected: sonarConnected,
+    officerName,
+    crew,
+    activeCollisions,
+    latestBlueprint,
+    navigate,
+    dismissCollision,
+  } = useFleetSonar();
+  const [isSonarOpen, setIsSonarOpen] = useState<boolean>(false);
 
   const codeContainerRef = useRef<HTMLDivElement>(null);
   const chatMessagesEndRef = useRef<HTMLDivElement>(null);
@@ -154,6 +170,9 @@ export const UnifiedWorkspaceView: React.FC<UnifiedWorkspaceViewProps> = ({
     setHighlightRange(range || null);
     setIsLoadingFile(true);
 
+    // Notificar posición al radar de colisión de Fleet Sonar (US-08)
+    navigate(path);
+
     try {
       const res = await api.getRepoFile(repoId, path);
       setFileContent(res.content);
@@ -204,7 +223,7 @@ export const UnifiedWorkspaceView: React.FC<UnifiedWorkspaceViewProps> = ({
         ...prev,
         {
           role: 'assistant',
-          content: `### Catálogo de Comandos Interactivos (Praxia UI)
+          content: `### Catálogo de Comandos Interactivos (OpenNavy UI)
 Selecciona o escribe cualquiera de los siguientes comandos:
 
 - **/tree** — Abre y resalta el árbol de navegación de archivos del repositorio.
@@ -267,7 +286,7 @@ Selecciona o escribe cualquiera de los siguientes comandos:
 **Inventario Local Detectado:**
 ${modelsList}
 
-*Tip:* Para cambiar de tier, ejecuta Praxia con \`--tier standard\` (3b) o \`--tier pro\` (7b).`,
+*Tip:* Para alternar entre modelos, usa gemma4:e4b (máxima calidad) o gemma4:e2b (ultrarrápido).`,
             timestamp: new Date(),
           },
         ]);
@@ -558,7 +577,6 @@ ${modelsList}
         return node.name.toLowerCase().includes(q) || node.path.toLowerCase().includes(q);
       })
       .map((node) => {
-        const isSelected = activeFile === node.path;
         if (node.type === 'directory') {
           const isExpanded = !!expandedFolders[node.path];
           return (
@@ -587,19 +605,46 @@ ${modelsList}
           );
         }
 
+        const isSelected = activeFile === node.path;
+        const peerOnThisFile = crew.find(
+          (c) => c.officer_name !== officerName && c.current_file === node.path
+        );
+        const isColliding = activeCollisions.some(
+          (a) => a.conflicting_files.includes(node.path)
+        );
+
         return (
           <div
             key={node.path}
             onClick={() => openFile(node.path)}
             style={{ paddingLeft: `${depth * 10 + 16}px` }}
-            className={`flex items-center gap-2 py-1 px-2 text-xs font-mono cursor-pointer transition-colors ${
+            className={`flex items-center justify-between gap-1.5 py-1 px-2 text-xs font-mono cursor-pointer transition-colors ${
               isSelected
                 ? 'bg-brand-soft text-brand-ink font-semibold border-l-2 border-brand'
+                : isColliding
+                ? 'bg-[#E73427]/10 text-[#E73427] border-l-2 border-[#E73427]'
                 : 'text-text-muted hover:text-text hover:bg-surface-2'
             }`}
           >
-            <FileCode className="size-3.5 flex-shrink-0 text-brand/60" />
-            <span className="truncate">{node.name}</span>
+            <div className="flex items-center gap-2 truncate min-w-0">
+              <FileCode className="size-3.5 flex-shrink-0 text-brand/60" />
+              <span className="truncate">{node.name}</span>
+            </div>
+
+            {peerOnThisFile && (
+              <span
+                className={cn(
+                  "text-[9px] px-1 py-0.2 border font-bold flex items-center gap-1 flex-shrink-0",
+                  isColliding
+                    ? "border-[#E73427] bg-[#E73427] text-white animate-pulse"
+                    : "border-[#FFC72C] bg-[#FFC72C]/20 text-[#B45309]"
+                )}
+                title={`${peerOnThisFile.officer_name} está operando en este archivo`}
+              >
+                <Radio className="size-2.5" />
+                <span>{peerOnThisFile.officer_name.split(' ')[0]}</span>
+              </span>
+            )}
           </div>
         );
       });
@@ -628,6 +673,25 @@ ${modelsList}
           )}
           <button
             type="button"
+            onClick={() => setIsSonarOpen(!isSonarOpen)}
+            className={cn(
+              "inline-flex items-center gap-1.5 px-2.5 py-1 border text-[11px] font-mono transition-colors",
+              isSonarOpen
+                ? "border-[#0084C7] bg-[#0084C7]/15 text-[#0084C7] font-bold"
+                : activeCollisions.length > 0
+                ? "border-[#E73427] bg-[#E73427]/10 text-[#E73427] animate-pulse font-bold"
+                : "border-border-subtle bg-surface text-text-muted hover:text-text"
+            )}
+            title="Fleet Sonar: Radar Multijugador LAN (US-08 & US-09)"
+          >
+            <Radio className={cn("size-3.5", sonarConnected ? (activeCollisions.length > 0 ? "text-[#E73427]" : "text-[#0084C7]") : "text-text-muted")} />
+            <span>Sonar ({crew.length})</span>
+            {activeCollisions.length > 0 && (
+              <span className="size-2 rounded-full bg-[#E73427] animate-ping" />
+            )}
+          </button>
+          <button
+            type="button"
             onClick={openSessionsManager}
             className="inline-flex items-center gap-1.5 px-2 py-1 border border-border-subtle bg-surface text-text-muted hover:text-text text-[11px]"
             title="Ver Historial de Sesiones (/resume)"
@@ -647,6 +711,36 @@ ${modelsList}
         </div>
       </div>
 
+      {/* ── COLLISION ALERT BANNER (US-08) ── */}
+      {activeCollisions.length > 0 && (
+        <div className="bg-[#E73427]/15 border-b border-[#E73427] p-2.5 px-4 flex items-center justify-between gap-3 text-xs font-mono text-[#E73427] animate-pulse z-20">
+          <div className="flex items-center gap-2.5 min-w-0">
+            <ShieldAlert className="size-4 flex-shrink-0 text-[#E73427]" />
+            <span className="font-bold uppercase tracking-wider text-[10px] px-1.5 py-0.5 bg-[#E73427] text-white">
+              Rumbo de Colisión Detectado
+            </span>
+            <span className="truncate text-text font-medium text-[11px]">
+              {activeCollisions[0].reason} ({activeCollisions[0].officers.join(' ↔ ')})
+            </span>
+          </div>
+          <div className="flex items-center gap-2 flex-shrink-0">
+            <button
+              onClick={() => setIsSonarOpen(true)}
+              className="px-2.5 py-1 border border-[#E73427] bg-[#E73427] text-white text-[11px] font-bold hover:opacity-90"
+            >
+              Abrir Radar
+            </button>
+            <button
+              onClick={() => dismissCollision(activeCollisions[0].id)}
+              className="p-1 hover:text-text"
+              title="Descartar alerta de colisión"
+            >
+              <X className="size-3.5" />
+            </button>
+          </div>
+        </div>
+      )}
+
       {/* ── MAIN WORKSPACE SPLIT AREA ── */}
       <div className="flex-1 grid grid-cols-1 lg:grid-cols-12 min-h-0 overflow-hidden">
         {/* ── LEFT: WORKSPACE COPILOT (5 COLUMNS) ── */}
@@ -655,10 +749,10 @@ ${modelsList}
           <div className="p-3.5 border-b border-border-subtle bg-surface/80 flex items-center justify-between flex-shrink-0">
             <div className="flex items-center gap-2">
               <Sparkles className="size-4 text-brand" />
-              <h2 className="font-sans text-sm font-bold text-text">Praxia RAG Copilot</h2>
+              <h2 className="font-sans text-sm font-bold text-text">OpenNavy AI Copilot</h2>
             </div>
-            <span className="font-mono text-[10px] px-2 py-0.5 border border-border-subtle bg-surface-2 text-text-muted">
-              AST & Normas
+            <span className="font-mono text-[10px] px-2 py-0.5 border border-[#003893]/30 bg-[#003893]/10 text-[#003893] font-semibold">
+              Gemma 4 · AST & Tarjan
             </span>
           </div>
 
@@ -913,6 +1007,35 @@ ${modelsList}
           </div>
         </div>
       </div>
+
+      {/* ── FLEET SONAR RADAR DRAWER (US-08 & US-09 - Dylan Gamero) ── */}
+      {isSonarOpen && (
+        <div className="fixed sm:absolute top-10 bottom-0 right-0 w-full sm:w-[420px] bg-surface border-l border-border-strong shadow-2xl z-40 flex flex-col min-h-0">
+          <div className="h-10 border-b border-border-subtle bg-surface-2 px-3 flex items-center justify-between flex-shrink-0">
+            <div className="flex items-center gap-2">
+              <Radio className="size-4 text-[#0084C7] animate-pulse" />
+              <span className="font-mono text-xs font-bold text-text">Fleet Sonar Cockpit</span>
+              <span className="font-mono text-[10px] text-text-muted">LAN Mesh</span>
+            </div>
+            <button
+              onClick={() => setIsSonarOpen(false)}
+              className="p-1 text-text-muted hover:text-text"
+              title="Cerrar Sonar"
+            >
+              <X className="size-4" />
+            </button>
+          </div>
+          <div className="flex-1 overflow-y-auto min-h-0">
+            <FleetSonarRadar
+              currentFile={activeFile}
+              repoId={repoId}
+              onOpenFile={(file) => openFile(file)}
+              onSelectWaypoint={(file, lines) => openFile(file, lines)}
+              className="h-full border-none shadow-none"
+            />
+          </div>
+        </div>
+      )}
 
       {/* ── SESSIONS MODAL (/resume) ── */}
       {isSessionsModalOpen && (

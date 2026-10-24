@@ -1,52 +1,28 @@
-import { t, language } from '@/i18n/site'
+import { t } from '@/i18n/site'
 import { OmarchyWordmark } from '@/components/Brand'
 import { PixelBackdrop } from '@/components/HeroShader'
-import {
-  CloudflareMark,
-  DigitalOceanMark,
-  ThirtySevenSignalsMark,
-} from '@/components/PartnerLogos'
 
 const columns = [
   {
-    title: t('Explore'),
+    title: 'Navegación',
     links: [
-      { label: t('News'), href: 'https://omarchy.org/news/' },
-      { label: t('Manual'), href: 'https://omarchy.org/manual/' },
-      { label: t('Plugins'), href: 'https://plugins.omarchy.org' },
-      { label: t('Themes'), href: '#themes' },
+      { label: 'Inicio', href: '#home' },
+      { label: 'Explorador y copiloto', href: '#workspace' },
     ],
   },
   {
-    title: t('Community'),
+    title: 'Tripulación',
     links: [
-      { label: 'Discord', href: 'https://discord.gg/tXFUdasqhY' },
-      { label: t('Meetups'), href: 'https://omarchy.org/meetups/' },
-      { label: t('Teams'), href: 'https://omarchy.org/teams/' },
-      { label: t('Workstations'), href: 'https://omarchy.org/workstations/' },
-      { label: t('Doctrine'), href: 'https://omarchy.org/doctrine/' },
+      { label: 'Daniel Echeverría', href: 'https://github.com/Dan18eP' },
+      { label: 'Dylan Gamero', href: 'https://github.com/dypok' },
+      { label: 'Brandon Carranza', href: 'https://github.com/brandoncarranza' },
     ],
   },
   {
-    title: t('Foundation'),
+    title: 'Comunidad',
     links: [
-      { label: t('About'), href: 'https://omarchy.org/foundation/' },
-      { label: t('Staff'), href: 'https://omarchy.org/staff/' },
-      { label: t('Patrons'), href: 'https://omarchy.org/patrons/' },
-      { label: t('Sponsorships'), href: 'https://omarchy.org/sponsorships/' },
-      { label: 'AIR', href: 'https://omarchy.org/air/' },
-    ],
-  },
-  {
-    title: t('Project'),
-    links: [
-      { label: t('Security'), href: 'https://omarchy.org/security/' },
-      { label: 'GitHub', href: 'https://github.com/omacom/omarchy' },
-      { label: t('Brand'), href: 'https://omarchy.org/brand/' },
-      {
-        label: t('Merch'),
-        href: 'https://supply.37signals.com/collections/omarchy',
-      },
+      { label: 'GitHub OpenNavy', href: 'https://github.com/Dan18eP/OpenNavy' },
+      { label: 'Hacktoberfest 2026', href: 'https://hacktoberfest.com' },
     ],
   },
 ] as const
@@ -59,20 +35,19 @@ const footerLink = `text-text-secondary underline decoration-transparent underli
 export function SiteFooter({ onHomeClick }: { onHomeClick?: () => void }) {
   return (
     <footer
-      className="relative isolate overflow-hidden border-t border-border-subtle"
+      className="relative isolate overflow-hidden border-t border-border-subtle bg-bg"
       style={{
-        background: 'var(--t-field-bg)',
         paddingBottom: 'env(safe-area-inset-bottom)',
       }}
     >
       <PixelBackdrop className="footer-rise" />
 
-      <div className="footer-rise relative mx-auto max-w-6xl px-4 py-14 sm:px-6">
-        <div className="flex flex-col gap-10 lg:flex-row lg:justify-between">
+      <div className="footer-rise relative mx-auto max-w-6xl px-4 py-10 sm:px-6">
+        <div className="flex flex-col gap-8 lg:flex-row lg:justify-between">
           <div className="flex w-full shrink-0 flex-col sm:w-max lg:w-96 lg:self-start">
             <a
               href="#home"
-              aria-label={t('Omarchy home')}
+              aria-label="OpenNavy home"
               onClick={(e) => {
                 if (onHomeClick) {
                   e.preventDefault()
@@ -83,61 +58,26 @@ export function SiteFooter({ onHomeClick }: { onHomeClick?: () => void }) {
               data-quiet
               className={`group block ${focusRing}`}
             >
-              <OmarchyWordmark className="h-6 w-auto text-brand transition-colors duration-150 ease-out group-hover:text-[color:var(--t-field-hover)]" />
+              <OmarchyWordmark className="h-6 w-auto text-[#003893] transition-colors duration-150 ease-out group-hover:text-[#CE1126]" />
             </a>
             <p
               data-quiet
-              className="mt-4 text-sm leading-relaxed text-text-muted [text-wrap:pretty]"
+              className="mt-3 text-sm leading-relaxed text-text-muted [text-wrap:pretty]"
             >
-              <span className="block">
-                {t('Beautiful, fun & agentic Linux')}{' '}
-                <span className="whitespace-nowrap">
-                  {t('by')}{' '}
-                  <a href="https://dhh.dk" target="_blank" rel="noreferrer" className={footerLink}>
-                    DHH
-                  </a>
-                </span>
-              </span>
-              <span className="block">
-                {t('The malleable OS for the age of agents.')}
-              </span>
+              The Sovereign Fleet Navigator for Open Source Codebases. Desarrollado por Daniel Echeverría, Dylan Gamero y Brandon Carranza bajo Licencia MIT.
             </p>
-
-            <div className="mt-4 flex flex-col text-sm leading-relaxed text-text-muted [text-wrap:pretty]">
-              <p data-quiet>
-                {t('Incubated at')}{' '}
-                <a href="https://37signals.com" target="_blank" rel="noreferrer" className={footerLink}>
-                  <ThirtySevenSignalsMark className="mr-[3px] inline-block size-4 shrink-0 align-[-0.28em]" />
-                  37signals
-                </a>
-              </p>
-              <p data-quiet>
-                {t('Hosting by')}{' '}
-                <a href="https://cloudflare.com" target="_blank" rel="noreferrer" className={footerLink}>
-                  <CloudflareMark className="mr-[5px] inline-block h-3 w-auto shrink-0 align-[-0.15em]" />
-                  Cloudflare
-                </a>
-              </p>
-              <p data-quiet>
-                {t('Compute by')}{' '}
-                <a href="https://www.digitalocean.com" target="_blank" rel="noreferrer" className={footerLink}>
-                  <DigitalOceanMark className="mr-[5px] inline-block size-4 shrink-0 align-[-0.2em]" />
-                  DigitalOcean
-                </a>
-              </p>
-            </div>
           </div>
 
-          <div className="grid min-w-0 flex-1 grid-cols-2 gap-x-6 gap-y-10 sm:grid-cols-4 xl:gap-x-10">
+          <div className="grid min-w-0 flex-1 grid-cols-2 gap-x-6 gap-y-8 sm:grid-cols-3 xl:gap-x-10">
             {columns.map((col) => (
               <nav key={col.title} data-quiet aria-label={col.title}>
-                <h2 className="font-sans text-xs tracking-widest text-text-muted uppercase">
+                <h2 className="font-sans text-xs tracking-widest text-[#003893] uppercase font-bold">
                   {col.title}
                 </h2>
-                <ul className="mt-3.5 flex flex-col gap-2.5">
+                <ul className="mt-3 flex flex-col gap-2">
                   {col.links.map((link) => (
                     <li key={link.label}>
-                      <a href={link.href} className={`text-sm ${footerLink}`}>
+                      <a href={link.href} className={`text-xs ${footerLink}`}>
                         {link.label}
                       </a>
                     </li>
@@ -148,18 +88,12 @@ export function SiteFooter({ onHomeClick }: { onHomeClick?: () => void }) {
           </div>
         </div>
 
-        <div className="mt-12 flex flex-col gap-2 border-t border-border-subtle pt-6 text-[13px] text-text-muted sm:flex-row sm:items-center sm:justify-between">
+        <div className="mt-8 flex flex-col gap-2 border-t border-border-subtle pt-4 text-xs font-mono text-text-muted sm:flex-row sm:items-center sm:justify-between">
           <p data-quiet>
-            <a href="https://omarchy.org/brand/" target="_blank" rel="noreferrer" className={footerLink}>
-              Omarchy™
-            </a>
-            {t('. All rights reserved.')}
+            OpenNavy™ · Licencia MIT · Major League Hacking 2026
           </p>
           <p data-quiet>
-            {t('Partner inquiries:')}{' '}
-            <a href="mailto:foundation@omarchy.org" className={footerLink}>
-              foundation@omarchy.org
-            </a>
+            Google DeepMind Gemma 4 & DigitalOcean Hacktoberfest
           </p>
         </div>
       </div>
