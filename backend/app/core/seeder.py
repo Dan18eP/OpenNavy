@@ -35,24 +35,26 @@ def seed_opennavy_repo(db: Session = None) -> None:
         close_db = True
 
     try:
-        existing_repo = db.query(Repo).first()
-        if existing_repo:
-            logger.info(f"[Seeder] Repositorio existente detectado: '{existing_repo.name}' ({existing_repo.id})")
+        repo = db.query(Repo).filter(Repo.name.ilike("%opennavy%")).first()
+        if not repo:
+            logger.info("[Seeder] Auto-registrando repositorio OpenNavy...")
+            repo_path = str(PROJECT_ROOT.resolve())
+            repo = Repo(
+                name="OpenNavy",
+                url=repo_path,
+                default_branch="develop",
+                connected_at=datetime.utcnow(),
+            )
+            db.add(repo)
+            db.commit()
+            db.refresh(repo)
+
+        existing_run = db.query(AnalysisRun).filter_by(repo_id=repo.id).first()
+        if existing_run:
+            logger.info(f"[Seeder] Análisis existente detectado para '{repo.name}' ({existing_run.id})")
             return
 
-        logger.info("[Seeder] Base de datos vacia. Auto-registrando repositorio OpenNavy...")
-
-        # 1. Crear Repositorio OpenNavy apuntando a la raiz física del proyecto
-        repo_path = str(PROJECT_ROOT.resolve())
-        repo = Repo(
-            name="OpenNavy",
-            url=repo_path,
-            default_branch="develop",
-            connected_at=datetime.utcnow(),
-        )
-        db.add(repo)
-        db.commit()
-        db.refresh(repo)
+        logger.info(f"[Seeder] Sembrando corrida de análisis inicial para '{repo.name}'...")
 
         # 2. Crear AnalysisRun inicial con estado COMPLETADO
         run = AnalysisRun(

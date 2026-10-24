@@ -93,7 +93,7 @@ def chat_with_repo(
                 f"Hallazgos recientes: {findings_summary}\n\n"
                 f"Base de conocimiento técnica y Rúbricas RAG recuperadas:\n{rag_context_text}\n\n"
                 f"Instrucciones:\n"
-                f"- Responde a la consulta del desarrollador en español, de forma precisa, técnica y profesional.\n"
+                f"- Responde de forma concisa y directa al grano en un máximo de 2 o 3 párrafos técnicos en español.\n"
                 f"- Cita las reglas de arquitectura, SOLID o Clean Code correspondientes anclándote en las fuentes RAG listadas arriba.\n"
                 f"- Cita archivos y líneas exactas usando el formato estricto: `[nombre_archivo:linea_inicio-linea_fin]` (ejemplo `[src/auth.py:45-72]`) o `[nombre_archivo:linea]` cuando te refieras a código o hallazgos concretos.\n"
                 f"- Si la pregunta es conceptual o general, responde sin forzar citas ficticias a archivos no relacionados.\n"
