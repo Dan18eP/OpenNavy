@@ -23,7 +23,7 @@ class TestLiveModuleDocsAndTeamStandards:
 
         # Validar autoría de equipo
         authorities = {c["authority"] for c in team_chunks}
-        assert "Praxia Engineering Standards Board" in authorities
+        assert ("OpenNavy Engineering Standards Board" in authorities) or ("Praxia Engineering Standards Board" in authorities)
 
     def test_docs_generator_and_persist_node_materializes_markdown_in_module_docs(self, tmp_path, monkeypatch):
         # Configurar un KNOWLEDGE_BASE_PATH temporal

@@ -24,10 +24,10 @@ class Settings(BaseSettings):
 
     # Configuración Ollama / llama.cpp (Inferencia Local On-Premise - ADR-001 / ADR-003)
     OLLAMA_BASE_URL: str = Field(default="http://localhost:11434", description="URL base de la instancia local de Ollama / llama.cpp")
-    OPENNAVY_TIER: str = Field(default="e4b", description="Perfil de hardware: e4b (razonamiento) o e2b (ultrarrápido)")
+    OPENNAVY_TIER: str = Field(default="e2b", description="Perfil de hardware: e4b (razonamiento) o e2b (ultrarrápido)")
     PRAXIA_LOCAL_TIER: str = Field(default="standard", description="Alias de compatibilidad heredada para perfil local")
-    OLLAMA_MODEL: str = Field(default="gemma4:e4b", description="Modelo primario de navegación Google Gemma 4")
-    OLLAMA_FALLBACK_MODEL: str = Field(default="gemma4:e2b", description="Modelo de contingencia ultrarrápido")
+    OLLAMA_MODEL: str = Field(default="gemma4:e2b", description="Modelo primario de navegación Google Gemma 4")
+    OLLAMA_FALLBACK_MODEL: str = Field(default="gemma4:e4b", description="Modelo secundario de contingencia")
 
 
     # Configuración Google AI Studio / Gemini

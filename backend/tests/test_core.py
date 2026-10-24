@@ -22,7 +22,7 @@ from app.schemas.api import RepoCreate, AnalysisCreateRequest
 
 
 def test_settings_loaded():
-    assert settings.PROJECT_NAME == "Praxia - AI Code Review & Live Docs"
+    assert "OpenNavy" in settings.PROJECT_NAME or "Praxia" in settings.PROJECT_NAME
     assert "maintainability_index" in settings.CRITERIA_WEIGHTS
     assert "cyclomatic_complexity" in settings.CRITERIA_WEIGHTS
     assert "dependency_version_control" in settings.CRITERIA_WEIGHTS

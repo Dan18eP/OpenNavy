@@ -21,6 +21,7 @@ def get_llm(temperature: float = 0.2) -> Optional[Any]:
             return ChatOllamaLocal(
                 base_url=settings.OLLAMA_BASE_URL,
                 model=settings.OLLAMA_MODEL,
+                fallback_model=settings.OLLAMA_FALLBACK_MODEL,
                 temperature=temperature,
             )
         except Exception as e:
@@ -38,6 +39,7 @@ def get_llm(temperature: float = 0.2) -> Optional[Any]:
                     return ChatOllamaLocal(
                         base_url=settings.OLLAMA_BASE_URL,
                         model=settings.OLLAMA_MODEL,
+                        fallback_model=settings.OLLAMA_FALLBACK_MODEL,
                         temperature=temperature,
                     )
         except Exception:

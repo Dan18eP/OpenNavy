@@ -15,11 +15,12 @@ class ChatOllamaLocal(BaseChatModel):
     Garantiza inferencia 100% on-premise sin llamadas a la nube, con soporte multimodal nativo.
     """
     base_url: str = "http://localhost:11434"
-    model: str = "gemma4:e4b"
+    model: str = "gemma4:e2b"
+    fallback_model: Optional[str] = "gemma4:e4b"
     temperature: float = 0.2
     top_p: float = 0.9
     num_ctx: int = 4096
-    timeout: float = 60.0
+    timeout: float = 120.0
 
     @property
     def _llm_type(self) -> str:
@@ -84,6 +85,22 @@ class ChatOllamaLocal(BaseChatModel):
                 generation = ChatGeneration(message=AIMessage(content=content))
                 return ChatResult(generations=[generation])
         except Exception as e:
+            if self.fallback_model and self.fallback_model != self.model:
+                logger.warning(
+                    f"Modelo primario {self.model} fallo o tardo demasiado ({e}). "
+                    f"Reintentando con modelo ligero de contingencia {self.fallback_model}..."
+                )
+                try:
+                    payload["model"] = self.fallback_model
+                    with httpx.Client(timeout=self.timeout) as client:
+                        resp = client.post(endpoint, json=payload)
+                        resp.raise_for_status()
+                        data = resp.json()
+                        content = data.get("message", {}).get("content", "")
+                        generation = ChatGeneration(message=AIMessage(content=content))
+                        return ChatResult(generations=[generation])
+                except Exception as fallback_err:
+                    logger.error(f"Fallo tambien modelo de contingencia {self.fallback_model}: {fallback_err}")
             logger.error(f"Error al invocar modelo Ollama en {endpoint}: {e}")
             raise
 
@@ -117,5 +134,21 @@ class ChatOllamaLocal(BaseChatModel):
                 generation = ChatGeneration(message=AIMessage(content=content))
                 return ChatResult(generations=[generation])
         except Exception as e:
+            if self.fallback_model and self.fallback_model != self.model:
+                logger.warning(
+                    f"Modelo primario {self.model} fallo o tardo demasiado en modo async ({e}). "
+                    f"Reintentando con modelo ligero de contingencia {self.fallback_model}..."
+                )
+                try:
+                    payload["model"] = self.fallback_model
+                    async with httpx.AsyncClient(timeout=self.timeout) as client:
+                        resp = await client.post(endpoint, json=payload)
+                        resp.raise_for_status()
+                        data = resp.json()
+                        content = data.get("message", {}).get("content", "")
+                        generation = ChatGeneration(message=AIMessage(content=content))
+                        return ChatResult(generations=[generation])
+                except Exception as fallback_err:
+                    logger.error(f"Fallo tambien modelo async de contingencia {self.fallback_model}: {fallback_err}")
             logger.error(f"Error asincrono al invocar modelo Ollama en {endpoint}: {e}")
             raise
