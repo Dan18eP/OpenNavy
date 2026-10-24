@@ -93,38 +93,53 @@ export const RepoSelector: React.FC<RepoSelectorProps> = ({
         </div>
 
         {/* Selector de Tipo de Repositorio: Remoto vs Local */}
-        <div className="flex items-center gap-3 flex-wrap">
-          <span className="font-mono text-xs text-text-muted">Origen:</span>
-          <div className="inline-flex border border-border-subtle bg-bg-deep p-0.5">
-            <button
-              type="button"
-              onClick={() => {
-                setRepoType('remote');
-                setUrl('');
-              }}
-              className={`font-mono text-xs px-3 py-1.5 transition-colors ${
-                repoType === 'remote'
-                  ? 'bg-brand text-brand-ink font-bold'
-                  : 'text-text-muted hover:text-text'
-              }`}
-            >
-              Repositorio Remoto (Git)
-            </button>
-            <button
-              type="button"
-              onClick={() => {
-                setRepoType('local');
-                setUrl('');
-              }}
-              className={`font-mono text-xs px-3 py-1.5 transition-colors ${
-                repoType === 'local'
-                  ? 'bg-brand text-brand-ink font-bold'
-                  : 'text-text-muted hover:text-text'
-              }`}
-            >
-              Carpeta Local (Ruta)
-            </button>
+        <div className="flex items-center justify-between gap-3 flex-wrap">
+          <div className="flex items-center gap-3">
+            <span className="font-mono text-xs text-text-muted">Origen:</span>
+            <div className="inline-flex border border-border-subtle bg-bg-deep p-0.5">
+              <button
+                type="button"
+                onClick={() => {
+                  setRepoType('remote');
+                  setUrl('');
+                }}
+                className={`font-mono text-xs px-3 py-1.5 transition-colors ${
+                  repoType === 'remote'
+                    ? 'bg-brand text-brand-ink font-bold'
+                    : 'text-text-muted hover:text-text'
+                }`}
+              >
+                Repositorio Remoto (Git)
+              </button>
+              <button
+                type="button"
+                onClick={() => {
+                  setRepoType('local');
+                  setUrl('.');
+                }}
+                className={`font-mono text-xs px-3 py-1.5 transition-colors ${
+                  repoType === 'local'
+                    ? 'bg-brand text-brand-ink font-bold'
+                    : 'text-text-muted hover:text-text'
+                }`}
+              >
+                Carpeta Local (Ruta)
+              </button>
+            </div>
           </div>
+
+          {repoType === 'local' && (
+            <button
+              type="button"
+              onClick={() => {
+                setUrl('.');
+                setBranch('develop');
+              }}
+              className="text-[11px] font-mono text-brand hover:underline px-2 py-1 border border-brand/30 bg-brand-soft/20 transition-colors"
+            >
+              Usar Proyecto OpenNavy Local (.)
+            </button>
+          )}
         </div>
 
         {/* Input Form */}
