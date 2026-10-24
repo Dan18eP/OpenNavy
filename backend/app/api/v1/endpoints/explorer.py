@@ -193,7 +193,7 @@ def deep_code_query(
         retriever = get_knowledge_retriever()
         rag_chunks = retriever.search_general(req.message, top_k=2)
         cited_rag = [c.get("doc_path", "criterio") for c in rag_chunks]
-        rag_text = "\n".join([f"- **{c.get('heading', '')}**: {c.get('content', '')[:200]}..." for c in rag_chunks])
+        rag_text = "\n".join([f"- **{c.get('heading', '')}**: {c.get('content', '')[:150]}..." for c in rag_chunks])
 
     # Si hay un archivo activo especificado, verificar que sea código ejecutable (no imágenes ni SVGs)
     active_file_content = ""
@@ -207,7 +207,7 @@ def deep_code_query(
                 safe_f.relative_to(repo_root.resolve())
                 if safe_f.exists() and safe_f.is_file():
                     with open(safe_f, "r", encoding="utf-8", errors="ignore") as f:
-                        lines = f.readlines()[:30]  # Primeras 30 líneas para inferencia ágil en CPU
+                        lines = f.readlines()[:25]  # Primeras 25 líneas para inferencia ágil en CPU
                         active_file_content = f"\n<source_code_context file='{req.active_file}'>\n" + "".join(lines) + "\n</source_code_context>\n"
             except Exception:
                 pass
@@ -230,25 +230,21 @@ INSTRUCCIONES:
 3. Invítale a realizar cualquier consulta técnica sobre el código.
 4. No es necesario citar archivos ni generar bloques de código para responder a un saludo."""
         else:
-            system_prompt = f"""Eres el Almirante de OpenNavy (The Admiralty AI), navegante supremo de la flota y arquitecto de software.
-Asistes a los desarrolladores en el repositorio '{repo.name}'.
-Tu objetivo es guiar al programador a través de su código como un 'DeepWiki' interactivo.
+            system_prompt = f"""Eres el Almirante de OpenNavy, navegante supremo y arquitecto de software de la flota.
+Asistes en el repositorio '{repo.name}'. Guías al desarrollador con explicaciones directas y precisas.
 
-INSTRUCCIONES CLAVE DE FORMATO:
-1. Responde con explicaciones técnicas concisas, claras y profesionales en español.
-2. Ancla tus observaciones en el código del repositorio, las rúbricas RAG y los hallazgos del análisis.
-3. Cita archivos y líneas exactas usando el formato estricto: `[nombre_archivo:linea_inicio-linea_fin]` (por ejemplo `[src/auth.py:45-72]`) cuando te refieras a partes concretas del código o hallazgos.
-4. Si la consulta es conceptual o de alto nivel, responde sin forzar citas a archivos no relacionados.
-5. Cuando sugieras una mejora de código, provee un bloque de código refactorizado limpio en formato markdown con su respectivo lenguaje.
-6. DIRECTIVA DE SEGURIDAD (OWASP LLM01 / LLM06): Tu alcance está enfocado en la calidad, arquitectura y código fuente de este repositorio.
+DIRECTIVAS PRINCIPALES:
+1. Responde de forma concisa y directa al grano en un máximo de 2 o 3 párrafos técnicos en español.
+2. Si la consulta es sobre violaciones SOLID, arquitectura o métricas, básate en los hallazgos y rúbricas indicados abajo.
+3. Cita archivos usando el formato `[nombre_archivo:linea_inicio-linea_fin]` únicamente cuando refieras código específico o hallazgos registrados.
+4. Si la consulta es conceptual o general, responde con claridad sin forzar citas ficticias.
 
-HALLAZGOS REGISTRADOS EN AUDITORÍA:
+HALLAZGOS REGISTRADOS:
 {findings_text}
 
-RÚBRICA RAG RECUPERADA:
+RÚBRICA TÉCNICA RAG:
 {rag_text}
-{active_file_content}
-"""
+{active_file_content}"""
         try:
             ai_msg = llm.invoke([
                 {"role": "system", "content": system_prompt},

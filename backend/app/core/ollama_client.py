@@ -20,7 +20,7 @@ class ChatOllamaLocal(BaseChatModel):
     temperature: float = 0.2
     top_p: float = 0.9
     num_ctx: int = 4096
-    timeout: float = 120.0
+    timeout: float = 180.0
 
     @property
     def _llm_type(self) -> str:
@@ -71,6 +71,7 @@ class ChatOllamaLocal(BaseChatModel):
                 "temperature": self.temperature,
                 "top_p": self.top_p,
                 "num_ctx": self.num_ctx,
+                "num_predict": 650,
             }
         }
         if stop:
@@ -82,10 +83,23 @@ class ChatOllamaLocal(BaseChatModel):
                 resp.raise_for_status()
                 data = resp.json()
                 content = data.get("message", {}).get("content", "")
+                if not content.strip() and data.get("message", {}).get("thinking"):
+                    thinking = data.get("message", {}).get("thinking", "").strip()
+                    paragraphs = [p.strip() for p in thinking.split("\n\n") if p.strip()]
+                    content = paragraphs[-1] if paragraphs else thinking[:300]
                 generation = ChatGeneration(message=AIMessage(content=content))
                 return ChatResult(generations=[generation])
         except Exception as e:
-            if self.fallback_model and self.fallback_model != self.model:
+            is_timeout = isinstance(e, (httpx.TimeoutException, httpx.ReadTimeout)) or "timed out" in str(e).lower()
+            should_fallback = bool(self.fallback_model and self.fallback_model != self.model)
+            if is_timeout and self.fallback_model and "e4b" in self.fallback_model and "e2b" in self.model:
+                should_fallback = False
+                logger.warning(
+                    f"Modelo primario {self.model} excedió timeout de {self.timeout}s. "
+                    f"Omitiendo reintento con {self.fallback_model} (mayor latencia en CPU)."
+                )
+
+            if should_fallback:
                 logger.warning(
                     f"Modelo primario {self.model} fallo o tardo demasiado ({e}). "
                     f"Reintentando con modelo ligero de contingencia {self.fallback_model}..."
@@ -120,6 +134,7 @@ class ChatOllamaLocal(BaseChatModel):
                 "temperature": self.temperature,
                 "top_p": self.top_p,
                 "num_ctx": self.num_ctx,
+                "num_predict": 650,
             }
         }
         if stop:
@@ -131,12 +146,25 @@ class ChatOllamaLocal(BaseChatModel):
                 resp.raise_for_status()
                 data = resp.json()
                 content = data.get("message", {}).get("content", "")
+                if not content.strip() and data.get("message", {}).get("thinking"):
+                    thinking = data.get("message", {}).get("thinking", "").strip()
+                    paragraphs = [p.strip() for p in thinking.split("\n\n") if p.strip()]
+                    content = paragraphs[-1] if paragraphs else thinking[:300]
                 generation = ChatGeneration(message=AIMessage(content=content))
                 return ChatResult(generations=[generation])
         except Exception as e:
-            if self.fallback_model and self.fallback_model != self.model:
+            is_timeout = isinstance(e, (httpx.TimeoutException, httpx.ReadTimeout)) or "timed out" in str(e).lower()
+            should_fallback = bool(self.fallback_model and self.fallback_model != self.model)
+            if is_timeout and self.fallback_model and "e4b" in self.fallback_model and "e2b" in self.model:
+                should_fallback = False
                 logger.warning(
-                    f"Modelo primario {self.model} fallo o tardo demasiado en modo async ({e}). "
+                    f"Modelo primario async {self.model} excedió timeout de {self.timeout}s. "
+                    f"Omitiendo reintento con {self.fallback_model} (mayor latencia en CPU)."
+                )
+
+            if should_fallback:
+                logger.warning(
+                    f"Modelo primario {self.model} fallo en modo async ({e}). "
                     f"Reintentando con modelo ligero de contingencia {self.fallback_model}..."
                 )
                 try:
