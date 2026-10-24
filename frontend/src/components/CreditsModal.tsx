@@ -11,42 +11,34 @@ export interface TeamMember {
   portfolio?: string;
 }
 
-export const PRAXIA_TEAM: TeamMember[] = [
-  {
-    name: 'Daniel Martínez',
-    role: 'Frontend & Architecture',
-    initials: 'DM',
-    bio: 'Arquitectura frontend, diseño de sistemas de diseño Obsidian Synth, integración reactiva y UX.',
-    github: 'https://github.com/ddamago0',
-    linkedin: 'https://www.linkedin.com/in/daniel-martinez-gonzalez-a891b3405',
-    portfolio: 'https://portfolio-2n4a.onrender.com',
-  },
+export const OPENNAVY_TEAM: TeamMember[] = [
   {
     name: 'Daniel Echeverría',
-    role: 'Backend Lead & Engine Architect',
+    role: 'Lead Architect & Backend Core',
     initials: 'DE',
-    bio: 'Motor de análisis SAST, orquestación de agentes con LangGraph, inferencia local (Ollama) y RAG normativo.',
+    bio: 'Gobernanza arquitectónica, ADRs, parser universal AST Tree-sitter, motor Tarjan SCC e inferencia soberana con Google Gemma 4.',
     github: 'https://github.com/Dan18eP',
     linkedin: 'https://www.linkedin.com/in/dechever23/',
   },
   {
-    name: 'Breyner Manga',
-    role: 'Core Developer & Contributor',
-    initials: 'BM',
-    bio: 'Algoritmos de detección de ciclos de dependencias (Tarjan), verificación de calidad y suite de pruebas.',
+    name: 'Brandon Carranza',
+    role: 'Frontend Engineer & Cockpit Navigator',
+    initials: 'BC',
+    bio: 'Cabina de mando náutica (Nautical Cockpit), visor interactivo split-view de waypoints sincronizado con Gemma 4 y ergonomía de usuario.',
     github: 'https://github.com/Brxynxr',
     linkedin: 'https://www.linkedin.com/in/breynerm/',
   },
   {
-    name: 'Luis Guerrero',
-    role: 'Frontend Lead & CLI / UX',
-    initials: 'LG',
-    bio: 'Desarrollo de interfaz de terminal CLI interactiva, maquetación de componentes y diseño responsivo.',
-    github: 'https://github.com/xclipsy',
-    linkedin: 'https://www.linkedin.com/in/luis-guerrero-6114942ab',
-    portfolio: 'https://luis-guerrer0.onrender.com/',
+    name: 'Dylan Gamero',
+    role: 'Real-Time & Systems Engineer',
+    initials: 'DG',
+    bio: 'Sonar de flota en tiempo real, radar de colisión arquitectónica sobre LAN y sincronización de blueprints entre máquinas.',
+    github: 'https://github.com/ddamago0',
+    linkedin: 'https://www.linkedin.com/in/daniel-martinez-gonzalez-a891b3405',
   },
 ];
+
+export const PRAXIA_TEAM = OPENNAVY_TEAM;
 
 interface CreditsModalProps {
   isOpen: boolean;
@@ -64,15 +56,15 @@ export const CreditsModal: React.FC<CreditsModalProps> = ({ isOpen, onClose }) =
           <div>
             <div className="flex items-center gap-2">
               <span className="font-mono text-xs px-2 py-0.5 border border-brand/40 bg-brand-soft text-brand font-semibold">
-                EQUIPO PRAXIA
+                EQUIPO OPENNAVY
               </span>
-              <span className="font-mono text-xs text-text-muted">4 Integrantes</span>
+              <span className="font-mono text-xs text-text-muted">3 Integrantes</span>
             </div>
             <h2 className="font-sans text-xl font-bold tracking-tight text-text mt-1.5">
-              Créditos & Desarrolladores
+              Tripulación & Desarrolladores
             </h2>
             <p className="font-mono text-xs text-text-muted mt-0.5">
-              Equipo de ingeniería responsable del diseño, motor SAST y plataforma de Praxia
+              Equipo de ingeniería responsable del diseño, motor de análisis AST y cabina de navegación de OpenNavy
             </p>
           </div>
 

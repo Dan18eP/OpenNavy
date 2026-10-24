@@ -72,7 +72,7 @@ export const PraxiaHeader: React.FC<PraxiaHeaderProps> = ({
   const navLinks: { id: TabType; label: string; badge?: number }[] = [
     { id: 'overview', label: 'Inicio' },
     { id: 'audit', label: 'Auditoría', badge: findingsCount },
-    { id: 'workspace', label: 'Explorador & Copilot' },
+    { id: 'workspace', label: 'Trazador & Explorador' },
     { id: 'docs', label: 'Documentación', badge: knowledgeDocsCount },
   ]
 
@@ -94,12 +94,12 @@ export const PraxiaHeader: React.FC<PraxiaHeaderProps> = ({
               onSelectTab('overview')
               window.scrollTo({ top: 0, behavior: 'smooth' })
             }}
-            aria-label="Praxia Home"
+            aria-label="OpenNavy Home"
             className="mark-draw-trigger relative flex items-center gap-2 focus-visible:outline-2 focus-visible:outline-brand"
           >
             <OmarchyMarkDrawn className="size-[22px] shrink-0 lg:size-[calc(var(--pxc)*2)]" />
             <span className="font-sans text-sm font-semibold tracking-tight text-text hidden sm:inline">
-              PRAXIA
+              OPENNAVY
             </span>
           </button>
 
@@ -180,7 +180,7 @@ export const PraxiaHeader: React.FC<PraxiaHeaderProps> = ({
                   <div className="flex items-center justify-between pb-2 border-b border-border-subtle mb-2.5">
                     <div className="flex items-center gap-1.5 text-text font-bold">
                       <Users className="size-3.5 text-brand" />
-                      <span>Equipo Praxia (4)</span>
+                      <span>Tripulación OpenNavy (3)</span>
                     </div>
                     <span className="text-[10px] text-text-muted">Perfiles</span>
                   </div>
@@ -261,11 +261,11 @@ export const PraxiaHeader: React.FC<PraxiaHeaderProps> = ({
             <Button
               variant="ghost"
               size="icon"
-              aria-label="Praxia on GitHub"
+              aria-label="OpenNavy on GitHub"
               className="hidden sm:inline-flex h-8 w-8 text-text-secondary hover:text-text"
               render={
                 <a
-                  href="https://github.com/Dan18eP/Praxia.git"
+                  href="https://github.com/Dan18eP/OpenNavy.git"
                   target="_blank"
                   rel="noopener noreferrer"
                 />
@@ -332,11 +332,11 @@ export const PraxiaHeader: React.FC<PraxiaHeaderProps> = ({
                 className="flex items-center justify-center gap-2 px-3 py-2 border border-border-subtle hover:border-brand/40 bg-surface text-text-secondary hover:text-brand font-mono text-xs transition-colors"
               >
                 <Users className="size-3.5" />
-                <span>Equipo & Desarrolladores Praxia (4)</span>
+                <span>Tripulación & Desarrolladores OpenNavy (3)</span>
               </button>
               <div className="flex items-center justify-between text-xs text-text-muted font-mono pt-1">
                 <span>{totalRepos} repos active</span>
-                <span>Praxia v1.0</span>
+                <span>OpenNavy v1.0</span>
               </div>
             </div>
           </div>
