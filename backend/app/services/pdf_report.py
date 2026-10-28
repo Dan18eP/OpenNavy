@@ -55,7 +55,7 @@ class NumberedCanvas(canvas.Canvas):
 
         # Encabezado en páginas posteriores a la primera
         if self._pageNumber > 1:
-            self.drawString(36, 762, "Praxia — Informe de Auditoría de Código y Plan de Mejora")
+            self.drawString(36, 762, "OpenNavy — Informe de Auditoría de Código y Plan de Mejora")
             self.setStrokeColor(colors.HexColor("#cbd5e1"))
             self.setLineWidth(0.5)
             self.line(36, 754, 576, 754)
@@ -67,7 +67,7 @@ class NumberedCanvas(canvas.Canvas):
 
         page_str = f"Página {self._pageNumber} de {page_count}"
         self.drawRightString(576, 24, page_str)
-        self.drawString(36, 24, "Documento confidencial generado automáticamente por Praxia AI Audit Engine")
+        self.drawString(36, 24, "Documento confidencial generado automáticamente por OpenNavy Engine")
         self.restoreState()
 
 
@@ -165,7 +165,7 @@ class PDFReportGenerator:
         elements = []
 
         # ── 1. ENCABEZADO INSTITUCIONAL ─────────────────────────────────
-        elements.append(Paragraph("🛡️ Praxia — Informe Ejecutivo de Auditoría y Plan de Mejora", title_style))
+        elements.append(Paragraph(" OpenNavy — Informe Ejecutivo de Auditoría y Plan de Mejora", title_style))
         elements.append(Paragraph("Evaluación Cualitativa Asistida por RAG, Métricas Estáticas Universales y Auditoría de Dependencias", subtitle_style))
         elements.append(Spacer(1, 8))
         elements.append(HRFlowable(width="100%", thickness=2, color=colors.HexColor("#4f46e5"), spaceAfter=10))
@@ -261,11 +261,11 @@ class PDFReportGenerator:
         for crit_key, label in CRITERIA_LABELS.items():
             val = float(metrics_map.get(crit_key, 75.0))
             if val >= 75:
-                stat_text = "<font color='#059669'><b>✓ Aceptable / Conforme</b></font>"
+                stat_text = "<font color='#059669'><b> Aceptable / Conforme</b></font>"
             elif val >= 55:
-                stat_text = "<font color='#d97706'><b>⚠️ Atención Requerida</b></font>"
+                stat_text = "<font color='#d97706'><b> Atención Requerida</b></font>"
             else:
-                stat_text = "<font color='#e11d48'><b>❌ No Conforme / Crítico</b></font>"
+                stat_text = "<font color='#e11d48'><b> No Conforme / Crítico</b></font>"
 
             if "maintainability" in crit_key:
                 target_val = "≥ 65.0 (Radon/Halstead)"
@@ -307,7 +307,7 @@ class PDFReportGenerator:
 
         if has_cycles:
             arch_summary = (
-                f"<font color='#e11d48'><b>⚠️ ALERTA ARQUITECTÓNICA CRÍTICA: Se detectaron {len(cycles)} dependencias circulares.</b></font><br/>"
+                f"<font color='#e11d48'><b> ALERTA ARQUITECTÓNICA CRÍTICA: Se detectaron {len(cycles)} dependencias circulares.</b></font><br/>"
                 f"Las dependencias cíclicas impiden desacoplar módulos, bloquean pruebas aisladas y generan recompilaciones en cascada.<br/>"
                 f"<b>Cadenas detectadas:</b><br/>" +
                 "<br/>".join([f"• <code>{clean_xml(' → '.join(c))}</code>" for c in cycles])
@@ -316,7 +316,7 @@ class PDFReportGenerator:
             arch_border = colors.HexColor("#e11d48")
         else:
             arch_summary = (
-                "<font color='#059669'><b>✓ Grafo Acíclico Dirigido (DAG) Conforme:</b></font><br/>"
+                "<font color='#059669'><b> Grafo Acíclico Dirigido (DAG) Conforme:</b></font><br/>"
                 "No se detectaron dependencias circulares entre los módulos analizados. El flujo de invocación respeta "
                 "la jerarquía y los límites de capas definidos en los estándares técnicos del equipo."
             )
@@ -430,7 +430,7 @@ class PDFReportGenerator:
         elements.append(Paragraph("4. Plan de Mejora y Acciones Priorizadas (Hallazgos Detallados)", heading_h1))
 
         if not findings:
-            elements.append(Paragraph("✓ No se encontraron violaciones críticas ni advertencias de deuda técnica en el código analizado.", body_style))
+            elements.append(Paragraph(" No se encontraron violaciones críticas ni advertencias de deuda técnica en el código analizado.", body_style))
         else:
             crit_findings = [f for f in findings if f.get("severidad") in ("critical", "high")]
             other_findings = [f for f in findings if f.get("severidad") not in ("critical", "high")]

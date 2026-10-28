@@ -17,12 +17,12 @@ RUN pip install --no-cache-dir -r requirements.txt
 COPY . .
 
 # Crear directorios para base de datos SQLite y repositorios temporales
-RUN mkdir -p /app/data /tmp/praxia
+RUN mkdir -p /app/data /tmp/opennavy
 
 # Usuario no root por seguridad
-RUN addgroup --system praxia && adduser --system --group praxia
-RUN chown -R praxia:praxia /app /tmp/praxia
-USER praxia
+RUN addgroup --system opennavy && adduser --system --group opennavy
+RUN chown -R praxia:praxia /app /tmp/opennavy
+USER opennavy
 
 EXPOSE 8000
 

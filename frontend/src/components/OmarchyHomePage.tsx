@@ -8,6 +8,7 @@ import { HeroShader } from '@/components/HeroShader'
 import { DottedSurface } from '@/components/ui/dotted-surface'
 import { SectionAnchor } from '@/components/SectionHeading'
 import { Button } from '@/components/ui/button'
+import { Ship, ShieldCheck, Cpu } from 'lucide-react'
 
 interface OmarchyHomePageProps {
   onStartAudit?: () => void
@@ -21,10 +22,6 @@ interface OmarchyHomePageProps {
 export function OmarchyHomePage({
   onStartAudit,
   onNavigate,
-  onOpenDependencies,
-  findingsCount = 0,
-  score,
-  lastAnalyzed,
 }: OmarchyHomePageProps) {
   const [painted, setPainted] = useState(false)
   const [intro, setIntro] = useState(false)
@@ -40,27 +37,25 @@ export function OmarchyHomePage({
   }, [painted])
 
   useEffect(() => {
-    if (!sessionStorage.getItem('praxia-intro-seen')) {
-      sessionStorage.setItem('praxia-intro-seen', 'true')
+    if (!sessionStorage.getItem('opennavy-intro-seen')) {
+      sessionStorage.setItem('opennavy-intro-seen', 'true')
       setIntro(true)
     }
   }, [])
 
-  const displayScore = typeof score === 'number' ? `${score}/100` : '—'
-
   return (
-    <div className="w-full h-full flex flex-col justify-between overflow-hidden select-none">
+    <div className="w-full h-full flex flex-col justify-between overflow-hidden select-none bg-bg">
       {/* ------------------------------------------------------------- 1. HERO VIEWPORT */}
       <section
         id="home"
         data-hero-sentinel
         className={
-          'pixel-container relative flex-1 flex flex-col justify-between overflow-hidden select-none [-webkit-touch-callout:none] bg-[#090a0f]' +
+          'pixel-container relative flex-1 flex flex-col justify-between overflow-hidden select-none [-webkit-touch-callout:none] bg-bg' +
           (intro ? ' hero-intro' : '')
         }
       >
-        {/* Three.js 3D Dotted Surface Background */}
-        <DottedSurface className="absolute inset-0 z-0 opacity-80" />
+        {/* Three.js 3D Dotted Surface Background with MLH Gradient */}
+        <DottedSurface className="absolute inset-0 z-0 opacity-75" />
 
         {/* Hero Pixel Field with Wordmark Laser-Etch & Interactive Cursor Matrix */}
         <HeroShader onPainted={() => setPainted(true)} transparent={true} />
@@ -70,7 +65,7 @@ export function OmarchyHomePage({
           <PraxiaWordmark
             data-hero-wordmark
             className={
-              'w-[88%] max-w-4xl text-[color:var(--t-field-lit)] drop-shadow-[0_0_35px_rgba(139,92,246,0.35)]' +
+              'w-[88%] max-w-4xl text-[#192531] drop-shadow-[0_4px_24px_rgba(25,37,49,0.12)]' +
               (painted ? ' invisible' : '')
             }
             background={WORDMARK_BANDS}
@@ -84,43 +79,65 @@ export function OmarchyHomePage({
             <h1
               data-hero-stagger
               style={{ fontFamily: 'var(--font-mono)' }}
-              className="text-2xl font-medium tracking-tight text-text [text-wrap:balance] sm:text-3xl"
+              className="text-2xl font-bold tracking-tight text-text [text-wrap:balance] sm:text-3xl"
             >
               <SectionAnchor anchor="home">
-                <span className="sr-only">Praxia: </span>
-                Autonomous Code Auditing & Architecture Intelligence
+                <span className="sr-only">OpenNavy: </span>
+                The Sovereign Fleet Navigator for Open Source Codebases
               </SectionAnchor>
             </h1>
 
             <p
               data-hero-stagger
-              className="mt-3 text-[14px] leading-relaxed text-text-secondary max-w-xl [text-wrap:balance]"
+              className="mt-3 text-[14px] leading-relaxed text-text-muted max-w-xl [text-wrap:balance]"
             >
-              Plataforma SAST multi-lenguaje con detección de ciclos acíclicos y evaluación arquitectónica asistida por RAG.
+              Carta náutica interactiva y radar arquitectónico multijugador local-first. Explora bases de código complejas, detecta arrecifes de dependencias con Tarjan y traza waypoints con Google Gemma 4.
             </p>
 
+            {/* CTAs */}
             <div
               data-hero-stagger
               data-hero-cta
-              className="mt-6 flex w-full max-w-xs flex-col items-stretch gap-3 sm:w-auto sm:max-w-none sm:flex-row"
+              className="mt-7 flex w-full max-w-xs flex-col items-stretch gap-3 sm:w-auto sm:max-w-none sm:flex-row"
             >
               <Button
                 size="lg"
-                className="h-10 pr-4 has-data-[icon=inline-start]:pl-3"
+                className="h-10 px-6 bg-[#E73427] hover:bg-[#D6281B] text-white font-mono text-xs font-semibold shadow-xs cursor-pointer border border-[#E73427]"
                 onClick={onStartAudit}
               >
-                <DownloadIcon data-icon="inline-start" />
-                Iniciar Auditoría
+                <DownloadIcon data-icon="inline-start" className="mr-1.5 size-4" />
+                Iniciar Auditoría AST
               </Button>
               <Button
                 size="lg"
                 variant="outline"
-                className="h-10 pr-4 has-data-[icon=inline-start]:pl-3"
+                className="h-10 px-6 border-[#192531]/30 bg-white hover:bg-surface-2 text-[#192531] font-mono text-xs font-semibold shadow-xs cursor-pointer hover:border-[#192531]"
                 onClick={() => onNavigate?.('workspace')}
               >
-                <PlayIcon data-icon="inline-start" className="mr-0.5" />
-                Workspace & Copilot
+                <PlayIcon data-icon="inline-start" className="mr-1.5 size-4 text-[#FFC72C] fill-[#FFC72C]" />
+                Explorador y copiloto
               </Button>
+            </div>
+
+            {/* Features bar without badges */}
+            <div
+              data-hero-stagger
+              className="mt-8 flex flex-wrap items-center justify-center gap-4 text-xs font-mono text-text-muted"
+            >
+              <div className="flex items-center gap-1.5">
+                <Ship className="size-3.5 text-[#192531]" />
+                <span>Carta Náutica (AST + Tarjan)</span>
+              </div>
+              <span className="text-border-strong">•</span>
+              <div className="flex items-center gap-1.5">
+                <Cpu className="size-3.5 text-[#FFC72C]" />
+                <span>Google Gemma 4 Local</span>
+              </div>
+              <span className="text-border-strong">•</span>
+              <div className="flex items-center gap-1.5">
+                <ShieldCheck className="size-3.5 text-[#E73427]" />
+                <span>100% Soberano & Sin Nube</span>
+              </div>
             </div>
           </div>
         </div>
@@ -128,4 +145,3 @@ export function OmarchyHomePage({
     </div>
   )
 }
-

@@ -28,9 +28,9 @@ export const MonochromeLandingHero: React.FC<MonochromeLandingProps> = ({
       {/* Top Meta Line */}
       <div className="flex flex-wrap items-center justify-between gap-4 mb-8 pb-6 border-b border-white/10">
         <div className="flex items-center gap-3">
-          <span className="w-2.5 h-2.5 rounded-full bg-[#3BE6C2] animate-pulse" />
-          <span className="font-mono text-xs uppercase tracking-widest text-[#3BE6C2]">
-            PRAXIA ENGINE v2.0 · SOVEREIGN AI & CODE AUDIT
+          <span className="w-2.5 h-2.5 rounded-full bg-[#003893] animate-pulse" />
+          <span className="font-mono text-xs uppercase tracking-widest text-[#003893]">
+            OPENNAVY FLEET OS · SOVEREIGN AI & CODE AUDIT
           </span>
         </div>
         <div className="flex items-center gap-4 text-xs font-mono text-neutral-400">
@@ -48,7 +48,7 @@ export const MonochromeLandingHero: React.FC<MonochromeLandingProps> = ({
             EXPERIENCIA MONOCROMÁTICA EDITORIAL
           </div>
           <h1 className="text-3xl md:text-5xl font-extrabold tracking-tight font-mono text-white leading-tight">
-            PRAXIA <span className="text-[#3BE6C2] font-sans font-light">SYSTEM</span>
+            OPENNAVY <span className="text-[#003893] font-sans font-light">SYSTEM</span>
           </h1>
           <p className="text-sm md:text-base text-neutral-300 max-w-xl leading-relaxed">
             Plataforma autónoma de gobernanza de software, auditoría de antipatrones y evaluación cualitativa con <b>RAG Blindado</b>. Integra la metodología formal de viabilidad de la <b>Sesión 01</b> y el visor dividido <b>DeepCode Explorer</b>.

@@ -6,6 +6,7 @@ export type SiteTheme = {
 }
 
 export const SITE_THEMES: SiteTheme[] = [
+  { id: 'opennavy', name: 'OpenNavy (Colombia)', light: true },
   { id: 'catppuccin', name: 'Catppuccin' },
   { id: 'catppuccin-latte', name: 'Catppuccin Latte', light: true },
   { id: 'ethereal', name: 'Ethereal' },

@@ -27,7 +27,7 @@ export const ChatPanel: React.FC<ChatPanelProps> = ({ repoId }) => {
   const [messages, setMessages] = useState<Message[]>([
     {
       role: 'assistant',
-      content: '¡Hola! Soy Praxia AI. Puedes preguntarme sobre las métricas de este repositorio, por qué se violó algún principio SOLID, o cómo solucionar las dependencias circulares.',
+      content: '¡Hola! Soy OpenNavy AI Copilot. Puedes preguntarme sobre las métricas de este repositorio, por qué se violó algún principio SOLID, o cómo solucionar las dependencias circulares con Google Gemma 4.',
       timestamp: new Date(),
     },
   ]);
@@ -120,10 +120,10 @@ export const ChatPanel: React.FC<ChatPanelProps> = ({ repoId }) => {
           key={`${start}-${label}`}
           type="button"
           onClick={() => openSplitCode(filePath, [startLine, endLine])}
-          className="inline-flex items-center gap-1 mx-1 px-2 py-0.5 border border-brand/40 bg-brand-soft text-brand-ink font-mono text-[11px] align-baseline hover:bg-brand transition-colors cursor-pointer"
+          className="inline-flex items-center gap-1 mx-1 px-2 py-0.5 border border-[#003893]/40 bg-[#003893]/10 text-[#003893] hover:bg-[#003893] hover:text-white font-mono text-[11px] align-baseline transition-colors cursor-pointer font-medium"
           title={`Abrir vista dividida en ${filePath} (${startLine}-${endLine})`}
         >
-          <Code2 className="size-3 text-brand" />
+          <Code2 className="size-3 text-[#003893]" />
           <span>{label}</span>
         </button>
       );
@@ -259,7 +259,7 @@ export const ChatPanel: React.FC<ChatPanelProps> = ({ repoId }) => {
                           key={cIdx}
                           type="button"
                           onClick={() => openSplitCode(c.file_path, [c.start_line, c.end_line])}
-                          className="border border-brand/40 bg-brand-soft text-brand-ink font-mono text-[11px] px-2 py-0.5 inline-flex items-center gap-1 hover:bg-brand transition-colors cursor-pointer"
+                          className="border border-[#003893]/30 bg-[#003893]/10 text-[#003893] hover:bg-[#003893] hover:text-white font-mono text-[11px] px-2 py-0.5 inline-flex items-center gap-1 transition-colors cursor-pointer font-medium"
                         >
                           <ExternalLink className="size-2.5" />
                           <span>{c.label}</span>
@@ -319,7 +319,7 @@ export const ChatPanel: React.FC<ChatPanelProps> = ({ repoId }) => {
           <button
             type="submit"
             disabled={!repoId || !input.trim() || isLoading}
-            className="px-5 py-2.5 bg-brand hover:bg-brand/90 text-brand-ink font-mono font-bold text-xs flex items-center justify-center transition-colors disabled:opacity-40"
+            className="px-5 py-2.5 bg-[#003893] hover:bg-[#002d75] text-white font-mono font-bold text-xs flex items-center justify-center transition-colors disabled:opacity-40 cursor-pointer"
           >
             <Send className="size-4" />
           </button>
@@ -379,7 +379,7 @@ export const ChatPanel: React.FC<ChatPanelProps> = ({ repoId }) => {
                 Cargando código fuente...
               </div>
             ) : splitViewer.error ? (
-              <div className="border border-rose-500/30 bg-rose-950/20 text-rose-300 p-4 font-mono text-xs">
+              <div className="border border-red-200 bg-red-50 text-red-700 p-4 font-mono text-xs">
                 {splitViewer.error}
               </div>
             ) : splitLines.length > 0 ? (
@@ -396,8 +396,8 @@ export const ChatPanel: React.FC<ChatPanelProps> = ({ repoId }) => {
                     id={`split-line-${lineNum}`}
                     className={`flex items-start px-2 py-0.5 transition-colors ${
                       isHighlighted
-                        ? 'bg-brand-soft border-l-2 border-brand text-text font-medium'
-                        : 'text-text-secondary hover:bg-surface-2/40'
+                        ? 'bg-[#FFC72C]/25 border-l-2 border-[#B45309] text-text font-semibold'
+                        : 'text-text hover:bg-surface-2/40'
                     }`}
                   >
                     <span className="w-10 text-text-muted select-none flex-shrink-0 text-right pr-4 text-[11px]">

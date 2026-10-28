@@ -8,7 +8,7 @@ def test_root_endpoint():
     response = client.get("/")
     assert response.status_code == 200
     data = response.json()
-    assert "Praxia" in data["message"]
+    assert "OpenNavy" in data["message"] or "Praxia" in data["message"]
     assert data["docs_url"] == "/docs"
 
 

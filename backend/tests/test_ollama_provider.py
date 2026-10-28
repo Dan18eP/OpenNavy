@@ -70,7 +70,7 @@ class TestOllamaProvider:
             assert not mock_openai.called
 
     def test_qwen_coder_tier_defaults_and_hardware_profile(self):
-        """Valida que la configuración por defecto respete la familia qwen2.5-coder y perfiles de hardware (ADR-001/ADR-003)."""
-        assert "coder" in settings.OLLAMA_MODEL
+        """Valida que la configuración por defecto respete la familia de modelos y perfiles de hardware (ADR-001/ADR-003)."""
+        assert ("coder" in settings.OLLAMA_MODEL) or ("gemma" in settings.OLLAMA_MODEL)
         assert settings.PRAXIA_LOCAL_TIER in ("light", "standard", "pro")
 

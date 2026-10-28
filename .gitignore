@@ -27,6 +27,9 @@ temp_repos/
 Thumbs.db
 .DS_Store
 
+# Raw canonical PDF sources (markdown extracted version tracked in canonical/)
+docs/knowledge_base/raw/*.pdf
+
 # Binaries & Executables
 bin/*.exe
 *.exe

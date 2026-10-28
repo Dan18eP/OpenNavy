@@ -9,7 +9,7 @@ def _build_circular_dependencies_adr(repo_name: str, now_str: str, cycles: List[
     adr_content = f"""# ADR-0001: Ruptura de Dependencias Circulares en {repo_name}
 
 **Fecha:** {now_str}  
-**Estado:** Propuesto (Autogenerado por Praxia)  
+**Estado:** Propuesto (Autogenerado por OpenNavy)  
 **Severidad:** Crítica  
 
 ---
@@ -48,15 +48,15 @@ def _build_architecture_summary(repo_name: str, now_str: str, eval_report: Dict[
 **Identificador:** `module_doc_{repo_name.lower().replace('-', '_')}`  
 **Tipo:** `module_doc`  
 **Categoría:** Documentación Viva de Repositorio  
-**Autoridad:** Praxia Architecture Synthesizer  
-**Rule-ID:** PRAXIA-LIVE-DOC-01  
+**Autoridad:** OpenNavy Architecture Synthesizer  
+**Rule-ID:** NAVY-LIVE-DOC-01  
 **Fecha:** {now_str}  
 **Score Global de Calidad:** {eval_report.get('global_score', 0.0)} / 100  
 **Estado:** {"SALUDABLE" if eval_report.get('is_healthy') else "REQUIERE ATENCIÓN"}  
 
 ---
 
-## 📊 Desglose de Criterios
+##  Desglose de Criterios
 | Criterio | Puntaje |
 |---|---|
 | Índice de Mantenibilidad | {scores.get('maintainability_index', 0)} / 100 |
@@ -68,7 +68,7 @@ def _build_architecture_summary(repo_name: str, now_str: str, eval_report: Dict[
 
 ---
 
-## 🔍 Hallazgos Principales
+##  Hallazgos Principales
 - **Total de Hallazgos:** {eval_report.get('total_findings', 0)}
 - **Hallazgos Críticos:** {eval_report.get('critical_findings', 0)}
 - **Hallazgos de Severidad Alta:** {eval_report.get('high_findings', 0)}

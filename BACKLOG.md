@@ -59,7 +59,7 @@ As defined in `docs/ARCHITECTURE.md`, OpenNavy strictly enforces a Ports and Ada
 
 ```
 [Sprint 1: Sovereign Foundations] ---> [Sprint 2: Course Plotter] ---> [Sprint 3: Fleet Sonar LAN] ---> [Sprint 4: Freeze & Demo]
-          [COMPLETED]                          [IN PROGRESS]                   [IN PROGRESS]                    [PLANNED]
+          [COMPLETED]                          [COMPLETED]                     [IN PROGRESS]                    [PLANNED]
 ```
 
 ### Sprint 1: Sovereign Foundations and Local AI Engine (Google Gemma 4)
@@ -90,7 +90,7 @@ As defined in `docs/ARCHITECTURE.md`, OpenNavy strictly enforces a Ports and Ada
 
 ### Sprint 2: The Course Plotter (Multimodal Issue-to-Waypoints)
 *Objective: Transform issues, bounties, or error screenshots into actionable code waypoints with zero hallucinations.*
-*Status: IN PROGRESS*
+*Status: COMPLETED*
 
 - [x] **US-05: Multimodal Course Plotter Endpoint (`/api/v1/course/plot`)**
   - Owner: Daniel Echeverría
@@ -102,7 +102,7 @@ As defined in `docs/ARCHITECTURE.md`, OpenNavy strictly enforces a Ports and Ada
     4. Action Steps: Step-by-step implementation checklist.
     5. PR Template: Markdown draft ready for GitHub/GitLab.
 
-- [ ] **US-06: Interactive Waypoint Split-View (Cockpit UI)**
+- [x] **US-06: Interactive Waypoint Split-View (Cockpit UI)**
   - Owner: Brandon Carranza
   - Description: Connect frontend Course Plotter to DeepCode split-view pane.
   - Acceptance Criteria:
@@ -115,14 +115,14 @@ As defined in `docs/ARCHITECTURE.md`, OpenNavy strictly enforces a Ports and Ada
 
 ### Sprint 3: The Fleet Sonar (LAN Multiplayer and Collision Radar)
 *Objective: Coordinate co-located developer teams on the same local network with zero external cloud infrastructure.*
-*Status: IN PROGRESS*
+*Status: COMPLETED*
 
 - [x] **US-07: FastAPI WebSocket Sonar Hub (`/ws/sonar`)**
   - Owner: Daniel Echeverría
   - Description: Lightweight WebSocket event bus broadcasting peer presence and navigation events across the LAN.
   - Acceptance Criteria: Multiple concurrent clients connect via `ws://<HOST_IP>:8000/api/v1/sonar/ws/sonar` without user accounts.
 
-- [ ] **US-08: Architectural Collision Radar (Pre-Merge Conflict Detection)**
+- [x] **US-08: Architectural Collision Radar (Pre-Merge Conflict Detection)**
   - Owner: Dylan Gamero
   - Description: Cross-reference peer navigation against Tarjan's dependency matrix in real time on the frontend.
   - Acceptance Criteria:
@@ -130,7 +130,7 @@ As defined in `docs/ARCHITECTURE.md`, OpenNavy strictly enforces a Ports and Ada
     2. If two peers inspect or modify strongly coupled modules, both receive an immediate `COLLISION_ALERT` visual banner.
     3. Display distance/proximity metrics between active files.
 
-- [ ] **US-09: Shared Blueprint Broadcast**
+- [x] **US-09: Shared Blueprint Broadcast**
   - Owner: Dylan Gamero / Daniel Echeverría
   - Description: When a developer plots a course with Gemma 4, the plan is broadcast to all active crew members on the network.
   - Acceptance Criteria: All connected laptops receive the `SHARED_BLUEPRINT` event within 200ms over LAN.

@@ -24,9 +24,10 @@ class Settings(BaseSettings):
 
     # Configuración Ollama / llama.cpp (Inferencia Local On-Premise - ADR-001 / ADR-003)
     OLLAMA_BASE_URL: str = Field(default="http://localhost:11434", description="URL base de la instancia local de Ollama / llama.cpp")
-    OPENNAVY_TIER: str = Field(default="e4b", description="Perfil de hardware: e4b (razonamiento) o e2b (ultrarrápido)")
-    OLLAMA_MODEL: str = Field(default="gemma4:e4b", description="Modelo primario de navegación Google Gemma 4")
-    OLLAMA_FALLBACK_MODEL: str = Field(default="gemma4:e2b", description="Modelo de contingencia ultrarrápido")
+    OPENNAVY_TIER: str = Field(default="e2b", description="Perfil de hardware: e4b (razonamiento) o e2b (ultrarrápido)")
+    PRAXIA_LOCAL_TIER: str = Field(default="standard", description="Alias de compatibilidad heredada para perfil local")
+    OLLAMA_MODEL: str = Field(default="gemma4:e2b", description="Modelo primario de navegación Google Gemma 4")
+    OLLAMA_FALLBACK_MODEL: str = Field(default="gemma4:e4b", description="Modelo secundario de contingencia")
 
 
     # Configuración Google AI Studio / Gemini
@@ -44,7 +45,7 @@ class Settings(BaseSettings):
     GITLAB_WEBHOOK_TOKEN: Optional[str] = Field(default=None, description="Token secreto para GitLab Webhooks")
 
     # Rutas del Sistema
-    KNOWLEDGE_BASE_PATH: Path = PROJECT_ROOT / "knowledge-base"
+    KNOWLEDGE_BASE_PATH: Path = PROJECT_ROOT / "docs" / "knowledge_base"
     CLONE_STORAGE_PATH: Path = BASE_DIR / "temp_repos"
 
     # Ponderaciones de los Criterios para el Score Global de Salud (Suma = 1.00)

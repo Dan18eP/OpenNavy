@@ -1,3 +1,7 @@
+<p align="center">
+  <img src="assets/logo_opennavy.svg" alt="OpenNavy Logo" width="480" />
+</p>
+
 # OpenNavy
 
 ### The Sovereign Fleet Navigator for Open Source Codebases

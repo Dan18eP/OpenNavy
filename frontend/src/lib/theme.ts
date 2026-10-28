@@ -6,7 +6,7 @@ import { runThemeViewTransition } from '@/lib/theme-transition'
 import { SITE_THEMES } from './site-themes.ts'
 export { SITE_THEMES, type SiteTheme } from './site-themes.ts'
 
-export const DEFAULT_THEME = 'tokyo-night'
+export const DEFAULT_THEME = 'opennavy'
 export const THEME_KEY = 'omarchy-site-theme'
 /** Fired on <window> after a theme lands, for canvas renderers to re-read. */
 export const THEME_EVENT = 'omarchy-theme'
@@ -21,11 +21,7 @@ export const HINT_KEY = 'omarchy-theme-hint-seen'
  * The favicon is owned outside React so replacing it cannot break reconciliation. */
 export const themeInitScript = `(function(){try{var t=localStorage.getItem(${inlineJson(THEME_KEY)});var ok=${inlineJson(
   SITE_THEMES.map((t) => t.id),
-)};var light=${inlineJson(
-  SITE_THEMES.filter((t) => t.light).map((t) => t.id),
-)};var dark=${inlineJson(
-  SITE_THEMES.filter((t) => !t.light).map((t) => t.id),
-)};if(ok.indexOf(t)<0){var pool=window.matchMedia&&matchMedia('(prefers-color-scheme: light)').matches?light:dark;t=pool[Math.floor(Math.random()*pool.length)];localStorage.setItem(${inlineJson(THEME_KEY)},t)}document.documentElement.dataset.theme=t}catch(e){document.documentElement.dataset.theme=${inlineJson(DEFAULT_THEME)}}if(!document.querySelector('link[rel="icon"][data-theme-icon]')){var l=document.createElement('link');l.rel='icon';l.type='image/svg+xml';l.href='/brand/omarchy-logo.svg';l.setAttribute('data-theme-icon','');document.head.appendChild(l)}})()`
+)};if(!t||ok.indexOf(t)<0||t==='tokyo-night'||t==='obsidian-synth'){t=${inlineJson(DEFAULT_THEME)};localStorage.setItem(${inlineJson(THEME_KEY)},t)}document.documentElement.dataset.theme=t}catch(e){document.documentElement.dataset.theme=${inlineJson(DEFAULT_THEME)}}if(!document.querySelector('link[rel="icon"][data-theme-icon]')){var l=document.createElement('link');l.rel='icon';l.type='image/svg+xml';l.href='/brand/omarchy-logo.svg';l.setAttribute('data-theme-icon','');document.head.appendChild(l)}})()`
 
 export function readTheme(): string {
   try {

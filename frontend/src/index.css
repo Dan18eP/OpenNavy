@@ -47,6 +47,11 @@
   --color-border: var(--t-border-subtle);
   --color-input: var(--t-border-strong);
   --color-ring: var(--t-brand);
+  --color-mlh-red: #e73427;
+  --color-mlh-navy: #192531;
+  --color-mlh-blue: #0084c7;
+  --color-mlh-gold: #ffc72c;
+  --color-mlh-white: #ffffff;
 }
 
 @theme {
@@ -70,6 +75,39 @@
 /* ------------------------------------------------------------- theme values */
 
 :root,
+[data-theme='opennavy'] {
+  --t-bg-deep: #f5f6f8;
+  --t-bg: #ffffff;
+  --t-surface: #ffffff;
+  --t-surface-2: #f5f6f8;
+  --t-border-subtle: rgba(25, 37, 49, 0.12);
+  --t-border-strong: rgba(25, 37, 49, 0.25);
+  --t-text: #192531;
+  --t-text-secondary: #003893;
+  --t-text-muted: #475569;
+  --t-brand: #e73427;
+  --t-brand-soft: rgba(0, 56, 147, 0.08);
+  --t-brand-ink: #ffffff;
+  --t-elevation: 0 1px 3px 0 rgba(25, 37, 49, 0.08), 0 0 0 1px rgba(25, 37, 49, 0.1);
+  --t-elevation-hover: 0 4px 6px -1px rgba(231, 52, 39, 0.12), 0 0 0 1px rgba(231, 52, 39, 0.6);
+  --t-img-outline: rgba(25, 37, 49, 0.12);
+  --t-scroll-thumb: rgba(25, 37, 49, 0.2);
+  --t-selection: rgba(255, 199, 44, 0.35);
+  --t-field-bg: #ffffff;
+  --t-field-dim: #e5e7eb;
+  --t-field-mid: #0084c7;
+  --t-field-lit: #ffc72c;
+  --t-field-hover: #e73427;
+  --t-field-crest: #192531;
+  color-scheme: light;
+  --t-hdr-text: #192531;
+  --t-hdr-text-2: #0084c7;
+  --t-hdr-brand: #e73427;
+  --t-hdr-ink: #ffffff;
+  --t-hdr-surface-2: #f5f6f8;
+  --t-hdr-surface: #ffffff;
+}
+
 [data-theme='tokyo-night'],
 [data-theme='obsidian-synth'] {
   --t-bg-deep: #04050d;

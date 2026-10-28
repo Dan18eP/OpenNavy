@@ -3,6 +3,7 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from app.core.config import settings
 from app.core.database import init_db
+from app.core.seeder import seed_opennavy_repo
 from app.api.v1.api import api_router
 
 
@@ -10,13 +11,15 @@ from app.api.v1.api import api_router
 async def lifespan(app: FastAPI):
     # Inicializar tablas de Base de Datos al arrancar
     init_db()
+    # Auto-sembrar repositorio OpenNavy si la base de datos esta vacia
+    seed_opennavy_repo()
     yield
 
 
 app = FastAPI(
     title=settings.PROJECT_NAME,
     version=settings.VERSION,
-    description="Sistema de análisis y revisión de código multi-lenguaje con rúbrica RAG y documentación viva.",
+    description="OpenNavy - The Sovereign Fleet Navigator for Open Source Codebases (Carta Nautica, Trazador de Rumbo y Sonar de Flota).",
     lifespan=lifespan,
 )
 

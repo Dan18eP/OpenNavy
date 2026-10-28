@@ -24,7 +24,7 @@ interface PraxiaHomeHeroProps {
   metrics?: any[];
 }
 
-export const PraxiaHomeHero: React.FC<PraxiaHomeHeroProps> = ({
+export const OpenNavyHomeHero: React.FC<PraxiaHomeHeroProps> = ({
   onEnterAudit,
   onEnterExplorer,
   onEnterFindings,
@@ -103,7 +103,7 @@ export const PraxiaHomeHero: React.FC<PraxiaHomeHeroProps> = ({
           {/* Fallback before canvas paint */}
           {!painted && (
             <span className="font-sans text-4xl sm:text-6xl font-bold tracking-tighter text-brand">
-              PRAXIA
+              OPENNAVY
             </span>
           )}
         </div>
@@ -111,7 +111,7 @@ export const PraxiaHomeHero: React.FC<PraxiaHomeHeroProps> = ({
         {/* Hero Title & Exact Tagline */}
         <div className="mt-4 max-w-2xl">
           <h1 className="font-mono text-2xl sm:text-3xl font-medium tracking-tight text-text">
-            Praxia: Malleable Code Governance
+            OpenNavy: Sovereign Fleet Navigator
           </h1>
           <p className="mt-3 text-[15px] leading-relaxed text-text-secondary font-mono">
             Autonomous Code Auditing & AI Opportunity Assessment
@@ -186,3 +186,5 @@ export const PraxiaHomeHero: React.FC<PraxiaHomeHeroProps> = ({
     </div>
   );
 };
+
+export const PraxiaHomeHero = OpenNavyHomeHero;

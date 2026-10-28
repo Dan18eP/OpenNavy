@@ -12,12 +12,14 @@ router = APIRouter()
 class FleetSonarManager:
     """
     Concentrador en tiempo real de Sonar de Flota (Fleet Sonar).
-    Coordina la presencia de tripulantes y el radar de colisión arquitectónica sobre red local.
+    Coordina la presencia de tripulantes, planos compartidos y el radar de colision arquitectonica sobre red local.
     """
 
     def __init__(self):
         # Conexiones activas: websocket -> metadata del tripulante
         self.active_connections: Dict[WebSocket, Dict[str, Any]] = {}
+        # Buffer de ultimos planos trazados por Gemma 4 (ultimos 20)
+        self.blueprints: List[Dict[str, Any]] = []
 
     async def connect(self, websocket: WebSocket, officer_name: str):
         await websocket.accept()
@@ -27,18 +29,30 @@ class FleetSonarManager:
             "current_issue": None,
             "connected_at": datetime.utcnow().isoformat(),
         }
-        logger.info(f"[FleetSonar] Oficial '{officer_name}' se unió al puente de mando.")
+        logger.info(f"[FleetSonar] Oficial '{officer_name}' se unio al puente de mando.")
         await self.broadcast_fleet_status()
+
+        # Enviar inmediatamente el ultimo plano activo al tripulante recien conectado
+        latest = self.get_latest_blueprint()
+        if latest:
+            try:
+                await websocket.send_json({
+                    "type": "SHARED_BLUEPRINT_SYNC",
+                    "blueprint": latest,
+                    "timestamp": datetime.utcnow().isoformat(),
+                })
+            except Exception as e:
+                logger.warning(f"[FleetSonar] No se pudo enviar blueprint inicial a '{officer_name}': {e}")
 
     def disconnect(self, websocket: WebSocket):
         if websocket in self.active_connections:
             officer = self.active_connections[websocket]["officer_name"]
             del self.active_connections[websocket]
-            logger.info(f"[FleetSonar] Oficial '{officer}' abandonó la sesión.")
+            logger.info(f"[FleetSonar] Oficial '{officer}' abandono la sesion.")
 
     async def broadcast(self, message: Dict[str, Any]):
         disconnected = []
-        for connection in self.active_connections:
+        for connection in list(self.active_connections.keys()):
             try:
                 await connection.send_json(message)
             except Exception:
@@ -66,7 +80,7 @@ class FleetSonarManager:
         })
 
     async def handle_navigation(self, websocket: WebSocket, file_path: str, issue_id: Optional[str] = None):
-        """Actualiza la posición del tripulante y activa el radar de colisión."""
+        """Actualiza la posicion del tripulante y activa el radar de colision."""
         if websocket not in self.active_connections:
             return
 
@@ -84,33 +98,43 @@ class FleetSonarManager:
             "timestamp": datetime.utcnow().isoformat(),
         })
 
-        # 2. Radar de Colisión: Detectar si otro tripulante está en el mismo archivo o módulo acoplado
-        for other_ws, other_meta in self.active_connections.items():
+        # 2. Radar de Colision: Detectar si otro tripulante esta en el mismo archivo o modulo acoplado
+        for other_ws, other_meta in list(self.active_connections.items()):
             if other_ws != websocket and other_meta.get("current_file"):
                 other_file = other_meta["current_file"]
-                # Colisión directa (mismo archivo)
+                # Colision directa (mismo archivo)
                 if other_file == file_path:
                     await self.broadcast({
                         "type": "COLLISION_ALERT",
                         "severity": "CRITICAL",
-                        "reason": "Ambos oficiales están editando exactamente el mismo archivo.",
+                        "reason": "Ambos oficiales estan editando exactamente el mismo archivo.",
                         "officers": [current_officer, other_meta["officer_name"]],
                         "conflicting_files": [file_path],
                         "timestamp": datetime.utcnow().isoformat(),
                     })
-                # Colisión por módulo acoplado (misma carpeta o prefijo)
+                # Colision por modulo acoplado (segun matriz de Tarjan o submodulo)
                 elif self._are_modules_coupled(file_path, other_file):
                     await self.broadcast({
                         "type": "COLLISION_ALERT",
                         "severity": "WARNING",
-                        "reason": "Módulos fuertemente interconectados detectados por el Radar de Tarjan.",
+                        "reason": "Modulos fuertemente interconectados detectados por el Radar de Tarjan.",
                         "officers": [current_officer, other_meta["officer_name"]],
                         "conflicting_files": [file_path, other_file],
                         "timestamp": datetime.utcnow().isoformat(),
                     })
 
     def _are_modules_coupled(self, file_a: str, file_b: str) -> bool:
-        """Determina heurísticamente acoplamiento cercano si comparten directorio o submódulo."""
+        """
+        Determina acoplamiento entre modulos utilizando la matriz de Tarjan SCC
+        del servicio AntiDrift, con fallback a coincidencia de directorio.
+        """
+        try:
+            from app.services.anti_drift_service import anti_drift_service
+            if anti_drift_service.are_modules_coupled_via_tarjan(file_a, file_b):
+                return True
+        except Exception as e:
+            logger.debug(f"[FleetSonar] Error consultando acoplamiento Tarjan: {e}")
+
         parts_a = file_a.replace("\\", "/").split("/")
         parts_b = file_b.replace("\\", "/").split("/")
         if len(parts_a) > 1 and len(parts_b) > 1:
@@ -118,14 +142,33 @@ class FleetSonarManager:
         return False
 
     async def broadcast_course_plotted(self, officer_name: str, mission: str, waypoints: List[Dict[str, Any]]):
-        """Difunde a la flota que un nuevo plan de navegación ha sido trazado por Gemma 4."""
-        await self.broadcast({
-            "type": "SHARED_BLUEPRINT",
+        """Difunde a la flota que un nuevo plan de navegacion ha sido trazado por Gemma 4."""
+        blueprint_entry = {
+            "id": f"bp-{int(datetime.utcnow().timestamp())}",
             "officer_name": officer_name,
             "mission": mission,
             "waypoints": waypoints,
             "timestamp": datetime.utcnow().isoformat(),
+        }
+
+        # Guardar en buffer circular (maximo 20)
+        self.blueprints.append(blueprint_entry)
+        if len(self.blueprints) > 20:
+            self.blueprints.pop(0)
+
+        await self.broadcast({
+            "type": "SHARED_BLUEPRINT",
+            "blueprint": blueprint_entry,
+            "timestamp": datetime.utcnow().isoformat(),
         })
+
+    def get_latest_blueprint(self) -> Optional[Dict[str, Any]]:
+        """Retorna el ultimo plano de navegacion registrado si existe."""
+        return self.blueprints[-1] if self.blueprints else None
+
+    def get_all_blueprints(self) -> List[Dict[str, Any]]:
+        """Retorna el historial completo de planos registrados en la sesion."""
+        return list(reversed(self.blueprints))
 
 
 sonar_hub = FleetSonarManager()
@@ -134,8 +177,8 @@ sonar_hub = FleetSonarManager()
 @router.websocket("/ws/sonar")
 async def sonar_websocket_endpoint(websocket: WebSocket, officer: str = "Cadet"):
     """
-    Endpoint WebSocket de Fleet Sonar para sincronización LAN en tiempo real.
-    Conéctate desde React con: ws://<HOST_IP>:8000/api/v1/sonar/ws/sonar?officer=Daniel
+    Endpoint WebSocket de Fleet Sonar para sincronizacion LAN en tiempo real.
+    Conectate desde React con: ws://<HOST_IP>:8000/api/v1/sonar/ws/sonar?officer=Daniel
     """
     await sonar_hub.connect(websocket, officer)
     try:
@@ -162,8 +205,25 @@ async def sonar_websocket_endpoint(websocket: WebSocket, officer: str = "Cadet")
 
 @router.get("/status", summary="Estado actual de la Flota")
 def get_fleet_status():
-    """Consulta HTTP rápida del estado de tripulantes activos en LAN."""
+    """Consulta HTTP rapida del estado de tripulantes activos en LAN."""
     return {
         "active_officers": len(sonar_hub.active_connections),
         "officers": [meta["officer_name"] for meta in sonar_hub.active_connections.values()],
+    }
+
+
+@router.get("/blueprints/latest", summary="Ultimo plano de navegacion compartido")
+def get_latest_blueprint():
+    """Retorna el ultimo blueprint trazado por Gemma 4 o null si no se ha trazado ninguno."""
+    return {
+        "latest_blueprint": sonar_hub.get_latest_blueprint()
+    }
+
+
+@router.get("/blueprints", summary="Historial de planos de navegacion compartidos")
+def get_all_blueprints():
+    """Retorna el listado cronologico inverso de planos de navegacion compartidos en la sesion."""
+    return {
+        "count": len(sonar_hub.blueprints),
+        "blueprints": sonar_hub.get_all_blueprints()
     }

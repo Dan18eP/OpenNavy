@@ -52,33 +52,33 @@ export const DependenciesModal: React.FC<DependenciesModalProps> = ({
     switch (status) {
       case 'incompatible':
         return (
-          <span className="inline-flex items-center gap-1.5 font-mono text-[11px] font-bold px-2 py-0.5 border border-rose-500/40 bg-rose-950/40 text-rose-300 uppercase">
-            <ShieldAlert className="size-3 text-rose-400" /> Incompatible
+          <span className="inline-flex items-center gap-1.5 font-mono text-[11px] font-bold px-2 py-0.5 border border-red-300 bg-red-50 text-red-700 uppercase">
+            <ShieldAlert className="size-3 text-red-600" /> Incompatible
           </span>
         );
       case 'major_update':
         return (
-          <span className="inline-flex items-center gap-1.5 font-mono text-[11px] font-semibold px-2 py-0.5 border border-rose-500/30 bg-rose-950/20 text-rose-400 uppercase">
-            <AlertTriangle className="size-3 text-rose-400" /> Major Update
+          <span className="inline-flex items-center gap-1.5 font-mono text-[11px] font-bold px-2 py-0.5 border border-rose-300 bg-rose-50 text-rose-700 uppercase">
+            <AlertTriangle className="size-3 text-rose-600" /> Major Update
           </span>
         );
       case 'minor_update':
         return (
-          <span className="inline-flex items-center gap-1.5 font-mono text-[11px] font-semibold px-2 py-0.5 border border-amber-500/40 bg-amber-950/40 text-amber-300 uppercase">
-            <ArrowUpCircle className="size-3 text-amber-400" /> Minor Update
+          <span className="inline-flex items-center gap-1.5 font-mono text-[11px] font-semibold px-2 py-0.5 border border-amber-300 bg-amber-50 text-amber-800 uppercase">
+            <ArrowUpCircle className="size-3 text-amber-600" /> Minor Update
           </span>
         );
       case 'patch_update':
         return (
-          <span className="inline-flex items-center gap-1.5 font-mono text-[11px] font-semibold px-2 py-0.5 border border-cyan-500/40 bg-cyan-950/40 text-cyan-300 uppercase">
-            <RefreshCw className="size-3 text-cyan-400" /> Patch
+          <span className="inline-flex items-center gap-1.5 font-mono text-[11px] font-semibold px-2 py-0.5 border border-sky-300 bg-sky-50 text-sky-800 uppercase">
+            <RefreshCw className="size-3 text-sky-600" /> Patch
           </span>
         );
       case 'up_to_date':
       default:
         return (
-          <span className="inline-flex items-center gap-1.5 font-mono text-[11px] font-semibold px-2 py-0.5 border border-emerald-500/40 bg-emerald-950/40 text-emerald-300 uppercase">
-            <CheckCircle2 className="size-3 text-emerald-400" /> Al Día
+          <span className="inline-flex items-center gap-1.5 font-mono text-[11px] font-semibold px-2 py-0.5 border border-emerald-300 bg-emerald-50 text-emerald-800 uppercase">
+            <CheckCircle2 className="size-3 text-emerald-600" /> Al Día
           </span>
         );
     }
@@ -87,7 +87,7 @@ export const DependenciesModal: React.FC<DependenciesModalProps> = ({
   const scoreVal = data?.score ?? 100.0;
   const isHealthy = scoreVal >= 80;
   const isWarning = scoreVal >= 50 && scoreVal < 80;
-  const scoreColor = isHealthy ? 'text-emerald-400' : isWarning ? 'text-amber-400' : 'text-rose-400';
+  const scoreColor = isHealthy ? 'text-emerald-700' : isWarning ? 'text-amber-800' : 'text-red-700';
 
   return (
     <div
@@ -139,23 +139,23 @@ export const DependenciesModal: React.FC<DependenciesModalProps> = ({
             </span>
           </div>
 
-          <div className="p-3 border border-emerald-500/20 bg-emerald-950/20">
-            <span className="font-mono text-[10px] text-emerald-400 block">Al Día</span>
-            <span className="font-mono text-xl font-bold text-emerald-300">
+          <div className="p-3 border border-emerald-200 bg-emerald-50/70">
+            <span className="font-mono text-[10px] text-emerald-800 font-semibold block">Al Día</span>
+            <span className="font-mono text-xl font-bold text-emerald-900">
               {data?.up_to_date_count ?? 0}
             </span>
           </div>
 
-          <div className="p-3 border border-amber-500/20 bg-amber-950/20">
-            <span className="font-mono text-[10px] text-amber-400 block">Desactualizadas</span>
-            <span className="font-mono text-xl font-bold text-amber-300">
+          <div className="p-3 border border-amber-200 bg-amber-50/70">
+            <span className="font-mono text-[10px] text-amber-800 font-semibold block">Desactualizadas</span>
+            <span className="font-mono text-xl font-bold text-amber-900">
               {data?.outdated_count ?? 0}
             </span>
           </div>
 
-          <div className="p-3 border border-rose-500/20 bg-rose-950/20">
-            <span className="font-mono text-[10px] text-rose-400 block">Incompatibles</span>
-            <span className="font-mono text-xl font-bold text-rose-300">
+          <div className="p-3 border border-red-200 bg-red-50/70">
+            <span className="font-mono text-[10px] text-red-700 font-semibold block">Incompatibles</span>
+            <span className="font-mono text-xl font-bold text-red-800">
               {data?.incompatible_count ?? 0}
             </span>
           </div>
@@ -169,9 +169,9 @@ export const DependenciesModal: React.FC<DependenciesModalProps> = ({
           <button
             type="button"
             onClick={() => setFilterStatus('all')}
-            className={`font-mono text-xs px-3 py-1 border transition-colors ${
+            className={`font-mono text-xs px-3 py-1 border transition-colors cursor-pointer ${
               filterStatus === 'all'
-                ? 'bg-brand text-brand-ink border-brand font-bold'
+                ? 'bg-[#003893] text-white border-[#003893] font-bold'
                 : 'border-border-subtle bg-surface text-text-muted hover:text-text'
             }`}
           >
@@ -180,10 +180,10 @@ export const DependenciesModal: React.FC<DependenciesModalProps> = ({
           <button
             type="button"
             onClick={() => setFilterStatus('incompatible')}
-            className={`font-mono text-xs px-3 py-1 border transition-colors ${
+            className={`font-mono text-xs px-3 py-1 border transition-colors cursor-pointer ${
               filterStatus === 'incompatible'
-                ? 'bg-rose-600 text-white border-rose-500 font-bold'
-                : 'border-border-subtle bg-surface text-rose-400 hover:border-rose-500/50'
+                ? 'bg-red-600 text-white border-red-600 font-bold'
+                : 'border-border-subtle bg-surface text-red-700 hover:border-red-400'
             }`}
           >
             Incompatibles ({data?.incompatible_count ?? 0})
@@ -191,10 +191,10 @@ export const DependenciesModal: React.FC<DependenciesModalProps> = ({
           <button
             type="button"
             onClick={() => setFilterStatus('outdated')}
-            className={`font-mono text-xs px-3 py-1 border transition-colors ${
+            className={`font-mono text-xs px-3 py-1 border transition-colors cursor-pointer ${
               filterStatus === 'outdated'
-                ? 'bg-amber-600 text-white border-amber-500 font-bold'
-                : 'border-border-subtle bg-surface text-amber-400 hover:border-amber-500/50'
+                ? 'bg-amber-600 text-white border-amber-600 font-bold'
+                : 'border-border-subtle bg-surface text-amber-800 hover:border-amber-400'
             }`}
           >
             Desactualizadas ({data?.outdated_count ?? 0})
@@ -202,10 +202,10 @@ export const DependenciesModal: React.FC<DependenciesModalProps> = ({
           <button
             type="button"
             onClick={() => setFilterStatus('major')}
-            className={`font-mono text-xs px-3 py-1 border transition-colors ${
+            className={`font-mono text-xs px-3 py-1 border transition-colors cursor-pointer ${
               filterStatus === 'major'
-                ? 'bg-rose-700 text-white border-rose-600 font-bold'
-                : 'border-border-subtle bg-surface text-rose-300 hover:border-rose-500/50'
+                ? 'bg-rose-700 text-white border-rose-700 font-bold'
+                : 'border-border-subtle bg-surface text-rose-700 hover:border-rose-400'
             }`}
           >
             Major Breaking ({data?.major_updates_count ?? 0})
@@ -213,10 +213,10 @@ export const DependenciesModal: React.FC<DependenciesModalProps> = ({
           <button
             type="button"
             onClick={() => setFilterStatus('up_to_date')}
-            className={`font-mono text-xs px-3 py-1 border transition-colors ${
+            className={`font-mono text-xs px-3 py-1 border transition-colors cursor-pointer ${
               filterStatus === 'up_to_date'
-                ? 'bg-emerald-600 text-white border-emerald-500 font-bold'
-                : 'border-border-subtle bg-surface text-emerald-400 hover:border-emerald-500/50'
+                ? 'bg-emerald-600 text-white border-emerald-600 font-bold'
+                : 'border-border-subtle bg-surface text-emerald-800 hover:border-emerald-400'
             }`}
           >
             Al Día ({data?.up_to_date_count ?? 0})
@@ -264,7 +264,7 @@ export const DependenciesModal: React.FC<DependenciesModalProps> = ({
                     </code>
                   </div>
 
-                  <span className="text-text-muted">➔</span>
+                  <span className="text-text-muted"></span>
 
                   <div className="flex items-center gap-1.5">
                     <span className="text-text-muted">Recomendada:</span>

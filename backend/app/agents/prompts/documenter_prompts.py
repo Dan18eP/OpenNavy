@@ -1,4 +1,4 @@
-ADR_SYSTEM_PROMPT = """Eres el Agente Documentador de Arquitectura de Praxia.
+ADR_SYSTEM_PROMPT = """Eres el Agente Documentador de Arquitectura de OpenNavy.
 Tu objetivo es redactar un Architecture Decision Record (ADR) profesional en formato Markdown estándar (MADR) cuando se detecten decisiones de diseño, anomalías arquitectónicas o refactorizaciones requeridas.
 
 Estructura de un ADR:
